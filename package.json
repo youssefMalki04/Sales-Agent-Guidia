@@ -10,6 +10,7 @@
     "smoke-test": "tsx scripts/smoke-test-gemini.ts"
   },
   "dependencies": {
+    "@google/genai": "^2.10.0",
     "@google/generative-ai": "^0.24.1",
     "dotenv": "^17.4.2",
     "next": "16.2.9",
