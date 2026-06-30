@@ -21,3 +21,15 @@ Export CRM (si score élevé)
    ├── Salesforce
    ├── Slack
    └── Webhook générique
+
+## Organisation cible
+
+Le projet utilise Next.js App Router avec `app/` à la racine pour l'interface Leadia et les routes API. Les dossiers `src/` présents dans la branche distante restent conservés pour les modules préparés par l'équipe, mais le frontend actif ajouté ici est sous `app/`.
+
+- `app/`: pages Next.js et routes API.
+- `components/leadia/`: composants métier de l'interface workspace.
+- `components/ui/`: composants UI réutilisables.
+- `lib/crm/`: exports HubSpot, Salesforce, Slack et webhook générique.
+- `lib/database/`: client Supabase et futurs repositories.
+- `lib/ai/`, `lib/scoring/`, `lib/dataset/`: emplacements pour agent IA, scoring et données simulées.
+- `supabase/migrations/`: schéma SQL.
