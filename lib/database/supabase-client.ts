@@ -15,4 +15,6 @@ if (!supabasePublishableKey) {
   );
 }
 
-export const supabase = createClient(supabaseUrl, supabasePublishableKey);
+const normalizedSupabaseUrl = supabaseUrl.replace(/\/rest\/v1\/?$/, "");
+
+export const supabase = createClient(normalizedSupabaseUrl, supabasePublishableKey);
