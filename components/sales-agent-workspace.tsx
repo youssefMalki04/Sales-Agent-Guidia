@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { CheckCircle2, Sparkles } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 
 import { AgentDetail } from "@/components/leadia/agent-detail";
 import { AgentDetailsDialog } from "@/components/leadia/agent-details-dialog";
+import { ChatWidget } from "@/components/leadia/chat-widget";
 import { CreateAgentSheet } from "@/components/leadia/create-agent-sheet";
 import { defaultAgent, emptyAgentForm } from "@/components/leadia/data";
 import { SalesAgentsView } from "@/components/leadia/sales-agents-view";
@@ -155,12 +156,7 @@ export function SalesAgentWorkspace() {
         </div>
       ) : null}
 
-      <button
-        aria-label="Assistant"
-        className="fixed right-5 top-1/2 hidden size-[76px] -translate-y-1/2 items-center justify-center rounded-l-[28px] rounded-r-none border border-[#c8c0ec] bg-white text-[#6654d9] shadow-[0_14px_40px_rgba(27,20,85,0.12)] lg:flex"
-      >
-        <Sparkles className="size-6" />
-      </button>
+      <ChatWidget />
     </main>
   );
 }
