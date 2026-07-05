@@ -1,4 +1,4 @@
-import type { LeadObjection, LeadUpdate } from "@/lib/schemas/lead";
+import type { LeadObjection, LeadUpdate } from "@/types/lead";
 
 export type LeadRecord = {
   name?: string | null;
@@ -68,4 +68,3 @@ export function mergeLeadUpdate(currentLead: LeadRecord | null | undefined, lead
     ),
   };
 }
-

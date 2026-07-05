@@ -1,5 +1,5 @@
 import { supabaseAdmin } from "@/lib/database/supabase-admin";
-import { parseLeadUpdate, type LeadUpdate } from "@/lib/schemas/lead";
+import { parseLeadUpdate, type LeadUpdate } from "@/schemas/lead";
 
 type ValidationContext = {
   leadId?: string;
@@ -64,4 +64,3 @@ export async function logLeadUpdateValidationFailed(event: ValidationFailure["ev
     console.error("Failed to log lead update validation error", error);
   }
 }
-
