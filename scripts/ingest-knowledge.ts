@@ -31,7 +31,7 @@ const MIN_CHUNK_TOKENS = 500;
 const MAX_CHUNK_TOKENS = 800;
 const TARGET_CHUNK_TOKENS = 700;
 const OVERLAP_TOKENS = 100;
-const EMBEDDING_MODEL = "gemini-embedding-001";
+const EMBEDDING_MODELS = ["text-embedding-004", "gemini-embedding-001"] as const;
 const EMBEDDING_DIMENSIONS = 768;
 const EMBEDDING_BATCH_SIZE = 10;
 
@@ -106,13 +106,30 @@ function toTitle(filePath: string) {
 }
 
 function inferCategory(relativePath: string) {
-  const firstFolder = relativePath.split(path.sep)[0];
+  const normalizedPath = relativePath.replace(/\\/g, "/").toLowerCase();
+  const filename = path.basename(normalizedPath, path.extname(normalizedPath));
 
-  if (firstFolder && firstFolder !== path.basename(relativePath)) {
+  const categoryByFilename: Record<string, string> = {
+    "doc1-page-accueil-guidia": "presentation",
+    "doc2-pages-produits-guidia": "presentation",
+    "doc3-cas-usages-guidia": "cas_usage",
+    "doc4-fonctionnalites-guidia": "fonctionnalites",
+    "doc5-documentation-technique-guidia": "technique",
+    "doc6-abonnements-tarifs-guidia": "pricing",
+    "doc7-strategie-vente-agent-sales-guidia": "strategie_vente",
+    "guidia-sales-playbook-core-pgvector": "strategie_vente",
+  };
+
+  if (filename in categoryByFilename) {
+    return categoryByFilename[filename];
+  }
+
+  const firstFolder = normalizedPath.split("/")[0];
+
+  if (firstFolder && firstFolder !== path.basename(normalizedPath)) {
     return firstFolder;
   }
 
-  const filename = path.basename(relativePath, path.extname(relativePath));
   return filename.split(/[-_ ]+/)[0] || "general";
 }
 
@@ -195,34 +212,52 @@ function toEmbeddingLiteral(values: number[]) {
 }
 
 async function embedChunkBatch(chunks: KnowledgeChunk[]) {
-  const response = await genAI.models.embedContent({
-    model: EMBEDDING_MODEL,
-    contents: chunks.map((chunk) => chunk.content),
-    config: {
-      taskType: "RETRIEVAL_DOCUMENT",
-      outputDimensionality: EMBEDDING_DIMENSIONS,
-    },
-  });
+  let lastError: unknown;
 
-  const embeddings = response.embeddings ?? [];
+  for (const model of EMBEDDING_MODELS) {
+    try {
+      const response = await genAI.models.embedContent({
+        model,
+        contents: chunks.map((chunk) => chunk.content),
+        config: {
+          taskType: "RETRIEVAL_DOCUMENT",
+          outputDimensionality: EMBEDDING_DIMENSIONS,
+        },
+      });
 
-  if (embeddings.length !== chunks.length) {
-    throw new Error(
-      `Gemini returned ${embeddings.length} embeddings for ${chunks.length} chunks`,
-    );
+      const embeddings = response.embeddings ?? [];
+
+      if (embeddings.length !== chunks.length) {
+        throw new Error(
+          `Gemini returned ${embeddings.length} embeddings for ${chunks.length} chunks`,
+        );
+      }
+
+      return embeddings.map((embedding, index) => {
+        const values = embedding.values ?? [];
+
+        if (values.length !== EMBEDDING_DIMENSIONS) {
+          throw new Error(
+            `Embedding ${index} has ${values.length} dimensions, expected ${EMBEDDING_DIMENSIONS}`,
+          );
+        }
+
+        return values;
+      });
+    } catch (error) {
+      lastError = error;
+
+      const isNotFoundError =
+        error instanceof Error &&
+        /not found|not supported/i.test(error.message);
+
+      if (!isNotFoundError || model === EMBEDDING_MODELS[EMBEDDING_MODELS.length - 1]) {
+        throw error;
+      }
+    }
   }
 
-  return embeddings.map((embedding, index) => {
-    const values = embedding.values ?? [];
-
-    if (values.length !== EMBEDDING_DIMENSIONS) {
-      throw new Error(
-        `Embedding ${index} has ${values.length} dimensions, expected ${EMBEDDING_DIMENSIONS}`,
-      );
-    }
-
-    return values;
-  });
+  throw lastError instanceof Error ? lastError : new Error("Embedding generation failed");
 }
 
 async function embedChunks(chunks: KnowledgeChunk[]) {
