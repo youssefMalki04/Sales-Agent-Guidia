@@ -1,0 +1,227 @@
+{
+  "info": {
+    "_postman_id": "4de54ec7-91a6-4a11-b4eb-3ed52470dc28",
+    "name": "Sales-Agent-Guidia API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "56248477",
+    "_collection_link": "https://go.postman.co/collection/56248477-4de54ec7-91a6-4a11-b4eb-3ed52470dc28?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "chat",
+      "item": [
+        {
+          "name": "Send chat message",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/chat",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "chat"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "leads",
+      "item": [
+        {
+          "name": "Get all leads",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/leads",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "leads"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get lead by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/leads/:id",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "leads",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "rag",
+      "item": [
+        {
+          "name": "Search RAG chunks",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/rag/search",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "rag",
+                "search"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Ingest knowledge document",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/knowledge/ingest",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "knowledge",
+                "ingest"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "crm",
+      "item": [
+        {
+          "name": "Export to HubSpot",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/crm/hubspot/export",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "crm",
+                "hubspot",
+                "export"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Export to Salesforce",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/crm/salesforce/export",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "crm",
+                "salesforce",
+                "export"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Notify Slack",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/crm/slack/notify",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "crm",
+                "slack",
+                "notify"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Send generic webhook",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/webhook/send",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "webhook",
+                "send"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
