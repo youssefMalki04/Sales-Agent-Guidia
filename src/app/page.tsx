@@ -1,5 +1,5 @@
-import { SalesAgentWorkspace } from "@/components/sales-agent-workspace";
+import { HomeOverview } from "@/components/leadia/home-overview";
 
 export default function Home() {
-  return <SalesAgentWorkspace />;
+  return <HomeOverview />;
 }

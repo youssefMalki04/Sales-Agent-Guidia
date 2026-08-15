@@ -1,4 +1,6 @@
 import type { LeadObjection, LeadUpdate } from "@/types/lead";
+import { normalizeSalesSummary } from "./normalize-sales-summary";
+import { normalizeSuggestedNextAction } from "./normalize-suggested-next-action";
 
 export type LeadRecord = {
   name?: string | null;
@@ -61,10 +63,10 @@ export function mergeLeadUpdate(currentLead: LeadRecord | null | undefined, lead
     lead_temperature: keepExistingText(current.lead_temperature, leadUpdate.leadTemperature),
     conversion_score: keepExistingNumber(current.conversion_score, leadUpdate.conversionScore),
     objections: mergeObjections(current.objections, leadUpdate.objections),
-    summary: keepExistingText(current.summary, leadUpdate.salesSummary),
+    summary: keepExistingText(current.summary, normalizeSalesSummary(leadUpdate.salesSummary)),
     suggested_next_action: keepExistingText(
       current.suggested_next_action,
-      leadUpdate.suggestedNextAction,
+      normalizeSuggestedNextAction(leadUpdate.suggestedNextAction),
     ),
   };
 }

@@ -1,39 +1,73 @@
 import {
   Bell,
+  Blocks,
   BookOpen,
   Bot,
   BriefcaseBusiness,
   Building2,
   Camera,
+  CalendarDays,
+  Columns3,
+  Code2,
   FileText,
+  FileSpreadsheet,
   LayoutGrid,
   Link2,
+  MessagesSquare,
   Route,
+  Rocket,
   Settings2,
+  ShieldCheck,
+  SlidersHorizontal,
+  Ticket,
+  UsersRound,
   Video,
 } from "lucide-react";
 
 import type { NavItem, SalesAgentApp, SalesAgentForm } from "./types";
 
 export const platformItems: NavItem[] = [
-  { label: "Workspace", icon: Building2, active: true },
-  { label: "Sales agents", icon: Bot },
-  { label: "Knowledge base", icon: BookOpen },
-  { label: "Qualification flows", icon: Route },
-  { label: "Replay sessions", icon: Video },
-  { label: "Branding", icon: Settings2 },
+  { label: "Getting started", icon: Rocket, href: "/dashboard/onboarding" },
+  { label: "Organization", icon: Building2, href: "/dashboard/organization" },
+  { label: "Team", icon: UsersRound, href: "/dashboard/team" },
+  { label: "Sales agents", icon: Bot, href: "/dashboard/agents" },
+  { label: "Knowledge base", icon: BookOpen, href: "/dashboard/knowledge" },
+  {
+    label: "Qualification flows",
+    icon: Route,
+    href: "/dashboard/qualification-flows",
+  },
+  { label: "Replay sessions", icon: Video, href: "/dashboard/replay-sessions" },
+  { label: "Branding", icon: Settings2, href: "/dashboard/branding" },
+  { label: "Settings", icon: SlidersHorizontal, href: "/dashboard/settings" },
+  { label: "Privacy & GDPR", icon: ShieldCheck, href: "/dashboard/privacy" },
 ];
 
 export const dataItems: NavItem[] = [
-  { label: "Analytics", icon: LayoutGrid },
-  { label: "Conversations", icon: Camera },
-  { label: "Notifications", icon: Bell },
-  { label: "Leads", icon: BriefcaseBusiness },
-  { label: "CRM payloads", icon: FileText },
+  { label: "Analytics", icon: LayoutGrid, href: "/dashboard/analytics" },
+  { label: "Live inbox", icon: MessagesSquare, href: "/dashboard/inbox" },
+  { label: "Conversations", icon: Camera, href: "/dashboard/conversations" },
+  { label: "Notifications", icon: Bell, href: "/dashboard/notifications" },
+  { label: "Leads", icon: BriefcaseBusiness, href: "/dashboard/leads" },
+  { label: "Sales pipeline", icon: Columns3, href: "/dashboard/pipeline" },
+  { label: "Meetings", icon: CalendarDays, href: "/dashboard/meetings" },
+  { label: "Tickets", icon: Ticket, href: "/dashboard/tickets" },
+  { label: "Docs", icon: FileText, href: "/dashboard/docs" },
+  { label: "Import / Export", icon: FileSpreadsheet, href: "/dashboard/import-export" },
 ];
 
 export const integrationItems: NavItem[] = [
-  { label: "Webhooks", icon: Link2 },
+  {
+    label: "Integration center",
+    icon: Blocks,
+    href: "/dashboard/integrations",
+  },
+  {
+    label: "Widget installation",
+    icon: Code2,
+    href: "/dashboard/widget-installation",
+  },
+  { label: "Webhooks", icon: Link2, href: "/dashboard/webhooks" },
 ];
 
 export const emptyAgentForm: SalesAgentForm = {
