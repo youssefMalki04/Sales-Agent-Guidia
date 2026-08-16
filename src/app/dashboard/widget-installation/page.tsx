@@ -12,16 +12,9 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-
-type Position = "bottom-right" | "bottom-left";
-type Device = "desktop" | "mobile";
-
-const steps = [
-  "Customize the widget",
-  "Copy the installation code",
-  "Paste it before the closing body tag",
-  "Publish your website and verify",
-];
+import { steps } from "./widget-data";
+import type { Device, Position } from "./widget-types";
+import { DeviceButton, Field } from "./widget-ui";
 
 export default function WidgetInstallationPage() {
   const [name, setName] = useState("Leadia Sales Assistant");
@@ -276,49 +269,5 @@ export default function WidgetInstallationPage() {
         </section>
       </div>
     </main>
-  );
-}
-
-function Field({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <label className="block">
-      <span className="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
-        {label}
-      </span>
-      {children}
-    </label>
-  );
-}
-
-function DeviceButton({
-  active,
-  label,
-  icon,
-  onClick,
-}: {
-  active: boolean;
-  label: string;
-  icon: React.ReactNode;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      type="button"
-      aria-label={label}
-      onClick={onClick}
-      className={`flex size-8 items-center justify-center rounded-lg transition ${
-        active
-          ? "bg-[#5964d6] text-white shadow-sm"
-          : "text-slate-400 hover:bg-[#f1f2ff] hover:text-[#5964d6]"
-      }`}
-    >
-      {icon}
-    </button>
   );
 }

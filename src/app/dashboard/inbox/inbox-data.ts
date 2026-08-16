@@ -1,0 +1,132 @@
+import type { InboxConversation } from "./inbox-types";
+
+export const STORAGE_KEY = "leadia-live-inbox-v1";
+
+export const initialConversations: InboxConversation[] = [
+  {
+    id: "chat-1",
+    visitor: "Amira Ben Salah",
+    company: "Nexa Retail",
+    email: "amira@nexa.tn",
+    mode: "waiting",
+    score: 87,
+    temperature: "hot",
+    owner: null,
+    unread: 2,
+    lastActivity: "Now",
+    need: "Automate lead qualification for 3 websites",
+    messages: [
+      {
+        id: "m1",
+        author: "visitor",
+        text: "Nous cherchons une solution pour qualifier environ 400 prospects par mois.",
+        time: "10:38",
+      },
+      {
+        id: "m2",
+        author: "ai",
+        text: "Je peux vous aider. Souhaitez-vous connecter les prospects à votre CRM actuel ?",
+        time: "10:39",
+      },
+      {
+        id: "m3",
+        author: "visitor",
+        text: "Oui, nous utilisons HubSpot. Je voudrais parler à quelqu’un pour organiser une démo.",
+        time: "10:41",
+      },
+      {
+        id: "m4",
+        author: "ai",
+        text: "Je transfère votre demande à un membre de notre équipe commerciale.",
+        time: "10:42",
+      },
+    ],
+  },
+  {
+    id: "chat-2",
+    visitor: "Thomas Martin",
+    company: "Flowdesk",
+    email: "thomas@flowdesk.fr",
+    mode: "human",
+    score: 76,
+    temperature: "warm",
+    owner: "Yosra",
+    unread: 1,
+    lastActivity: "3 min",
+    need: "Pricing and Salesforce integration",
+    messages: [
+      {
+        id: "m5",
+        author: "visitor",
+        text: "Le connecteur Salesforce est-il inclus dans le forfait Pro ?",
+        time: "10:31",
+      },
+      {
+        id: "m6",
+        author: "agent",
+        text: "Bonjour Thomas, oui. Je vais vous envoyer le détail des fonctionnalités incluses.",
+        time: "10:34",
+      },
+      {
+        id: "m7",
+        author: "visitor",
+        text: "Merci, pouvez-vous aussi me confirmer le délai d’installation ?",
+        time: "10:36",
+      },
+    ],
+  },
+  {
+    id: "chat-3",
+    visitor: "Sara Trabelsi",
+    company: "Kite Finance",
+    email: "sara@kite.tn",
+    mode: "ai",
+    score: 64,
+    temperature: "warm",
+    owner: null,
+    unread: 0,
+    lastActivity: "8 min",
+    need: "Security and data hosting",
+    messages: [
+      {
+        id: "m8",
+        author: "visitor",
+        text: "Où sont hébergées les données des conversations ?",
+        time: "10:25",
+      },
+      {
+        id: "m9",
+        author: "ai",
+        text: "Les options d’hébergement dépendent du forfait. Je peux vous présenter les choix disponibles.",
+        time: "10:26",
+      },
+    ],
+  },
+  {
+    id: "chat-4",
+    visitor: "Hugo Leroy",
+    company: "Maison Data",
+    email: "hugo@maisondata.fr",
+    mode: "resolved",
+    score: 55,
+    temperature: "cold",
+    owner: "Sami",
+    unread: 0,
+    lastActivity: "1 h",
+    need: "Product documentation",
+    messages: [
+      {
+        id: "m10",
+        author: "visitor",
+        text: "Merci, j’ai trouvé la documentation dont j’avais besoin.",
+        time: "09:42",
+      },
+      {
+        id: "m11",
+        author: "agent",
+        text: "Parfait. N’hésitez pas à revenir vers nous si nécessaire.",
+        time: "09:43",
+      },
+    ],
+  },
+];

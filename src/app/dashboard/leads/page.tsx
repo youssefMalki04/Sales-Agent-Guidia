@@ -1,4 +1,4 @@
-import { CalendarDays, Search, Sparkles } from "lucide-react";
+import { Search, Sparkles } from "lucide-react";
 import { Suspense } from "react";
 
 import {
@@ -14,201 +14,22 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { supabaseAdmin } from "@/lib/database/supabase-admin";
 import { cn } from "@/lib/utils";
 import { DemoLeads } from "./demo-leads";
-
-type LeadRow = {
-  id: string;
-  name: string | null;
-  email: string | null;
-  company: string | null;
-  country: string | null;
-  sector: string | null;
-  need: string | null;
-  suggested_next_action: string | null;
-  summary: string | null;
-  urgency: string | null;
-  lead_temperature: string | null;
-  conversion_score: number | null;
-  crm_status: string | null;
-  created_at: string;
-};
-
-type LeadsPageProps = {
-  searchParams?: Promise<{
-    from?: string;
-    q?: string;
-    source?: string;
-    status?: string;
-    temperature?: string;
-    country?: string;
-    sector?: string;
-    urgency?: string;
-    crm?: string;
-    to?: string;
-  }>;
-};
-
-const STATUS_OPTIONS = [
-  { label: "All", value: "" },
-  { label: "New", value: "new" },
-  { label: "Qualified", value: "qualified" },
-  { label: "Won", value: "won" },
-  { label: "Failed", value: "failed" },
-];
-
-const SOURCE_OPTIONS = [
-  { label: "All", value: "" },
-  { label: "Agent", value: "agent" },
-  { label: "Manual", value: "manual" },
-  { label: "Website", value: "website" },
-];
-
-const STATUS_STYLES: Record<string, string> = {
-  failed: "border-red-200 bg-red-50 text-red-700",
-  new: "border-indigo-200 bg-indigo-50 text-indigo-700",
-  qualified: "border-emerald-200 bg-emerald-50 text-emerald-700",
-  won: "border-green-200 bg-green-50 text-green-700",
-};
-
-function normalizeParam(value: string | undefined) {
-  return value?.trim() ?? "";
-}
-
-function formatDate(value: string) {
-  return new Intl.DateTimeFormat("fr-FR", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  }).format(new Date(value));
-}
-
-function getLeadName(lead: LeadRow) {
-  return lead.name || lead.email || "Visiteur";
-}
-
-function getLeadSource(lead: LeadRow) {
-  if (lead.sector) {
-    return lead.sector;
-  }
-
-  return lead.email ? "Agent" : "Manual";
-}
-
-function getLeadStatus(lead: LeadRow) {
-  const crmStatus = lead.crm_status?.toLowerCase();
-  const score = lead.conversion_score ?? 0;
-  const temperature = lead.lead_temperature?.toLowerCase();
-
-  if (crmStatus === "failed") {
-    return { label: "Failed", value: "failed" };
-  }
-
-  if (crmStatus === "sent") {
-    return { label: "Won", value: "won" };
-  }
-
-  if (score >= 70 || temperature === "hot") {
-    return { label: "Qualified", value: "qualified" };
-  }
-
-  return { label: "New", value: "new" };
-}
-
-function getLeadInitial(lead: LeadRow) {
-  return getLeadName(lead).slice(0, 1).toUpperCase();
-}
-
-function matchesSource(lead: LeadRow, source: string) {
-  if (!source) {
-    return true;
-  }
-
-  return getLeadSource(lead).toLowerCase() === source;
-}
-
-async function getLeads(filters: {
-  from: string;
-  query: string;
-  source: string;
-  status: string;
-  temperature: string;
-  country: string;
-  sector: string;
-  urgency: string;
-  crm: string;
-  to: string;
-}) {
-  if (process.env.ENABLE_SUPABASE_DASHBOARD !== "true") return [];
-  let request = supabaseAdmin
-    .from("leads")
-    .select(
-      "id,name,email,company,country,sector,need,urgency,lead_temperature,conversion_score,crm_status,created_at,summary,suggested_next_action",
-    )
-    .order("created_at", { ascending: false })
-    .limit(100);
-
-  if (filters.from) {
-    request = request.gte("created_at", `${filters.from}T00:00:00.000Z`);
-  }
-
-  if (filters.to) {
-    request = request.lte("created_at", `${filters.to}T23:59:59.999Z`);
-  }
-
-  if (filters.query) {
-    const escapedQuery = filters.query
-      .replaceAll("%", "\\%")
-      .replaceAll(",", "\\,");
-    request = request.or(
-      [
-        `name.ilike.%${escapedQuery}%`,
-        `email.ilike.%${escapedQuery}%`,
-        `company.ilike.%${escapedQuery}%`,
-        `country.ilike.%${escapedQuery}%`,
-        `sector.ilike.%${escapedQuery}%`,
-        `need.ilike.%${escapedQuery}%`,
-      ].join(","),
-    );
-  }
-  if (filters.temperature)
-    request = request.eq("lead_temperature", filters.temperature);
-  if (filters.country)
-    request = request.ilike("country", `%${filters.country}%`);
-  if (filters.sector) request = request.ilike("sector", `%${filters.sector}%`);
-  if (filters.urgency) request = request.eq("urgency", filters.urgency);
-  if (filters.crm) request = request.eq("crm_status", filters.crm);
-
-  const result = await request;
-
-  if (result.error) {
-    throw new Error(result.error.message);
-  }
-
-  return ((result.data ?? []) as LeadRow[])
-    .filter((lead) => {
-      const status = getLeadStatus(lead);
-
-      return (
-        (!filters.status || status.value === filters.status) &&
-        matchesSource(lead, filters.source)
-      );
-    })
-    .sort((first, second) => {
-      const scoreDiff =
-        (second.conversion_score ?? 0) - (first.conversion_score ?? 0);
-
-      if (scoreDiff !== 0) {
-        return scoreDiff;
-      }
-
-      return (
-        new Date(second.created_at).getTime() -
-        new Date(first.created_at).getTime()
-      );
-    });
-}
+import {
+  formatDate,
+  getLeadInitial,
+  getLeadName,
+  getLeadSource,
+  getLeadStatus,
+  getLeads,
+  normalizeParam,
+  SOURCE_OPTIONS,
+  STATUS_OPTIONS,
+  STATUS_STYLES,
+} from "./leads-data";
+import type { LeadsPageProps } from "./leads-types";
+import { DateInput, FieldLabel, StatCard } from "./leads-ui";
 
 export default async function LeadsDashboardPage({
   searchParams,
@@ -514,70 +335,6 @@ export default async function LeadsDashboardPage({
           </div>
         </section>
       </div>
-    </div>
-  );
-}
-
-function StatCard({
-  label,
-  tone,
-  value,
-}: {
-  label: string;
-  tone: "green" | "indigo" | "neutral";
-  value: number;
-}) {
-  return (
-    <div
-      className={cn(
-        "soft-lift rounded-2xl border p-5 shadow-[0_6px_22px_rgba(15,23,42,.04)]",
-        tone === "green"
-          ? "border-emerald-100 bg-emerald-50"
-          : "border-slate-200/80 bg-white",
-        tone === "neutral" ? "bg-[#fafafd]" : "",
-      )}
-    >
-      <p
-        className={cn(
-          "text-3xl font-semibold",
-          tone === "indigo" ? "text-[#5964d6]" : "text-[#171717]",
-          tone === "green" ? "text-[#0f766e]" : "",
-        )}
-      >
-        {value}
-      </p>
-      <p className="mt-1 text-sm font-medium text-[#686872]">{label}</p>
-    </div>
-  );
-}
-
-function FieldLabel({
-  children,
-  label,
-}: {
-  children: React.ReactNode;
-  label: string;
-}) {
-  return (
-    <label className="block">
-      <span className="mb-2 block text-sm font-semibold text-[#4c4c56]">
-        {label}
-      </span>
-      {children}
-    </label>
-  );
-}
-
-function DateInput({ name, value }: { name: string; value: string }) {
-  return (
-    <div className="relative">
-      <input
-        name={name}
-        type="date"
-        defaultValue={value}
-        className="h-11 w-full rounded-xl border border-slate-200 bg-white py-2 pl-3 pr-9 text-sm text-[#4f4f59] outline-none focus:border-[#939ae2] focus:ring-2 focus:ring-[#f1f2ff]"
-      />
-      <CalendarDays className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-[#9a9aa3]" />
     </div>
   );
 }

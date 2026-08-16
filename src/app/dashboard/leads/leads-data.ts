@@ -1,0 +1,163 @@
+import { supabaseAdmin } from "@/lib/database/supabase-admin";
+
+import type { LeadRow } from "./leads-types";
+
+export const STATUS_OPTIONS = [
+  { label: "All", value: "" },
+  { label: "New", value: "new" },
+  { label: "Qualified", value: "qualified" },
+  { label: "Won", value: "won" },
+  { label: "Failed", value: "failed" },
+];
+
+export const SOURCE_OPTIONS = [
+  { label: "All", value: "" },
+  { label: "Agent", value: "agent" },
+  { label: "Manual", value: "manual" },
+  { label: "Website", value: "website" },
+];
+
+export const STATUS_STYLES: Record<string, string> = {
+  failed: "border-red-200 bg-red-50 text-red-700",
+  new: "border-indigo-200 bg-indigo-50 text-indigo-700",
+  qualified: "border-emerald-200 bg-emerald-50 text-emerald-700",
+  won: "border-green-200 bg-green-50 text-green-700",
+};
+
+export function normalizeParam(value: string | undefined) {
+  return value?.trim() ?? "";
+}
+
+export function formatDate(value: string) {
+  return new Intl.DateTimeFormat("fr-FR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  }).format(new Date(value));
+}
+
+export function getLeadName(lead: LeadRow) {
+  return lead.name || lead.email || "Visiteur";
+}
+
+export function getLeadSource(lead: LeadRow) {
+  if (lead.sector) {
+    return lead.sector;
+  }
+
+  return lead.email ? "Agent" : "Manual";
+}
+
+export function getLeadStatus(lead: LeadRow) {
+  const crmStatus = lead.crm_status?.toLowerCase();
+  const score = lead.conversion_score ?? 0;
+  const temperature = lead.lead_temperature?.toLowerCase();
+
+  if (crmStatus === "failed") {
+    return { label: "Failed", value: "failed" };
+  }
+
+  if (crmStatus === "sent") {
+    return { label: "Won", value: "won" };
+  }
+
+  if (score >= 70 || temperature === "hot") {
+    return { label: "Qualified", value: "qualified" };
+  }
+
+  return { label: "New", value: "new" };
+}
+
+export function getLeadInitial(lead: LeadRow) {
+  return getLeadName(lead).slice(0, 1).toUpperCase();
+}
+
+function matchesSource(lead: LeadRow, source: string) {
+  if (!source) {
+    return true;
+  }
+
+  return getLeadSource(lead).toLowerCase() === source;
+}
+
+export async function getLeads(filters: {
+  from: string;
+  query: string;
+  source: string;
+  status: string;
+  temperature: string;
+  country: string;
+  sector: string;
+  urgency: string;
+  crm: string;
+  to: string;
+}) {
+  if (process.env.ENABLE_SUPABASE_DASHBOARD !== "true") return [];
+  let request = supabaseAdmin
+    .from("leads")
+    .select(
+      "id,name,email,company,country,sector,need,urgency,lead_temperature,conversion_score,crm_status,created_at,summary,suggested_next_action",
+    )
+    .order("created_at", { ascending: false })
+    .limit(100);
+
+  if (filters.from) {
+    request = request.gte("created_at", `${filters.from}T00:00:00.000Z`);
+  }
+
+  if (filters.to) {
+    request = request.lte("created_at", `${filters.to}T23:59:59.999Z`);
+  }
+
+  if (filters.query) {
+    const escapedQuery = filters.query
+      .replaceAll("%", "\\%")
+      .replaceAll(",", "\\,");
+    request = request.or(
+      [
+        `name.ilike.%${escapedQuery}%`,
+        `email.ilike.%${escapedQuery}%`,
+        `company.ilike.%${escapedQuery}%`,
+        `country.ilike.%${escapedQuery}%`,
+        `sector.ilike.%${escapedQuery}%`,
+        `need.ilike.%${escapedQuery}%`,
+      ].join(","),
+    );
+  }
+  if (filters.temperature)
+    request = request.eq("lead_temperature", filters.temperature);
+  if (filters.country)
+    request = request.ilike("country", `%${filters.country}%`);
+  if (filters.sector) request = request.ilike("sector", `%${filters.sector}%`);
+  if (filters.urgency) request = request.eq("urgency", filters.urgency);
+  if (filters.crm) request = request.eq("crm_status", filters.crm);
+
+  const result = await request;
+
+  if (result.error) {
+    throw new Error(result.error.message);
+  }
+
+  return ((result.data ?? []) as LeadRow[])
+    .filter((lead) => {
+      const status = getLeadStatus(lead);
+
+      return (
+        (!filters.status || status.value === filters.status) &&
+        matchesSource(lead, filters.source)
+      );
+    })
+    .sort((first, second) => {
+      const scoreDiff =
+        (second.conversion_score ?? 0) - (first.conversion_score ?? 0);
+
+      if (scoreDiff !== 0) {
+        return scoreDiff;
+      }
+
+      return (
+        new Date(second.created_at).getTime() -
+        new Date(first.created_at).getTime()
+      );
+    });
+}

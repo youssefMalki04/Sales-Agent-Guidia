@@ -1,14 +1,11 @@
 "use client";
 
 import {
-  ArrowDownRight,
-  ArrowUpRight,
   Bot,
   CalendarDays,
   CircleAlert,
   Clock3,
   Download,
-  Lightbulb,
   MessageSquareText,
   Sparkles,
   TrendingUp,
@@ -32,83 +29,16 @@ import {
 } from "recharts";
 
 import { readDemoConversations } from "@/lib/demo-conversations";
-
-type Period = "7d" | "30d" | "90d";
-
-const trendData = [
-  { day: "Jul 12", conversations: 32, qualified: 8, meetings: 3 },
-  { day: "Jul 16", conversations: 48, qualified: 13, meetings: 5 },
-  { day: "Jul 20", conversations: 41, qualified: 11, meetings: 4 },
-  { day: "Jul 24", conversations: 67, qualified: 19, meetings: 8 },
-  { day: "Jul 28", conversations: 59, qualified: 16, meetings: 7 },
-  { day: "Aug 1", conversations: 82, qualified: 27, meetings: 12 },
-  { day: "Aug 5", conversations: 76, qualified: 25, meetings: 10 },
-  { day: "Aug 9", conversations: 94, qualified: 34, meetings: 15 },
-];
-
-const sourceData = [
-  { name: "Website", value: 46, color: "#5964d6" },
-  { name: "Landing pages", value: 27, color: "#8189e6" },
-  { name: "Product app", value: 17, color: "#aeb4ef" },
-  { name: "Other", value: 10, color: "#e1e4f8" },
-];
-
-const questionData = [
-  { label: "Pricing and plans", count: 148, rate: 92 },
-  { label: "CRM integrations", count: 121, rate: 88 },
-  { label: "Setup and deployment", count: 96, rate: 84 },
-  { label: "Data security", count: 82, rate: 79 },
-  { label: "Product capabilities", count: 73, rate: 90 },
-];
-
-const objections = [
-  { label: "Price is too high", count: 43, change: -8 },
-  { label: "Need internal approval", count: 37, change: 12 },
-  { label: "Missing integration", count: 24, change: -4 },
-  { label: "Not the right time", count: 19, change: 3 },
-];
-
-const unresolved = [
-  {
-    question: "Can data be hosted in a dedicated Tunisian region?",
-    occurrences: 12,
-    category: "Security",
-  },
-  {
-    question: "Does the Salesforce connector support custom objects?",
-    occurrences: 9,
-    category: "Integration",
-  },
-  {
-    question: "Can several brands share one knowledge base?",
-    occurrences: 7,
-    category: "Product",
-  },
-];
-
-const agentData = [
-  {
-    name: "Leadia Sales Agent",
-    sessions: 286,
-    qualification: 36,
-    satisfaction: 92,
-    response: "1.2s",
-  },
-  {
-    name: "Enterprise Advisor",
-    sessions: 174,
-    qualification: 42,
-    satisfaction: 89,
-    response: "1.5s",
-  },
-  {
-    name: "Pricing Assistant",
-    sessions: 128,
-    qualification: 28,
-    satisfaction: 94,
-    response: "0.9s",
-  },
-];
+import {
+  agentData,
+  objections,
+  questionData,
+  sourceData,
+  trendData,
+  unresolved,
+} from "./analytics-data";
+import type { Period } from "./analytics-types";
+import { Card, Change, Legend, Recommendation } from "./analytics-ui";
 
 export default function AnalyticsPage() {
   const [period, setPeriod] = useState<Period>("30d");
@@ -517,76 +447,5 @@ export default function AnalyticsPage() {
         </section>
       </div>
     </main>
-  );
-}
-
-function Card({
-  title,
-  subtitle,
-  children,
-}: {
-  title: string;
-  subtitle: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <section className="soft-panel-enter rounded-3xl border border-slate-200/80 bg-white p-5 shadow-[0_8px_30px_rgba(15,23,42,.045)] sm:p-6">
-      <div>
-        <h2 className="font-semibold text-slate-950">{title}</h2>
-        <p className="mt-1 text-xs text-slate-500">{subtitle}</p>
-      </div>
-      {children}
-    </section>
-  );
-}
-function Change({ value }: { value: number }) {
-  const positive = value >= 0;
-  return (
-    <span
-      className={`flex items-center gap-1 text-[11px] font-bold ${positive ? "text-emerald-600" : "text-indigo-600"}`}
-    >
-      {positive ? (
-        <ArrowUpRight className="size-3" />
-      ) : (
-        <ArrowDownRight className="size-3" />
-      )}
-      {Math.abs(value)}%
-    </span>
-  );
-}
-function Legend({ color, label }: { color: string; label: string }) {
-  return (
-    <span className="flex items-center gap-2">
-      <span className={`size-2 rounded-full ${color}`} />
-      {label}
-    </span>
-  );
-}
-function Recommendation({
-  title,
-  text,
-  impact,
-}: {
-  title: string;
-  text: string;
-  impact: string;
-}) {
-  return (
-    <article className="rounded-2xl border border-slate-100 bg-[#fafafd] p-4">
-      <div className="flex items-start gap-3">
-        <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-[#f1f2ff] text-[#5964d6]">
-          <Lightbulb className="size-4" />
-        </span>
-        <div>
-          <div className="flex flex-wrap items-center gap-2">
-            <h3 className="text-sm font-semibold">{title}</h3>
-            <span className="rounded-full bg-white px-2 py-0.5 text-[9px] font-bold uppercase text-[#5964d6] ring-1 ring-[#e1e4f8]">
-              {impact}
-            </span>
-          </div>
-          <p className="mt-2 text-xs leading-5 text-[#707079]">{text}</p>
-        </div>
-      </div>
-    </article>
   );
 }

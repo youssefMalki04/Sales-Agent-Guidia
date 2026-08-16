@@ -14,77 +14,14 @@ import {
   X,
 } from "lucide-react";
 import { ChangeEvent, useMemo, useRef, useState } from "react";
-
-type LeadField =
-  | "ignore"
-  | "name"
-  | "email"
-  | "company"
-  | "country"
-  | "sector"
-  | "score"
-  | "temperature"
-  | "status";
-type CsvRow = Record<string, string>;
-
-const sampleLeads = [
-  {
-    name: "Amira Ben Salah",
-    email: "amira@nexa.tn",
-    company: "Nexa Retail",
-    country: "Tunisia",
-    sector: "Retail",
-    score: "87",
-    temperature: "Hot",
-    status: "Qualified",
-  },
-  {
-    name: "Thomas Martin",
-    email: "thomas@flowdesk.fr",
-    company: "Flowdesk",
-    country: "France",
-    sector: "SaaS",
-    score: "76",
-    temperature: "Warm",
-    status: "New",
-  },
-  {
-    name: "Sara Trabelsi",
-    email: "sara@kite.tn",
-    company: "Kite Finance",
-    country: "Tunisia",
-    sector: "Finance",
-    score: "64",
-    temperature: "Warm",
-    status: "Meeting",
-  },
-];
-
-const fieldOptions: Array<{ value: LeadField; label: string }> = [
-  { value: "ignore", label: "Do not import" },
-  { value: "name", label: "Name" },
-  { value: "email", label: "Email" },
-  { value: "company", label: "Company" },
-  { value: "country", label: "Country" },
-  { value: "sector", label: "Sector" },
-  { value: "score", label: "Conversion score" },
-  { value: "temperature", label: "Temperature" },
-  { value: "status", label: "Status" },
-];
-
-const normalizeHeader = (header: string): LeadField => {
-  const value = header.trim().toLowerCase().replaceAll(" ", "_");
-  if (["name", "full_name", "nom"].includes(value)) return "name";
-  if (["email", "e-mail", "mail"].includes(value)) return "email";
-  if (["company", "entreprise", "organization"].includes(value))
-    return "company";
-  if (["country", "pays"].includes(value)) return "country";
-  if (["sector", "secteur", "industry"].includes(value)) return "sector";
-  if (["score", "conversion_score"].includes(value)) return "score";
-  if (["temperature", "lead_temperature"].includes(value)) return "temperature";
-  if (["status", "statut"].includes(value)) return "status";
-  return "ignore";
-};
+import { fieldOptions, sampleLeads } from "./import-export-data";
+import type { CsvRow, LeadField } from "./import-export-types";
+import {
+  escapeCsv,
+  normalizeHeader,
+  parseCsvLine,
+} from "./import-export-utils";
+import { Tip, Validation } from "./import-export-ui";
 
 export default function ImportExportPage() {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -557,56 +494,5 @@ export default function ImportExportPage() {
         </section>
       </div>
     </main>
-  );
-}
-
-function parseCsvLine(line: string, delimiter: string) {
-  const result: string[] = [];
-  let value = "";
-  let quoted = false;
-  for (let index = 0; index < line.length; index += 1) {
-    const character = line[index];
-    if (character === '"' && line[index + 1] === '"' && quoted) {
-      value += '"';
-      index += 1;
-    } else if (character === '"') quoted = !quoted;
-    else if (character === delimiter && !quoted) {
-      result.push(value);
-      value = "";
-    } else value += character;
-  }
-  result.push(value);
-  return result;
-}
-function escapeCsv(value: string) {
-  return /[",\n]/.test(value) ? `"${value.replaceAll('"', '""')}"` : value;
-}
-function Validation({
-  label,
-  value,
-  tone,
-}: {
-  label: string;
-  value: number;
-  tone: "green" | "red" | "amber";
-}) {
-  const styles = {
-    green: "bg-emerald-50 text-emerald-700",
-    red: "bg-red-50 text-red-700",
-    amber: "bg-amber-50 text-amber-700",
-  };
-  return (
-    <div className={`rounded-lg p-3 ${styles[tone]}`}>
-      <p className="text-xl font-semibold">{value}</p>
-      <p className="mt-1 text-[10px] font-bold uppercase">{label}</p>
-    </div>
-  );
-}
-function Tip({ icon, text }: { icon: React.ReactNode; text: string }) {
-  return (
-    <div className="flex items-start gap-2">
-      {icon}
-      <p>{text}</p>
-    </div>
   );
 }
