@@ -36,7 +36,11 @@ function createSessionId() {
   return `session_${Date.now()}_${Math.random().toString(16).slice(2)}`;
 }
 
-export function ChatWidget() {
+type ChatWidgetProps = {
+  embedded?: boolean;
+};
+
+export function ChatWidget({ embedded = false }: ChatWidgetProps) {
   const formRef = useRef<HTMLFormElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -60,7 +64,16 @@ export function ChatWidget() {
     window.localStorage.setItem(SESSION_STORAGE_KEY, nextSessionId);
     return nextSessionId;
   });
+  useEffect(() => {
+  if (!embedded || typeof window === "undefined") {
+    return;
+  }
 
+  window.parent.postMessage(
+    { source: "leadia-widget", type: "resize", open },
+    "*",
+  );
+}, [open, embedded]);
   useEffect(() => {
     if (!open) {
       return;
@@ -77,7 +90,7 @@ export function ChatWidget() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isTyping, open]);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const content = draft.trim();
@@ -96,18 +109,45 @@ export function ChatWidget() {
     setDraft("");
     setIsTyping(true);
 
-    window.setTimeout(() => {
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sessionId,
+          message: content,
+          agentSlug: "leadia-sales-agent",
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
+      }
+
+      const data = await response.json();
+
       setMessages((current) => [
         ...current,
         {
           id: `assistant_${Date.now()}`,
           role: "assistant",
-          content:
-            "Merci. Je vais vérifier les informations disponibles et vous poser une question pour qualifier votre besoin.",
+          content: data.reply,
         },
       ]);
+    } catch (error) {
+      console.error("[ChatWidget] Failed to send message:", error);
+      setMessages((current) => [
+        ...current,
+        {
+          id: `assistant_error_${Date.now()}`,
+          role: "assistant",
+          content:
+            "Désolé, une erreur est survenue. Merci de réessayer dans un instant.",
+        },
+      ]);
+    } finally {
       setIsTyping(false);
-    }, 900);
+    }
   }
 
   function handleKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
@@ -120,7 +160,13 @@ export function ChatWidget() {
   }
 
   return (
-    <div className="fixed bottom-5 right-5 z-[80] flex flex-col items-end gap-3">
+        <div
+      className={
+        embedded
+          ? "flex h-full w-full flex-col items-end justify-end gap-3"
+          : "fixed bottom-5 right-5 z-[80] flex flex-col items-end gap-3"
+      }
+    >
       {open ? (
         <section className="flex h-[min(620px,calc(100vh-40px))] w-[min(390px,calc(100vw-40px))] flex-col overflow-hidden rounded-lg border border-[#dedee3] bg-white shadow-[0_24px_70px_rgba(18,18,23,0.18)]">
           <header className="flex h-14 items-center justify-between border-b border-[#ededf0] px-4">
