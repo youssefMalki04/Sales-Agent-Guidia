@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { getAgentBySlug } from "@/lib/agents/get-agent-by-slug";
+import { isOriginAllowed } from "@/lib/agents/validate-domain";
 import { parseChatRequest } from "@/schemas/chat";
 
 /**
@@ -35,9 +36,17 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Agent not found" }, { status: 404 });
   }
 
-  // TODO(rotation AI/RAG): valider agent.allowedDomains contre le header
-  // Origin/Referer de la requête avant de répondre, une fois le vrai flux
-  // en place (le stub ne le fait pas encore pour rester testable en local).
+  const origin = request.headers.get("origin");
+
+  if (!isOriginAllowed(origin, agent.allowedDomains)) {
+    console.warn(
+      `[api/chat] Rejected request for agent "${agentSlug}" from origin "${origin}"`,
+    );
+    return NextResponse.json(
+      { error: "Origin not allowed for this agent" },
+      { status: 403 },
+    );
+  }
 
   // TODO(rotation AI/RAG): remplacer ce bloc par recherche RAG + Gemini.
   const reply =

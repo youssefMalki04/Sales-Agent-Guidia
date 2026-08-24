@@ -29,3 +29,10 @@ export type NavItem = {
   icon: LucideIcon;
   active?: boolean;
 };
+export type ChatMessageRole = "assistant" | "visitor";
+
+export type ChatMessage = {
+  id: string;
+  role: ChatMessageRole;
+  content: string;
+};

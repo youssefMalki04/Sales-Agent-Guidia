@@ -28,7 +28,7 @@ export async function getAgentBySlug(
     .maybeSingle();
 
   if (error) {
-    console.error("[getAgentBySlug] Supabase error:", error.message);
+    console.warn("[getAgentBySlug] Supabase error:", error.message);
     return null;
   }
 

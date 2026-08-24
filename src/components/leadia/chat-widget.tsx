@@ -11,12 +11,7 @@ import { MessageCircle, Send, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-
-type ChatMessage = {
-  id: string;
-  role: "assistant" | "visitor";
-  content: string;
-};
+import type { ChatMessage } from "./types";
 
 const initialMessages: ChatMessage[] = [
   {
@@ -38,9 +33,13 @@ function createSessionId() {
 
 type ChatWidgetProps = {
   embedded?: boolean;
+  agentSlug?: string;
 };
 
-export function ChatWidget({ embedded = false }: ChatWidgetProps) {
+export function ChatWidget({
+  embedded = false,
+  agentSlug = "leadia-sales-agent",
+}: ChatWidgetProps) {
   const formRef = useRef<HTMLFormElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -113,10 +112,10 @@ export function ChatWidget({ embedded = false }: ChatWidgetProps) {
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+         body: JSON.stringify({
           sessionId,
           message: content,
-          agentSlug: "leadia-sales-agent",
+          agentSlug,
         }),
       });
 
