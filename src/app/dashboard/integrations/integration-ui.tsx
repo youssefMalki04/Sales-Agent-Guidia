@@ -2,14 +2,12 @@
 
 import {
   CalendarDays,
-  Check,
   CheckCircle2,
   Cloud,
   Mail,
   MessageSquareText,
   RefreshCcw,
   Settings2,
-  Unplug,
   Webhook,
   X,
 } from "lucide-react";
@@ -19,19 +17,15 @@ import type { Integration, IntegrationStatus } from "./integration-types";
 export function ConfigPanel({
   integration,
   testing,
-  tested,
+  testResult,
   onClose,
   onTest,
-  onConnect,
-  onDisconnect,
 }: {
   integration: Integration;
   testing: boolean;
-  tested: boolean;
+  testResult: { ok: boolean; message: string } | null;
   onClose: () => void;
   onTest: () => void;
-  onConnect: () => void;
-  onDisconnect: () => void;
 }) {
   return (
     <div
@@ -67,58 +61,23 @@ export function ConfigPanel({
         </p>
         <section className="mt-7 rounded-2xl border border-[#e1e4f8] bg-[#fafaff] p-5">
           <h3 className="text-sm font-semibold">Connection settings</h3>
-          <p className="mt-1 text-xs leading-5 text-slate-500">
-            Frontend demonstration only. Authentication credentials must be
-            configured securely on the backend.
+          <p className="mt-2 text-sm leading-6 text-slate-600">
+            {integration.detail ?? "Configuration status unavailable."}
           </p>
-          <label className="mt-4 block">
-            <span className="mb-2 block text-xs font-bold uppercase tracking-wider text-slate-400">
-              Workspace or account
-            </span>
-            <input
-              defaultValue={
-                integration.status === "connected"
-                  ? `Leadia · ${integration.name}`
-                  : ""
-              }
-              placeholder={`Select your ${integration.name} account`}
-              className="h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none transition focus:border-[#5964d6] focus:ring-4 focus:ring-[#5964d6]/10"
-            />
-          </label>
-          <label className="mt-4 flex items-center justify-between rounded-xl border border-slate-100 bg-white p-3.5">
-            <span>
-              <b className="block text-sm">Sync qualified leads</b>
-              <span className="mt-1 block text-xs text-slate-500">
-                Triggered when the score reaches 70.
-              </span>
-            </span>
-            <input
-              type="checkbox"
-              defaultChecked
-              className="size-4 accent-[#5964d6]"
-            />
-          </label>
-          <label className="mt-2 flex items-center justify-between rounded-xl border border-slate-100 bg-white p-3.5">
-            <span>
-              <b className="block text-sm">Include conversation summary</b>
-              <span className="mt-1 block text-xs text-slate-500">
-                Add context for the sales team.
-              </span>
-            </span>
-            <input
-              type="checkbox"
-              defaultChecked
-              className="size-4 accent-[#5964d6]"
-            />
-          </label>
+          <p className="mt-3 text-xs leading-5 text-slate-500">
+            Secrets remain server-side in <code>.env.local</code> and are never
+            exposed here.
+          </p>
         </section>
-        {tested ? (
-          <div className="mt-4 flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700">
+        {testResult ? (
+          <div
+            className={`mt-4 flex items-center gap-2 rounded-xl border px-4 py-3 text-sm font-semibold ${testResult.ok ? "border-emerald-200 bg-emerald-50 text-emerald-700" : "border-red-200 bg-red-50 text-red-700"}`}
+          >
             <CheckCircle2 className="size-4" />
-            Connection test successful.
+            {testResult.message}
           </div>
         ) : null}
-        <div className="mt-6 grid grid-cols-2 gap-2">
+        <div className="mt-6 grid gap-2">
           <button
             type="button"
             onClick={onTest}
@@ -128,33 +87,14 @@ export function ConfigPanel({
             <RefreshCcw className={`size-4 ${testing ? "animate-spin" : ""}`} />
             {testing ? "Testing…" : "Test connection"}
           </button>
-          {integration.status === "connected" ? (
-            <button
-              type="button"
-              onClick={onDisconnect}
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-red-200 text-sm font-semibold text-red-700 transition hover:bg-red-50"
-            >
-              <Unplug className="size-4" />
-              Disconnect
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={onConnect}
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#5964d6] text-sm font-semibold text-white shadow-sm transition hover:bg-[#4f5acb]"
-            >
-              <Check className="size-4" />
-              Connect
-            </button>
-          )}
         </div>
-        {integration.id === "webhooks" ? (
+        {integration.actionHref ? (
           <a
-            href="/dashboard/webhooks"
+            href={integration.actionHref}
             className="mt-3 flex h-11 items-center justify-center gap-2 rounded-xl border border-[#e1e4f8] text-sm font-semibold text-[#5964d6] transition hover:bg-[#f1f2ff]"
           >
             <Settings2 className="size-4" />
-            Open advanced webhook settings
+            Open configuration
           </a>
         ) : null}
       </aside>

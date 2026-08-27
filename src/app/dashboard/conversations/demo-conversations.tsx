@@ -56,7 +56,7 @@ export function DemoConversations() {
             setSessions([]);
           }}
         >
-          <Trash2 className="size-4" /> Clear demo data
+          <Trash2 className="size-4" /> Clear conversations
         </Button>
       </div>
       <div className="divide-y divide-slate-100">

@@ -12,6 +12,7 @@ export type LeadRow = {
   lead_temperature: string | null;
   conversion_score: number | null;
   crm_status: string | null;
+  pipeline_stage: string | null;
   created_at: string;
 };
 
@@ -28,4 +29,17 @@ export type LeadsPageProps = {
     crm?: string;
     to?: string;
   }>;
+};
+
+export type LeadsFilters = {
+  from: string;
+  query: string;
+  source: string;
+  status: string;
+  temperature: string;
+  country: string;
+  sector: string;
+  urgency: string;
+  crm: string;
+  to: string;
 };

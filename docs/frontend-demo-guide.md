@@ -103,7 +103,7 @@ Ouvrir `/dashboard/integrations`, puis `/dashboard/privacy`.
 - Tester une connexion simulee.
 - Preciser que les secrets sont reserves au backend.
 - Montrer le consentement, l'anonymisation et la conservation des donnees.
-- Presenter l'export et la suppression d'un visiteur comme simulations frontend.
+- Presenter le parcours d'export et de suppression des données d'un visiteur.
 
 ## Fonctionnalites frontend reelles
 
@@ -131,16 +131,16 @@ Ouvrir `/dashboard/integrations`, puis `/dashboard/privacy`.
 
 ## Correspondance frontend / backend
 
-| Frontend | Backend attendu |
-| --- | --- |
-| Widget chat | `POST /api/chat` et creation de session |
-| Live Inbox | WebSocket ou service Realtime |
-| Leads et Pipeline | API CRUD Leads et historique des etapes |
-| Meetings | API calendrier et OAuth fournisseur |
-| Analytics | Agregations SQL et evenements produit |
-| Integrations | OAuth, webhooks signes et coffre de secrets |
-| Team | Authentification, invitations et RBAC |
-| Privacy | Consentements, retention et demandes RGPD |
+| Frontend          | Backend attendu                             |
+| ----------------- | ------------------------------------------- |
+| Widget chat       | `POST /api/chat` et creation de session     |
+| Live Inbox        | WebSocket ou service Realtime               |
+| Leads et Pipeline | API CRUD Leads et historique des etapes     |
+| Meetings          | API calendrier et OAuth fournisseur         |
+| Analytics         | Agregations SQL et evenements produit       |
+| Integrations      | OAuth, webhooks signes et coffre de secrets |
+| Team              | Authentification, invitations et RBAC       |
+| Privacy           | Consentements, retention et demandes RGPD   |
 
 ## Verification avant livraison
 

@@ -1,108 +1,30 @@
 "use client";
 
+import { Sparkles } from "lucide-react";
 import {
-  Bot,
-  Check,
-  CheckCircle2,
-  Clock3,
-  Flame,
-  Mail,
-  MessageSquareText,
-  MoreHorizontal,
-  Search,
-  Send,
-  Sparkles,
-  UserRound,
-} from "lucide-react";
-import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
-import { initialConversations, STORAGE_KEY } from "./inbox-data";
-import type { Filter, InboxConversation } from "./inbox-types";
-import { Avatar, Info, InfoMetric, ModeBadge } from "./inbox-ui";
+  ConversationDetails,
+  ConversationList,
+  ConversationThread,
+} from "./inbox-panels";
+import { useLiveInbox } from "./use-live-inbox";
 
 export default function InboxPage() {
-  const [conversations, setConversations] = useState(initialConversations);
-  const [selectedId, setSelectedId] = useState(initialConversations[0].id);
-  const [filter, setFilter] = useState<Filter>("all");
-  const [query, setQuery] = useState("");
-  const [draft, setDraft] = useState("");
-  const endRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const timer = window.setTimeout(() => {
-      try {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored) setConversations(JSON.parse(stored) as InboxConversation[]);
-      } catch {
-        // Keep the demo inbox when local storage is unavailable.
-      }
-    }, 0);
-    return () => window.clearTimeout(timer);
-  }, []);
-
-  const visible = useMemo(
-    () =>
-      conversations.filter((conversation) => {
-        const term = query.trim().toLowerCase();
-        const matchesFilter = filter === "all" || conversation.mode === filter;
-        const matchesQuery =
-          !term ||
-          [
-            conversation.visitor,
-            conversation.company,
-            conversation.email,
-            conversation.need,
-          ].some((value) => value.toLowerCase().includes(term));
-        return matchesFilter && matchesQuery;
-      }),
-    [conversations, filter, query],
-  );
-
-  const selected =
-    conversations.find((conversation) => conversation.id === selectedId) ??
-    visible[0] ??
-    conversations[0];
-  const waitingCount = conversations.filter(
-    (conversation) => conversation.mode === "waiting",
-  ).length;
-
-  function updateConversation(id: string, update: Partial<InboxConversation>) {
-    setConversations((current) => {
-      const next = current.map((conversation) =>
-        conversation.id === id ? { ...conversation, ...update } : conversation,
-      );
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-      return next;
-    });
-  }
-
-  function selectConversation(id: string) {
-    setSelectedId(id);
-    updateConversation(id, { unread: 0 });
-  }
-
-  function sendMessage(event: FormEvent) {
-    event.preventDefault();
-    const text = draft.trim();
-    if (!text || selected.mode !== "human") return;
-    const messages = [
-      ...selected.messages,
-      {
-        id: `message-${Date.now()}`,
-        author: "agent" as const,
-        text,
-        time: new Date().toLocaleTimeString("fr-FR", {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
-      },
-    ];
-    updateConversation(selected.id, { messages, lastActivity: "Now" });
-    setDraft("");
-    window.setTimeout(
-      () => endRef.current?.scrollIntoView({ behavior: "smooth" }),
-      0,
-    );
-  }
+  const {
+    draft,
+    endRef,
+    error,
+    filter,
+    query,
+    selected,
+    visible,
+    waitingCount,
+    setDraft,
+    setFilter,
+    setQuery,
+    selectConversation,
+    sendMessage,
+    updateConversation,
+  } = useLiveInbox();
 
   return (
     <main className="min-h-[calc(100vh-76px)] bg-white p-3 text-[#171717] sm:p-6 lg:h-[calc(100vh-76px)] lg:min-h-[760px]">
@@ -129,293 +51,30 @@ export default function InboxPage() {
             </p>
           </div>
         </header>
+        {error ? (
+          <div className="mb-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-800">
+            {error}
+          </div>
+        ) : null}
         <div className="grid min-h-0 flex-1 overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-[0_8px_30px_rgba(15,23,42,.055)] lg:grid-cols-[330px_minmax(420px,1fr)_300px]">
-          <aside className="flex max-h-[520px] min-h-0 flex-col border-b border-[#e5e5e9] lg:max-h-none lg:border-b-0 lg:border-r">
-            <div className="border-b border-[#e9e9ed] p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="text-lg font-semibold">Conversations</h2>
-                  <p className="mt-1 text-xs text-[#82828b]">
-                    Live customer activity
-                  </p>
-                </div>
-                <button
-                  aria-label="Inbox options"
-                  className="flex size-9 items-center justify-center rounded-xl border border-slate-200 text-slate-500 hover:bg-[#f5f6ff]"
-                >
-                  <MoreHorizontal className="size-4" />
-                </button>
-              </div>
-              <label className="relative mt-4 block">
-                <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#92929b]" />
-                <input
-                  value={query}
-                  onChange={(event) => setQuery(event.target.value)}
-                  placeholder="Search conversations…"
-                  className="h-10 w-full rounded-xl border border-slate-200 pl-9 pr-3 text-sm outline-none focus:border-[#939ae2] focus:ring-2 focus:ring-[#f1f2ff]"
-                />
-              </label>
-              <div className="mt-3 flex gap-1 overflow-x-auto">
-                {(
-                  ["all", "waiting", "human", "ai", "resolved"] as Filter[]
-                ).map((item) => (
-                  <button
-                    key={item}
-                    type="button"
-                    onClick={() => setFilter(item)}
-                    className={`rounded-lg px-2.5 py-1.5 text-xs font-semibold capitalize transition ${filter === item ? "bg-[#f1f2ff] text-[#5964d6] shadow-sm" : "bg-[#f3f3f5] text-[#6f6f78]"}`}
-                  >
-                    {item}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="min-h-0 flex-1 overflow-y-auto">
-              {visible.map((conversation) => (
-                <button
-                  type="button"
-                  key={conversation.id}
-                  onClick={() => selectConversation(conversation.id)}
-                  className={`w-full border-b border-slate-100 p-4 text-left transition hover:bg-[#fafaff] ${selected.id === conversation.id ? "border-l-2 border-l-[#5964d6] bg-[#f5f6ff]" : "bg-white"}`}
-                >
-                  <div className="flex items-start gap-3">
-                    <Avatar name={conversation.visitor} />
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center justify-between gap-2">
-                        <p className="truncate text-sm font-semibold">
-                          {conversation.visitor}
-                        </p>
-                        <span className="shrink-0 text-[10px] text-[#9999a2]">
-                          {conversation.lastActivity}
-                        </span>
-                      </div>
-                      <p className="mt-1 truncate text-xs text-[#777780]">
-                        {conversation.company}
-                      </p>
-                      <p className="mt-2 line-clamp-2 text-xs leading-5 text-[#65656e]">
-                        {conversation.messages.at(-1)?.text}
-                      </p>
-                      <div className="mt-2 flex items-center justify-between">
-                        <ModeBadge mode={conversation.mode} />
-                        {conversation.unread ? (
-                          <span className="flex size-5 items-center justify-center rounded-full bg-[#5964d6] text-[10px] font-bold text-white">
-                            {conversation.unread}
-                          </span>
-                        ) : null}
-                      </div>
-                    </div>
-                  </div>
-                </button>
-              ))}
-              {!visible.length ? (
-                <p className="p-8 text-center text-sm text-[#85858e]">
-                  No conversation matches these filters.
-                </p>
-              ) : null}
-            </div>
-          </aside>
-
-          <section className="flex min-h-[650px] flex-col border-b border-[#e5e5e9] lg:min-h-0 lg:border-b-0 lg:border-r">
-            <header className="flex min-h-20 flex-wrap items-center justify-between gap-3 border-b border-[#e7e7eb] px-5 py-3">
-              <div className="flex items-center gap-3">
-                <Avatar name={selected.visitor} />
-                <div>
-                  <h2 className="text-sm font-semibold">{selected.visitor}</h2>
-                  <p className="mt-1 flex items-center gap-1.5 text-xs text-[#7e7e87]">
-                    <span className="size-2 rounded-full bg-emerald-500" />
-                    Online · {selected.company}
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {selected.mode !== "human" && selected.mode !== "resolved" ? (
-                  <button
-                    type="button"
-                    onClick={() =>
-                      updateConversation(selected.id, {
-                        mode: "human",
-                        owner: "Yosra",
-                      })
-                    }
-                    className="inline-flex h-9 items-center gap-2 rounded-xl bg-[#5964d6] px-3 text-xs font-semibold text-white hover:bg-[#4f5acb]"
-                  >
-                    <UserRound className="size-4" />
-                    Take over
-                  </button>
-                ) : null}
-                {selected.mode === "human" ? (
-                  <button
-                    type="button"
-                    onClick={() =>
-                      updateConversation(selected.id, {
-                        mode: "ai",
-                        owner: null,
-                      })
-                    }
-                    className="inline-flex h-9 items-center gap-2 rounded-xl border border-slate-200 px-3 text-xs font-semibold text-slate-600 hover:bg-[#f5f6ff]"
-                  >
-                    <Bot className="size-4" />
-                    Return to AI
-                  </button>
-                ) : null}
-                {selected.mode !== "resolved" ? (
-                  <button
-                    type="button"
-                    onClick={() =>
-                      updateConversation(selected.id, { mode: "resolved" })
-                    }
-                    className="inline-flex h-9 items-center gap-2 rounded-xl border border-slate-200 px-3 text-xs font-semibold text-slate-600 hover:bg-[#f5f6ff]"
-                  >
-                    <Check className="size-4" />
-                    Resolve
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() =>
-                      updateConversation(selected.id, {
-                        mode: "human",
-                        owner: "Yosra",
-                      })
-                    }
-                    className="inline-flex h-9 items-center gap-2 rounded-xl border border-slate-200 px-3 text-xs font-semibold"
-                  >
-                    Reopen
-                  </button>
-                )}
-              </div>
-            </header>
-            <div className="min-h-0 flex-1 overflow-y-auto bg-[#fafafd] px-5 py-6">
-              <div className="mx-auto max-w-3xl space-y-4">
-                <p className="text-center text-[11px] font-semibold uppercase tracking-[0.12em] text-[#a0a0a8]">
-                  Today
-                </p>
-                {selected.messages.map((message) => (
-                  <div
-                    key={message.id}
-                    className={`flex gap-2 ${message.author === "visitor" ? "justify-start" : "justify-end"}`}
-                  >
-                    {message.author === "visitor" ? (
-                      <span className="mt-auto flex size-7 items-center justify-center rounded-full bg-[#e9e9ed]">
-                        <UserRound className="size-3.5" />
-                      </span>
-                    ) : null}
-                    <div
-                      className={`max-w-[78%] rounded-2xl px-4 py-3 text-sm leading-6 shadow-sm ${message.author === "visitor" ? "rounded-bl-sm border border-[#e2e2e7] bg-white text-[#45454e]" : message.author === "ai" ? "rounded-br-sm bg-[#eef0ff] text-[#404a9f]" : "rounded-br-sm bg-[#5964d6] text-white"}`}
-                    >
-                      <p>{message.text}</p>
-                      <p
-                        className={`mt-1 text-[10px] ${message.author === "agent" ? "text-white/55" : "text-[#9999a2]"}`}
-                      >
-                        {message.author === "ai"
-                          ? "AI · "
-                          : message.author === "agent"
-                            ? "You · "
-                            : ""}
-                        {message.time}
-                      </p>
-                    </div>
-                    {message.author !== "visitor" ? (
-                      <span
-                        className={`mt-auto flex size-7 items-center justify-center rounded-full ${message.author === "ai" ? "bg-[#dfe2ff] text-[#5964d6]" : "bg-[#5964d6] text-white"}`}
-                      >
-                        {message.author === "ai" ? (
-                          <Bot className="size-3.5" />
-                        ) : (
-                          <UserRound className="size-3.5" />
-                        )}
-                      </span>
-                    ) : null}
-                  </div>
-                ))}
-                <div ref={endRef} />
-              </div>
-            </div>
-            <form
-              onSubmit={sendMessage}
-              className="border-t border-[#e5e5e9] bg-white p-4"
-            >
-              {selected.mode === "human" ? (
-                <div className="flex items-end gap-3">
-                  <textarea
-                    value={draft}
-                    onChange={(event) => setDraft(event.target.value)}
-                    onKeyDown={(event) => {
-                      if (event.key === "Enter" && !event.shiftKey) {
-                        event.preventDefault();
-                        event.currentTarget.form?.requestSubmit();
-                      }
-                    }}
-                    rows={2}
-                    placeholder="Write a reply…"
-                    className="max-h-28 min-h-12 flex-1 resize-none rounded-xl border border-slate-200 px-3 py-3 text-sm outline-none focus:border-[#939ae2] focus:ring-2 focus:ring-[#f1f2ff]"
-                  />
-                  <button
-                    type="submit"
-                    disabled={!draft.trim()}
-                    aria-label="Send message"
-                    className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-[#5964d6] text-white hover:bg-[#4f5acb] disabled:opacity-40"
-                  >
-                    <Send className="size-4" />
-                  </button>
-                </div>
-              ) : (
-                <div className="flex h-12 items-center justify-center gap-2 rounded-xl bg-[#f3f3f5] text-sm font-medium text-[#74747d]">
-                  {selected.mode === "resolved" ? (
-                    <CheckCircle2 className="size-4 text-emerald-600" />
-                  ) : (
-                    <Bot className="size-4" />
-                  )}
-                  {selected.mode === "resolved"
-                    ? "This conversation is resolved."
-                    : "The AI is handling this conversation. Take over to reply."}
-                </div>
-              )}
-            </form>
-          </section>
-
-          <aside className="min-h-0 overflow-y-auto bg-white p-5">
-            <div className="text-center">
-              <Avatar name={selected.visitor} large />
-              <h2 className="mt-3 font-semibold">{selected.visitor}</h2>
-              <p className="mt-1 text-xs text-[#81818a]">{selected.company}</p>
-            </div>
-            <div className="mt-6 grid grid-cols-2 gap-2">
-              <InfoMetric
-                icon={<Flame className="size-4 text-red-500" />}
-                label="Score"
-                value={`${selected.score}/100`}
-              />
-              <InfoMetric
-                icon={<Clock3 className="size-4 text-indigo-500" />}
-                label="Status"
-                value={selected.mode}
-              />
-            </div>
-            <Info title="Contact">
-              <p className="flex items-center gap-2">
-                <Mail className="size-4" />
-                {selected.email}
-              </p>
-            </Info>
-            <Info title="Identified need">
-              <p>{selected.need}</p>
-            </Info>
-            <Info title="Assigned to">
-              <div className="flex items-center gap-2">
-                <span className="flex size-7 items-center justify-center rounded-full bg-[#5964d6] text-[10px] font-bold text-white">
-                  {selected.owner?.[0] ?? "AI"}
-                </span>
-                <span>{selected.owner ?? "AI Assistant"}</span>
-              </div>
-            </Info>
-            <Info title="Suggested action">
-              <p className="flex gap-2">
-                <MessageSquareText className="mt-0.5 size-4 shrink-0 text-emerald-600" />
-                Confirm the business need and propose a 20-minute demo.
-              </p>
-            </Info>
-          </aside>
+          <ConversationList
+            filter={filter}
+            onFilterChange={setFilter}
+            onQueryChange={setQuery}
+            onSelect={selectConversation}
+            query={query}
+            selectedId={selected.id}
+            visible={visible}
+          />
+          <ConversationThread
+            conversation={selected}
+            draft={draft}
+            endRef={endRef}
+            onDraftChange={setDraft}
+            onModeChange={(update) => updateConversation(selected.id, update)}
+            onSubmit={sendMessage}
+          />
+          <ConversationDetails conversation={selected} />
         </div>
       </div>
     </main>

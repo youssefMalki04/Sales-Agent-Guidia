@@ -234,6 +234,9 @@ export const initialFlows: Flow[] = [
   },
 ];
 
+// Legacy examples above remain available for JSON imports. Supabase is the
+// runtime source of truth for active qualification flows.
+
 export function createEmptyForm(flowNumber: number): FlowForm {
   return {
     key: `flow-${flowNumber}`,
@@ -245,5 +248,6 @@ export function createEmptyForm(flowNumber: number): FlowForm {
     active: true,
     entryPageIds: [],
     steps: [],
+    scoring: { coldMax: 34, warmMax: 69 },
   };
 }

@@ -11,122 +11,41 @@ import {
   Save,
   Sparkles,
 } from "lucide-react";
-import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 
-import type { Asset, Settings, Tab } from "./branding-data";
-import {
-  AGENTS_STORAGE_KEY,
-  STORAGE_KEY,
-  cx,
-  initial,
-  makeToken,
-} from "./branding-data";
+import { cx } from "./branding-data";
 import { Button, TabButton } from "./branding-controls";
 import { BrandTab, EmbedTab, FeaturesTab, MediaTab } from "./branding-tabs";
+import { useBranding } from "./use-branding";
 
 export default function BrandingPage() {
-  const [tab, setTab] = useState<Tab>("brand");
-  const [settings, setSettings] = useState<Settings>(initial);
-  const [saved, setSaved] = useState(false);
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [signatureInput, setSignatureInput] = useState("");
-  const [forbiddenInput, setForbiddenInput] = useState("");
-  const [assets, setAssets] = useState<Asset[]>([]);
-  const [externalLink, setExternalLink] = useState("");
-  const [copied, setCopied] = useState(false);
-  const [installationStatus, setInstallationStatus] = useState<
-    "idle" | "checking" | "installed"
-  >("idle");
-  const [integrationAgent, setIntegrationAgent] = useState<{
-    id: string;
-    name: string;
-    status: "draft" | "published" | "paused";
-  } | null>(null);
-
-  useEffect(() => {
-    const restoreSettings = window.setTimeout(() => {
-      try {
-        const agentId = new URLSearchParams(window.location.search).get(
-          "agentId",
-        );
-        const profiles = JSON.parse(
-          localStorage.getItem(AGENTS_STORAGE_KEY) ?? "[]",
-        ) as Array<{
-          id: string;
-          name: string;
-          welcomeMessage: string;
-          status: "draft" | "published" | "paused";
-          integrationStatus?: "not_configured" | "ready";
-        }>;
-        const agent =
-          profiles.find((profile) => profile.id === agentId) ?? null;
-        setIntegrationAgent(
-          agent
-            ? { id: agent.id, name: agent.name, status: agent.status }
-            : null,
-        );
-        if (agent?.integrationStatus === "ready")
-          setInstallationStatus("installed");
-        const storageKey = agent ? `${STORAGE_KEY}:${agent.id}` : STORAGE_KEY;
-        const raw = localStorage.getItem(storageKey);
-        if (raw) setSettings({ ...initial, ...JSON.parse(raw) });
-        else if (agent)
-          setSettings({
-            ...initial,
-            title: agent.name,
-            welcome: agent.welcomeMessage,
-          });
-      } catch {
-        // Ignore malformed or unavailable local storage and keep the defaults.
-      }
-    }, 0);
-
-    return () => window.clearTimeout(restoreSettings);
-  }, []);
-
-  const update = <K extends keyof Settings>(key: K, value: Settings[K]) => {
-    setSettings((s) => ({ ...s, [key]: value }));
-    setSaved(false);
-  };
-  const save = () => {
-    const storageKey = integrationAgent
-      ? `${STORAGE_KEY}:${integrationAgent.id}`
-      : STORAGE_KEY;
-    localStorage.setItem(storageKey, JSON.stringify(settings));
-    setSaved(true);
-    setTimeout(() => setSaved(false), 1800);
-  };
-  const addPhrase = (kind: "signature" | "forbidden") => {
-    const text = (
-      kind === "signature" ? signatureInput : forbiddenInput
-    ).trim();
-    if (!text) return;
-    if (kind === "signature") {
-      update("signaturePhrases", [...settings.signaturePhrases, text]);
-      setSignatureInput("");
-    } else {
-      update("forbiddenPhrases", [...settings.forbiddenPhrases, text]);
-      setForbiddenInput("");
-    }
-  };
-  const handleFiles = (
-    e: ChangeEvent<HTMLInputElement>,
-    kind: Asset["kind"],
-  ) => {
-    const next = Array.from(e.target.files ?? []).map((f) => ({
-      id: `${f.name}-${f.lastModified}`,
-      kind,
-      name: f.name,
-    }));
-    setAssets((a) => [...a, ...next]);
-    e.target.value = "";
-  };
-  const snippet = useMemo(
-    () =>
-      `<script\n  src="https://cdn.guidia.ai/widget.js"\n  data-token="${settings.token}"\n  data-title="${settings.title}"\n  data-color="${settings.color}"\n  data-position="${settings.position}"\n  data-shape="${settings.shape}"\n  defer\n></script>`,
-    [settings],
-  );
+  const {
+    tab,
+    setTab,
+    settings,
+    update,
+    saved,
+    save,
+    regenerateToken,
+    previewOpen,
+    setPreviewOpen,
+    signatureInput,
+    setSignatureInput,
+    forbiddenInput,
+    setForbiddenInput,
+    addPhrase,
+    assets,
+    setAssets,
+    externalLink,
+    setExternalLink,
+    handleFiles,
+    snippet,
+    copied,
+    setCopied,
+    installationStatus,
+    setInstallationStatus,
+    integrationAgent,
+  } = useBranding();
 
   return (
     <main className="min-h-screen bg-white px-4 py-7 text-zinc-950 sm:px-6 lg:px-10">
@@ -223,12 +142,7 @@ export default function BrandingPage() {
               )}
               {saved ? "Saved" : "Save"}
             </Button>
-            <Button
-              onClick={() => {
-                update("token", makeToken());
-                update("tokenCreatedAt", new Date().toISOString());
-              }}
-            >
+            <Button onClick={regenerateToken}>
               <RefreshCcw className="size-4" />
               Regenerate token
             </Button>

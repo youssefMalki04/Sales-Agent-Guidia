@@ -16,15 +16,26 @@ export function toEmbeddingLiteral(values: number[]) {
 }
 
 export async function generateQueryEmbedding(query: string) {
+  return generateEmbedding(query, "RETRIEVAL_QUERY");
+}
+
+export async function generateDocumentEmbedding(content: string) {
+  return generateEmbedding(content, "RETRIEVAL_DOCUMENT");
+}
+
+async function generateEmbedding(
+  content: string,
+  taskType: "RETRIEVAL_QUERY" | "RETRIEVAL_DOCUMENT",
+) {
   let lastError: unknown;
 
   for (const model of EMBEDDING_MODELS) {
     try {
       const response = await genAI.models.embedContent({
         model,
-        contents: [query],
+        contents: [content],
         config: {
-          taskType: "RETRIEVAL_QUERY",
+          taskType,
           outputDimensionality: EMBEDDING_DIMENSIONS,
         },
       });
@@ -33,7 +44,7 @@ export async function generateQueryEmbedding(query: string) {
 
       if (values.length !== EMBEDDING_DIMENSIONS) {
         throw new Error(
-          `Query embedding has ${values.length} dimensions, expected ${EMBEDDING_DIMENSIONS}`,
+          `Embedding has ${values.length} dimensions, expected ${EMBEDDING_DIMENSIONS}`,
         );
       }
 

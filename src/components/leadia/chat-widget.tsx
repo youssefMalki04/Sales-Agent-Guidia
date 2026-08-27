@@ -1,8 +1,8 @@
 "use client";
 
-import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import {
   AlertCircle,
+  CalendarDays,
   MessageCircle,
   RotateCcw,
   Send,
@@ -12,147 +12,42 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useChatWidget } from "./use-chat-widget";
 
-type ChatMessage = {
-  id: string;
-  role: "assistant" | "visitor";
-  content: string;
-};
-
-const initialMessages: ChatMessage[] = [
-  {
-    id: "welcome",
-    role: "assistant",
-    content: "Bonjour, je suis l'agent Leadia. Comment puis-je vous aider ?",
-  },
-];
-
-const SESSION_STORAGE_KEY = "leadia_session_id";
-const CONTACT_STORAGE_KEY = "leadia_visitor_contact";
 const suggestions = [
   "Que fait votre solution ?",
   "Quels sont vos tarifs ?",
   "Je souhaite une démonstration",
 ];
 
-function createSessionId() {
-  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
-    return `session_${crypto.randomUUID()}`;
-  }
-
-  return `session_${Date.now()}_${Math.random().toString(16).slice(2)}`;
-}
-
 export function ChatWidget() {
-  const formRef = useRef<HTMLFormElement>(null);
-  const inputRef = useRef<HTMLTextAreaElement>(null);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
-  const [draft, setDraft] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
-  const [sessionId, setSessionId] = useState("");
-  const [error, setError] = useState("");
-  const [lastSent, setLastSent] = useState("");
-  const [contact, setContact] = useState({ name: "", email: "", company: "" });
-  const [contactSaved, setContactSaved] = useState(false);
-
-  useEffect(() => {
-    const initialize = window.setTimeout(() => {
-      const storedSessionId = window.localStorage.getItem(SESSION_STORAGE_KEY);
-      const nextSessionId = storedSessionId || createSessionId();
-      window.localStorage.setItem(SESSION_STORAGE_KEY, nextSessionId);
-      setSessionId(nextSessionId);
-      try {
-        const savedContact = window.localStorage.getItem(CONTACT_STORAGE_KEY);
-        if (savedContact) {
-          setContact(JSON.parse(savedContact));
-          setContactSaved(true);
-        }
-      } catch {
-        window.localStorage.removeItem(CONTACT_STORAGE_KEY);
-      }
-    }, 0);
-    return () => window.clearTimeout(initialize);
-  }, []);
-
-  useEffect(() => {
-    if (!open) {
-      return;
-    }
-
-    inputRef.current?.focus();
-  }, [open]);
-
-  useEffect(() => {
-    if (!open) {
-      return;
-    }
-
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isTyping, open]);
-
-  function sendMessage(content: string) {
-    if (!content || isTyping) {
-      return;
-    }
-
-    const visitorMessage: ChatMessage = {
-      id: `visitor_${crypto.randomUUID()}`,
-      role: "visitor",
-      content,
-    };
-
-    setMessages((current) => [...current, visitorMessage]);
-    setDraft("");
-    setLastSent(content);
-    setError("");
-    setIsTyping(true);
-
-    window.setTimeout(() => {
-      setMessages((current) => [
-        ...current,
-        {
-          id: `assistant_${crypto.randomUUID()}`,
-          role: "assistant",
-          content:
-            "Merci. Je vais vérifier les informations disponibles et vous poser une question pour qualifier votre besoin.",
-        },
-      ]);
-      setIsTyping(false);
-    }, 900);
-  }
-
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    sendMessage(draft.trim());
-  }
-
-  function resetConversation() {
-    setMessages(initialMessages);
-    setDraft("");
-    setError("");
-    setLastSent("");
-    const nextSessionId = createSessionId();
-    window.localStorage.setItem(SESSION_STORAGE_KEY, nextSessionId);
-    setSessionId(nextSessionId);
-  }
-
-  function saveContact(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (!contact.name.trim() || !/^\S+@\S+\.\S+$/.test(contact.email)) return;
-    window.localStorage.setItem(CONTACT_STORAGE_KEY, JSON.stringify(contact));
-    setContactSaved(true);
-  }
-
-  function handleKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
-    if (event.key !== "Enter" || event.shiftKey) {
-      return;
-    }
-
-    event.preventDefault();
-    formRef.current?.requestSubmit();
-  }
+  const {
+    contact,
+    contactSaved,
+    draft,
+    error,
+    formRef,
+    handleKeyDown,
+    handleSubmit,
+    inputRef,
+    isTyping,
+    lastSent,
+    meeting,
+    meetingSaved,
+    messages,
+    messagesEndRef,
+    open,
+    resetConversation,
+    saveContact,
+    saveMeeting,
+    sendMessage,
+    sessionId,
+    setContact,
+    setDraft,
+    setMeeting,
+    setOpen,
+    trackEvent,
+  } = useChatWidget();
 
   return (
     <div className="fixed bottom-5 right-5 z-[80] flex flex-col items-end gap-3 sm:bottom-6 sm:right-6">
@@ -185,7 +80,10 @@ export function ChatWidget() {
               <button
                 type="button"
                 aria-label="Fermer le chat"
-                onClick={() => setOpen(false)}
+                onClick={() => {
+                  setOpen(false);
+                  trackEvent("chat_closed");
+                }}
                 className="flex size-8 items-center justify-center rounded-lg text-slate-400 transition hover:bg-[#f1f2ff] hover:text-[#5964d6]"
               >
                 <X className="size-4" />
@@ -306,18 +204,78 @@ export function ChatWidget() {
               </div>
             ) : null}
 
+            {contactSaved &&
+            !meetingSaved &&
+            messages.some((message) =>
+              /démo|demo|démonstration|rendez-vous/i.test(message.content),
+            ) ? (
+              <form
+                onSubmit={saveMeeting}
+                className="rounded-xl border border-[#e1e4f8] bg-[#fafaff] p-4"
+              >
+                <div className="flex items-center gap-2 text-[#5964d6]">
+                  <CalendarDays className="size-4" />
+                  <p className="text-sm font-semibold text-slate-800">
+                    Planifier la démonstration
+                  </p>
+                </div>
+                <div className="mt-3 grid grid-cols-2 gap-2">
+                  <input
+                    required
+                    type="date"
+                    min={new Date().toISOString().slice(0, 10)}
+                    value={meeting.date}
+                    onChange={(event) =>
+                      setMeeting((current) => ({
+                        ...current,
+                        date: event.target.value,
+                      }))
+                    }
+                    className="h-10 rounded-lg border border-slate-200 bg-white px-2 text-xs outline-none focus:border-[#5964d6]"
+                  />
+                  <input
+                    required
+                    type="time"
+                    value={meeting.time}
+                    onChange={(event) =>
+                      setMeeting((current) => ({
+                        ...current,
+                        time: event.target.value,
+                      }))
+                    }
+                    className="h-10 rounded-lg border border-slate-200 bg-white px-2 text-xs outline-none focus:border-[#5964d6]"
+                  />
+                </div>
+                <Button
+                  type="submit"
+                  size="sm"
+                  className="mt-2 h-10 w-full rounded-lg bg-[#5964d6] text-white hover:bg-[#4f5acb]"
+                >
+                  Confirmer le rendez-vous
+                </Button>
+              </form>
+            ) : null}
+
+            {meetingSaved ? (
+              <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2.5 text-xs font-semibold text-emerald-700">
+                Démonstration planifiée avec succès.
+              </div>
+            ) : null}
+
             {error ? (
               <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
                 <div className="flex items-center gap-2 font-semibold">
-                  <AlertCircle className="size-4" /> Message non envoyé
+                  <AlertCircle className="size-4" /> {error}
                 </div>
-                <button
-                  type="button"
-                  onClick={() => sendMessage(lastSent)}
-                  className="mt-2 text-xs font-bold underline"
-                >
-                  Réessayer
-                </button>
+                {lastSent && error.startsWith("Impossible") ? (
+                  <button
+                    type="button"
+                    onClick={() => sendMessage(lastSent)}
+                    className="mt-2 text-xs font-bold underline"
+                  >
+                    Réessayer
+                  </button>
+                ) : null}
               </div>
             ) : null}
 
@@ -351,7 +309,7 @@ export function ChatWidget() {
             <Button
               type="submit"
               size="icon"
-              disabled={!draft.trim() || isTyping}
+              disabled={!draft.trim() || isTyping || !sessionId}
               aria-label="Envoyer"
               className="size-11 shrink-0 rounded-xl bg-[#5964d6] text-white shadow-[0_6px_14px_rgba(89,100,214,0.22)] hover:bg-[#4f5acb]"
             >
@@ -364,7 +322,12 @@ export function ChatWidget() {
       <button
         type="button"
         aria-label="Ouvrir le chat"
-        onClick={() => setOpen((current) => !current)}
+        onClick={() =>
+          setOpen((current) => {
+            trackEvent(current ? "chat_closed" : "chat_opened");
+            return !current;
+          })
+        }
         className="group relative flex size-14 items-center justify-center rounded-2xl bg-[#5964d6] text-white shadow-[0_14px_32px_rgba(89,100,214,0.3)] transition hover:-translate-y-0.5 hover:bg-[#4f5acb]"
       >
         <span className="absolute right-0.5 top-0.5 size-2.5 rounded-full border-2 border-white bg-emerald-500" />

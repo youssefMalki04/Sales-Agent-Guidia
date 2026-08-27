@@ -8,37 +8,16 @@ import {
   SlidersHorizontal,
   Sparkles,
 } from "lucide-react";
-import { useEffect, useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { defaults, integrations, STORAGE_KEY } from "./settings-data";
-import type { ScoringRule } from "./settings-types";
+import { integrations } from "./settings-data";
 import { Range } from "./settings-ui";
+import { useSettings } from "./use-settings";
 
 export default function SettingsPage() {
-  const [rules, setRules] = useState<ScoringRule[]>(defaults);
-  const [saved, setSaved] = useState(false);
-  useEffect(() => {
-    const load = window.setTimeout(() => {
-      try {
-        const value = localStorage.getItem(STORAGE_KEY);
-        if (value) setRules(JSON.parse(value));
-      } catch {}
-    }, 0);
-    return () => window.clearTimeout(load);
-  }, []);
-  const total = rules.reduce((sum, rule) => sum + rule.points, 0);
-  const save = () => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(rules));
-    setSaved(true);
-    window.setTimeout(() => setSaved(false), 1600);
-  };
-  const reset = () => {
-    setRules(defaults);
-    localStorage.removeItem(STORAGE_KEY);
-  };
+  const { rules, total, saved, updateRule, save, reset } = useSettings();
 
   return (
     <main className="min-h-[calc(100vh-76px)] bg-white px-5 py-8 sm:px-8 xl:px-14">
@@ -114,19 +93,7 @@ export default function SettingsPage() {
                       max={100}
                       value={rule.points}
                       onChange={(event) =>
-                        setRules((current) =>
-                          current.map((item) =>
-                            item.id === rule.id
-                              ? {
-                                  ...item,
-                                  points: Math.max(
-                                    0,
-                                    Number(event.target.value),
-                                  ),
-                                }
-                              : item,
-                          ),
-                        )
+                        updateRule(rule.id, Number(event.target.value))
                       }
                       className="h-10 w-20 rounded-xl border-slate-200 bg-white text-right focus-visible:ring-[#939ae2]"
                     />
@@ -176,10 +143,10 @@ export default function SettingsPage() {
               </div>
             </section>
             <section className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-900">
-              <b>Frontend mode</b>
+              <b>CRM connections</b>
               <p className="mt-1">
-                CRM buttons remain simulated until backend integrations are
-                enabled and tested.
+                Configure and validate the required credentials before enabling
+                CRM actions.
               </p>
             </section>
           </aside>

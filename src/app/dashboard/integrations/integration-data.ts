@@ -1,17 +1,25 @@
-import type { Category, Integration, SyncEvent } from "./integration-types";
+import type { Category, Integration } from "./integration-types";
 
-export const STORAGE_KEY = "leadia-integrations-v1";
-
-export const initialIntegrations: Integration[] = [
+export const integrationCatalog: Integration[] = [
+  {
+    id: "supabase",
+    name: "Supabase",
+    description: "Store leads, conversations, meetings and application data.",
+    category: "automation",
+    status: "disconnected",
+    lastSync: null,
+    events: 0,
+    color: "bg-emerald-500",
+  },
   {
     id: "hubspot",
     name: "HubSpot",
     description:
       "Send qualified leads, contact properties and conversation summaries to HubSpot CRM.",
     category: "crm",
-    status: "connected",
-    lastSync: "5 minutes ago",
-    events: 148,
+    status: "disconnected",
+    lastSync: null,
+    events: 0,
     color: "bg-orange-500",
   },
   {
@@ -31,32 +39,31 @@ export const initialIntegrations: Integration[] = [
     description:
       "Notify sales channels about hot leads, handoffs and booked meetings.",
     category: "communication",
-    status: "connected",
-    lastSync: "12 minutes ago",
-    events: 82,
+    status: "disconnected",
+    lastSync: null,
+    events: 0,
     color: "bg-violet-600",
   },
   {
-    id: "gmail",
-    name: "Gmail",
+    id: "gemini",
+    name: "Google Gemini",
     description:
-      "Send follow-up emails and notify account owners after important conversations.",
+      "Generate grounded answers, embeddings and lead qualification scores.",
+    category: "automation",
+    status: "disconnected",
+    lastSync: null,
+    events: 0,
+    color: "bg-blue-500",
+  },
+  {
+    id: "widget",
+    name: "Website widget",
+    description: "Track visitor sessions and run Leadia on your website.",
     category: "communication",
     status: "disconnected",
     lastSync: null,
     events: 0,
-    color: "bg-red-500",
-  },
-  {
-    id: "calendly",
-    name: "Calendly",
-    description:
-      "Offer available slots in the AI conversation and synchronize booked demonstrations.",
-    category: "calendar",
-    status: "connected",
-    lastSync: "31 minutes ago",
-    events: 36,
-    color: "bg-blue-600",
+    color: "bg-[#5964d6]",
   },
   {
     id: "webhooks",
@@ -64,41 +71,10 @@ export const initialIntegrations: Integration[] = [
     description:
       "Forward Leadia events to your own backend or automation platform.",
     category: "automation",
-    status: "error",
-    lastSync: "1 hour ago",
-    events: 214,
+    status: "disconnected",
+    lastSync: null,
+    events: 0,
     color: "bg-[#171717]",
-  },
-];
-
-export const initialEvents: SyncEvent[] = [
-  {
-    id: "event-1",
-    integration: "HubSpot",
-    action: "Lead Amira Ben Salah synchronized",
-    status: "success",
-    time: "5 min ago",
-  },
-  {
-    id: "event-2",
-    integration: "Slack",
-    action: "Hot lead notification delivered",
-    status: "success",
-    time: "12 min ago",
-  },
-  {
-    id: "event-3",
-    integration: "Calendly",
-    action: "Meeting with Sara Trabelsi imported",
-    status: "success",
-    time: "31 min ago",
-  },
-  {
-    id: "event-4",
-    integration: "Webhooks",
-    action: "Endpoint returned HTTP 500",
-    status: "failed",
-    time: "1 hour ago",
   },
 ];
 

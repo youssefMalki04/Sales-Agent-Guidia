@@ -1,6 +1,14 @@
-import type React from "react";
-import type { FormEvent } from "react";
-import { CalendarDays, Check, Clock3, UserRound, Video, X } from "lucide-react";
+import type { ReactNode } from "react";
+import { useState } from "react";
+import {
+  CalendarDays,
+  Check,
+  Clock3,
+  Pencil,
+  UserRound,
+  Video,
+  X,
+} from "lucide-react";
 
 import type { Meeting, MeetingStatus } from "./meeting-data";
 import { isoDate, today } from "./meeting-data";
@@ -14,6 +22,18 @@ export function MeetingDetails({
   onClose: () => void;
   onUpdate: (patch: Partial<Meeting>) => void;
 }) {
+  const [editing, setEditing] = useState(false);
+  const [schedule, setSchedule] = useState({
+    date: meeting.date,
+    time: meeting.time,
+    duration: meeting.duration,
+  });
+
+  function saveSchedule() {
+    onUpdate(schedule);
+    setEditing(false);
+  }
+
   return (
     <div
       className="fixed inset-0 z-50 flex justify-end bg-slate-950/45 backdrop-blur-[2px]"
@@ -66,6 +86,78 @@ export function MeetingDetails({
             {meeting.notes || "No notes added."}
           </p>
         </section>
+        <section className="mt-6 rounded-xl border border-[#e1e4f8] bg-[#fafaff] p-4">
+          <div className="flex items-center justify-between gap-3">
+            <h3 className="text-sm font-semibold text-slate-800">Schedule</h3>
+            <button
+              type="button"
+              onClick={() => setEditing((current) => !current)}
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#5964d6]"
+            >
+              <Pencil className="size-3.5" />{" "}
+              {editing ? "Cancel editing" : "Modify"}
+            </button>
+          </div>
+          {editing ? (
+            <div className="mt-4 space-y-3">
+              <div className="grid grid-cols-2 gap-2">
+                <Field label="Date">
+                  <input
+                    required
+                    type="date"
+                    value={schedule.date}
+                    onChange={(event) =>
+                      setSchedule((current) => ({
+                        ...current,
+                        date: event.target.value,
+                      }))
+                    }
+                    className="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-[#5964d6]"
+                  />
+                </Field>
+                <Field label="Time">
+                  <input
+                    required
+                    type="time"
+                    value={schedule.time}
+                    onChange={(event) =>
+                      setSchedule((current) => ({
+                        ...current,
+                        time: event.target.value,
+                      }))
+                    }
+                    className="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-[#5964d6]"
+                  />
+                </Field>
+              </div>
+              <Field label="Duration">
+                <select
+                  value={schedule.duration}
+                  onChange={(event) =>
+                    setSchedule((current) => ({
+                      ...current,
+                      duration: Number(event.target.value),
+                    }))
+                  }
+                  className="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-[#5964d6]"
+                >
+                  <option value="15">15 minutes</option>
+                  <option value="30">30 minutes</option>
+                  <option value="45">45 minutes</option>
+                  <option value="60">60 minutes</option>
+                </select>
+              </Field>
+              <button
+                type="button"
+                onClick={saveSchedule}
+                disabled={!schedule.date || !schedule.time}
+                className="h-10 w-full rounded-xl bg-[#5964d6] text-sm font-semibold text-white hover:bg-[#4f5acb] disabled:opacity-50"
+              >
+                Save changes
+              </button>
+            </div>
+          ) : null}
+        </section>
         <section className="mt-7 grid grid-cols-2 gap-2">
           <button
             type="button"
@@ -107,124 +199,7 @@ export function MeetingDetails({
   );
 }
 
-export function CreateMeeting({
-  onClose,
-  onSubmit,
-}: {
-  onClose: () => void;
-  onSubmit: (event: FormEvent<HTMLFormElement>) => void;
-}) {
-  const input =
-    "h-10 w-full rounded-md border border-[#dcdce2] px-3 text-sm outline-none";
-  return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/45 p-4 backdrop-blur-[2px]"
-      onMouseDown={(event) => {
-        if (event.currentTarget === event.target) onClose();
-      }}
-    >
-      <form
-        onSubmit={onSubmit}
-        className="w-full max-w-lg rounded-xl bg-white p-6 shadow-2xl"
-      >
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-xl font-semibold">New meeting</h2>
-            <p className="mt-1 text-sm text-[#7d7d86]">
-              Schedule a sales appointment.
-            </p>
-          </div>
-          <button type="button" onClick={onClose} aria-label="Close form">
-            <X className="size-5" />
-          </button>
-        </div>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2">
-          <Field label="Title">
-            <input
-              required
-              name="title"
-              defaultValue="Product discovery"
-              className={input}
-            />
-          </Field>
-          <Field label="Prospect">
-            <input required name="prospect" className={input} />
-          </Field>
-          <Field label="Company">
-            <input required name="company" className={input} />
-          </Field>
-          <Field label="Email">
-            <input type="email" name="email" className={input} />
-          </Field>
-          <Field label="Date">
-            <input
-              required
-              type="date"
-              name="date"
-              defaultValue={isoDate(today.getDate())}
-              className={input}
-            />
-          </Field>
-          <Field label="Time">
-            <input
-              required
-              type="time"
-              name="time"
-              defaultValue="10:00"
-              className={input}
-            />
-          </Field>
-          <Field label="Duration">
-            <select name="duration" className={input}>
-              <option value="30">30 minutes</option>
-              <option value="45">45 minutes</option>
-              <option value="60">60 minutes</option>
-            </select>
-          </Field>
-          <Field label="Owner">
-            <select name="owner" className={input}>
-              <option>Yosra</option>
-              <option>Sami</option>
-            </select>
-          </Field>
-          <label className="sm:col-span-2">
-            <span className="mb-2 block text-xs font-bold uppercase text-[#7c7c85]">
-              Notes
-            </span>
-            <textarea
-              name="notes"
-              rows={3}
-              className="w-full rounded-md border border-[#dcdce2] p-3 text-sm"
-            />
-          </label>
-        </div>
-        <div className="mt-6 flex justify-end gap-2">
-          <button
-            type="button"
-            onClick={onClose}
-            className="h-10 rounded-md border px-4 text-sm font-semibold"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            className="h-10 rounded-xl bg-[#5964d6] px-4 text-sm font-semibold text-white hover:bg-[#4f5acb]"
-          >
-            Create meeting
-          </button>
-        </div>
-      </form>
-    </div>
-  );
-}
-
-function Field({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
+function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
     <label>
       <span className="mb-2 block text-xs font-bold uppercase text-[#7c7c85]">

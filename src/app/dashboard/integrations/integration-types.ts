@@ -9,6 +9,8 @@ export type Integration = {
   lastSync: string | null;
   events: number;
   color: string;
+  detail?: string;
+  actionHref?: string;
 };
 
 export type SyncEvent = {

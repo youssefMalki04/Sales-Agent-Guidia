@@ -11,7 +11,12 @@ export type TourPage = {
 export type FlowStep = {
   id: string;
   title: string;
+  field?: string;
+  required?: boolean;
+  weight?: number;
 };
+
+export type FlowScoring = { coldMax: number; warmMax: number };
 
 export type QualificationFlow = {
   id: string;
@@ -24,6 +29,7 @@ export type QualificationFlow = {
   active: boolean;
   entryPageIds: string[];
   steps: FlowStep[];
+  scoring?: FlowScoring;
 };
 
 export type QualificationFlowForm = {
@@ -36,4 +42,5 @@ export type QualificationFlowForm = {
   active: boolean;
   entryPageIds: string[];
   steps: FlowStep[];
+  scoring: FlowScoring;
 };

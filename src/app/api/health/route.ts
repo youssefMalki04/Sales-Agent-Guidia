@@ -14,7 +14,7 @@ export async function GET() {
       serviceRoleKey: isConfigured("SUPABASE_SERVICE_ROLE_KEY"),
     },
     ai: {
-      googleApiKey: isConfigured("GOOGLE_API_KEY"),
+      googleApiKey: isConfigured("GOOGLE_API_KEY") || isConfigured("GEMINI_API_KEY"),
     },
     crm: {
       hubspotAccessToken: isConfigured("HUBSPOT_ACCESS_TOKEN"),
@@ -33,8 +33,7 @@ export async function GET() {
     checks.supabase.url,
     checks.supabase.anonKey,
     checks.supabase.serviceRoleKey,
-    checks.crm.hubspotAccessToken,
-    checks.notifications.slackWebhookUrl,
+    checks.ai.googleApiKey,
   ];
 
   return Response.json({

@@ -1,21 +1,12 @@
 "use client";
 
-import {
-  GitBranch,
-  Loader2,
-  Plus,
-  RefreshCw,
-  Sparkles,
-  Video,
-} from "lucide-react";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import type { AiDraft, ReplayStorage, TourSource } from "./tour-types";
 import { createDraft, createEmptySource } from "./tour-utils";
-import { Counter, DraftReviewModal, SourceCard, Toast } from "./tour-ui";
+import { DraftReviewModal, Toast } from "./tour-ui";
+import { TourWorkspace } from "./tour-workspace";
 
 export default function GenerateTourPage() {
   return (
@@ -196,114 +187,22 @@ function GenerateTourContent() {
   return (
     <main className="min-h-[calc(100vh-76px)] bg-[#fbfbfc] px-5 py-7 sm:px-8 xl:px-14">
       <div className="mx-auto flex max-w-[1120px] flex-col gap-6">
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#e6e7eb] bg-white p-4 shadow-[0_1px_3px_rgba(16,24,40,0.04)]">
-          <div>
-            <div className="mb-1 flex items-center gap-2 text-sm font-medium text-[#62626b]">
-              <Sparkles className="size-4 text-[#6c63ff]" />
-              Generate with AI
-            </div>
-            <h1 className="text-2xl font-semibold text-[#17171a]">
-              Create a guided workflow from a replay or source
-            </h1>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-2">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() =>
-                router.push("/dashboard/qualification-flows?tab=flows")
-              }
-            >
-              <GitBranch className="mr-2 size-4" />
-              Open flows
-            </Button>
-            <Button type="button" onClick={analyzeSources}>
-              <Sparkles className="mr-2 size-4" />
-              Analyze sources
-            </Button>
-          </div>
-        </div>
-
-        {replayId && (
-          <div className="rounded-2xl border border-[#e6e7eb] bg-[#f7f7fb] p-4 text-sm text-[#4d4f59]">
-            <div className="flex items-center gap-2 font-semibold text-[#17171a]">
-              <Video className="size-4" />
-              Replay linked as AI source
-            </div>
-            <p className="mt-1">
-              {isLoadingReplay
-                ? "Loading replay video…"
-                : "The replay is ready. Review the source details, then analyze it to generate the draft."}
-            </p>
-          </div>
-        )}
-
-        <div className="grid gap-6 lg:grid-cols-[1.35fr_0.65fr]">
-          <section className="rounded-2xl border border-[#e6e7eb] bg-white p-5 shadow-[0_1px_3px_rgba(16,24,40,0.04)]">
-            <div className="mb-4 flex items-center justify-between">
-              <div>
-                <h2 className="text-lg font-semibold text-[#17171a]">
-                  Sources
-                </h2>
-                <p className="text-sm text-[#62626b]">
-                  Upload a video, link an image, or paste HTML evidence.
-                </p>
-              </div>
-              <Button type="button" variant="outline" onClick={addSource}>
-                <Plus className="mr-2 size-4" />
-                Add source
-              </Button>
-            </div>
-
-            <div className="space-y-4">
-              {sources.map((source, index) => (
-                <SourceCard
-                  key={source.id}
-                  source={source}
-                  index={index}
-                  onUpdate={(updates) => updateSource(source.id, updates)}
-                  onDelete={() => removeSource(source.id)}
-                />
-              ))}
-            </div>
-          </section>
-
-          <section className="space-y-4">
-            <div className="rounded-2xl border border-[#e6e7eb] bg-white p-5 shadow-[0_1px_3px_rgba(16,24,40,0.04)]">
-              <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-[#17171a]">
-                <RefreshCw className="size-4" />
-                Draft insights
-              </div>
-              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-                <Counter value={pageCount} label="pages" />
-                <Counter value={flowCount} label="flows" />
-              </div>
-            </div>
-
-            <div className="rounded-2xl border border-[#e6e7eb] bg-white p-5 shadow-[0_1px_3px_rgba(16,24,40,0.04)]">
-              <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-[#17171a]">
-                <Loader2
-                  className={cn("size-4", isAnalyzing ? "animate-spin" : "")}
-                />
-                Status
-              </div>
-              {isAnalyzing ? (
-                <div className="rounded-xl bg-[#f7f7fb] p-4 text-sm text-[#4d4f59]">
-                  Source analysis in progress…
-                </div>
-              ) : draft ? (
-                <div className="rounded-xl bg-[#f0fff4] p-4 text-sm text-[#22643d]">
-                  A draft is ready. Review it before validation.
-                </div>
-              ) : (
-                <div className="rounded-xl bg-[#f7f7fb] p-4 text-sm text-[#4d4f59]">
-                  No preview yet. Use Analyze sources to generate a draft.
-                </div>
-              )}
-            </div>
-          </section>
-        </div>
+        <TourWorkspace
+          sources={sources}
+          replayId={replayId}
+          isLoadingReplay={isLoadingReplay}
+          isAnalyzing={isAnalyzing}
+          hasDraft={Boolean(draft)}
+          pageCount={pageCount}
+          flowCount={flowCount}
+          onOpenFlows={() =>
+            router.push("/dashboard/qualification-flows?tab=flows")
+          }
+          onAnalyze={analyzeSources}
+          onAddSource={addSource}
+          onUpdateSource={updateSource}
+          onRemoveSource={removeSource}
+        />
 
         {draft && (
           <DraftReviewModal
