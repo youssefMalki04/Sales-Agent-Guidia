@@ -12,7 +12,7 @@ create table if not exists public.qualification_flows (
   active boolean not null default true,
   entry_page_ids text[] not null default '{}',
   steps jsonb not null default '[]'::jsonb,
-  scoring jsonb not null default '{"coldMax":34,"warmMax":69}'::jsonb,
+  scoring jsonb not null default '{"coldMax":39,"warmMax":69}'::jsonb,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -40,5 +40,5 @@ values (
     {"id":"contact","title":"What email can the sales team use to contact you?","field":"email","required":true,"weight":20},
     {"id":"intent","title":"Would you like to book a demonstration?","field":"intent","required":false,"weight":10}
   ]'::jsonb,
-  '{"coldMax":34,"warmMax":69}'::jsonb
+  '{"coldMax":39,"warmMax":69}'::jsonb
 ) on conflict (key) do nothing;

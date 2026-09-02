@@ -7,6 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "generate:test-conversations": "node --import tsx scripts/generate-test-conversations.ts",
+    "test": "node --import tsx --test tests/*.test.ts",
+    "test:integration": "node --import tsx scripts/integration-test-sales-flow.ts",
+    "evaluate:rag": "node --import tsx scripts/evaluate-rag.ts",
     "ingest:knowledge": "tsx scripts/ingest-knowledge.ts",
     "smoke-test": "tsx scripts/smoke-test-gemini.ts"
   },

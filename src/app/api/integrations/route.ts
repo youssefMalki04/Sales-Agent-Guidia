@@ -57,6 +57,22 @@ export async function POST(request: Request) {
       if (!response.ok) throw new Error("Gemini rejected the configured API key.");
       return Response.json({ ok: true, message: "Gemini API is reachable." });
     }
+    if (id === "hubspot") {
+      const token = process.env.HUBSPOT_ACCESS_TOKEN;
+      if (!token) return Response.json({ error: "HubSpot access token is not configured." }, { status: 400 });
+      const response = await fetch("https://api.hubapi.com/crm/v3/objects/contacts?limit=1&archived=false", {
+        headers: { Authorization: `Bearer ${token}` },
+        cache: "no-store",
+      });
+      const payload = (await response.json().catch(() => null)) as { message?: string } | null;
+      if (!response.ok) {
+        return Response.json(
+          { error: payload?.message ?? `HubSpot rejected the access token (${response.status}).` },
+          { status: response.status === 401 || response.status === 403 ? 400 : 502 },
+        );
+      }
+      return Response.json({ ok: true, message: "HubSpot API is reachable." });
+    }
     const current = (await snapshot()).services.find((item) => item.id === id);
     if (!current || current.status !== "connected") return Response.json({ error: current?.detail ?? "Integration is not configured." }, { status: 400 });
     return Response.json({ ok: true, message: current.detail });

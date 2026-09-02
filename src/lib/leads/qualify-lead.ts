@@ -1,5 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
+import { calculateLeadScore } from "./calculate-lead-score";
 import { mergeLeadUpdate, type LeadRecord } from "./merge-lead-update";
 import {
   logLeadUpdateValidationFailed,
@@ -7,7 +8,11 @@ import {
 } from "./validate-lead-update";
 import { supabaseAdmin } from "../database/supabase-admin";
 import { createNotification } from "../notifications/create-notification";
-import { flowPrompt, getActiveQualificationFlow, type ActiveQualificationFlow } from "./active-qualification-flow";
+import {
+  flowPrompt,
+  getActiveQualificationFlow,
+  type ActiveQualificationFlow,
+} from "./active-qualification-flow";
 import { dispatchWebhook } from "../webhooks/dispatch-webhook";
 
 const apiKey = process.env.GOOGLE_API_KEY ?? process.env.GEMINI_API_KEY;
@@ -17,13 +22,20 @@ type ConversationRow = {
   role: "user" | "assistant" | "system";
 };
 
-function qualificationPrompt(conversation: ConversationRow[], flow: ActiveQualificationFlow | null) {
+function qualificationPrompt(
+  conversation: ConversationRow[],
+  flow: ActiveQualificationFlow | null,
+) {
   const transcript = conversation
     .map(({ message, role }) => `${role.toUpperCase()}: ${message}`)
     .join("\n");
 
-  const weights = flow?.steps.map((step) => `${step.field ?? "criterion"}: ${step.weight ?? 0} points`).join(", ") || "coordonnées 20 points, besoin clair 25, entreprise/secteur 15, budget 15, urgence/délai 15, intention de démo ou d'achat 10";
-  const coldMax = flow?.scoring.coldMax ?? 34;
+  const weights =
+    flow?.steps
+      .map((step) => `${step.field ?? "criterion"}: ${step.weight ?? 0} points`)
+      .join(", ") ||
+    "coordonnées 20 points, besoin clair 25, entreprise/secteur 15, budget 15, urgence/délai 15, intention de démo ou d'achat 10";
+  const coldMax = flow?.scoring.coldMax ?? 39;
   const warmMax = flow?.scoring.warmMax ?? 69;
   return `Analyse cette conversation commerciale et retourne uniquement un objet JSON valide.
 N'invente aucune information. Utilise null lorsqu'une donnée n'est pas explicitement connue.
@@ -88,30 +100,80 @@ export async function qualifyLeadFromConversation(
   const result = await model.generateContent(
     qualificationPrompt(conversationResult.data as ConversationRow[], flow),
   );
-  const validation = validateLeadUpdate(parseJsonResponse(result.response.text()), {
-    leadId,
-    sessionId,
-  });
+  const validation = validateLeadUpdate(
+    parseJsonResponse(result.response.text()),
+    {
+      leadId,
+      sessionId,
+    },
+  );
 
   if (!validation.ok) {
     await logLeadUpdateValidationFailed(validation.event);
     throw new Error("Invalid lead qualification returned by Gemini");
   }
 
-  const update: ReturnType<typeof mergeLeadUpdate> & { pipeline_stage?: string } = mergeLeadUpdate(leadResult.data as LeadRecord, validation.data);
-  const previousScore = Number((leadResult.data as Record<string, unknown>).conversion_score ?? 0);
-  const previousTemperature = (leadResult.data as Record<string, unknown>).lead_temperature;
-  const currentStage = String((leadResult.data as Record<string, unknown>).pipeline_stage ?? "new");
+  const update: ReturnType<typeof mergeLeadUpdate> & {
+    pipeline_stage?: string;
+  } = mergeLeadUpdate(leadResult.data as LeadRecord, validation.data);
+  const deterministicScore = calculateLeadScore({
+    conversation: conversationResult.data as ConversationRow[],
+    lead: update,
+    thresholds: flow?.scoring ?? { coldMax: 39, warmMax: 69 },
+  });
+  update.conversion_score = deterministicScore.score;
+  update.lead_temperature = deterministicScore.temperature;
+  const previousScore = Number(
+    (leadResult.data as Record<string, unknown>).conversion_score ?? 0,
+  );
+  const previousTemperature = (leadResult.data as Record<string, unknown>)
+    .lead_temperature;
+  const currentStage = String(
+    (leadResult.data as Record<string, unknown>).pipeline_stage ?? "new",
+  );
   const hotThreshold = (flow?.scoring.warmMax ?? 69) + 1;
-  const isHot = (update.conversion_score ?? 0) >= hotThreshold || update.lead_temperature === "hot";
+  const isHot =
+    (update.conversion_score ?? 0) >= hotThreshold ||
+    update.lead_temperature === "hot";
   const wasHot = previousScore >= hotThreshold || previousTemperature === "hot";
-  if (isHot && ["new", "qualified"].includes(currentStage)) update.pipeline_stage = "qualified";
-  const { error } = await supabaseAdmin.from("leads").update(update).eq("id", leadId);
+  if (isHot && ["new", "qualified"].includes(currentStage))
+    update.pipeline_stage = "qualified";
+  const { error } = await supabaseAdmin
+    .from("leads")
+    .update(update)
+    .eq("id", leadId);
 
   if (error) throw error;
+  const { error: scoringEventError } = await supabaseAdmin
+    .from("agent_events")
+    .insert({
+      event_type: "lead_score_calculated",
+      lead_id: leadId,
+      payload: {
+        breakdown: deterministicScore.breakdown,
+        score: deterministicScore.score,
+        session_id: sessionId,
+        temperature: deterministicScore.temperature,
+      },
+    });
+  if (scoringEventError) {
+    console.error("Failed to log deterministic lead score", scoringEventError);
+  }
   if (isHot && !wasHot) {
-    await createNotification({ eventKey: `high-intent:${leadId}`, eventType: "high-intent", leadId, message: `${update.name || update.email || "A visitor"} reached a qualification score of ${update.conversion_score ?? 0}/100.`, sessionId, severity: "success", title: "High-intent lead detected" });
-    await dispatchWebhook("lead.qualified", { ...update, id: leadId, session_id: sessionId });
+    await createNotification({
+      eventKey: `high-intent:${leadId}`,
+      eventType: "high-intent",
+      leadId,
+      message: `${update.name || update.email || "A visitor"} reached a qualification score of ${update.conversion_score ?? 0}/100.`,
+      sessionId,
+      severity: "success",
+      title: "High-intent lead detected",
+    });
+    await dispatchWebhook("lead.qualified", {
+      ...update,
+      id: leadId,
+      session_id: sessionId,
+    });
   }
   return update;
 }

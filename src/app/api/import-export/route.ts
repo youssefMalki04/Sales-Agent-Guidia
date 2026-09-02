@@ -35,6 +35,15 @@ function csvCell(value: unknown) {
   return /[",\n\r]/.test(text) ? `"${text.replaceAll('"', '""')}"` : text;
 }
 
+function xmlCell(value: unknown) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&apos;");
+}
+
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const format = url.searchParams.get("format") ?? "csv";
@@ -46,6 +55,19 @@ export async function GET(request: Request) {
   const rows = data.map((lead) => ({ name: lead.name, email: lead.email, company: lead.company, country: lead.country, sector: lead.sector, score: lead.conversion_score, temperature: lead.lead_temperature, status: status(lead) }));
   await supabaseAdmin.from("agent_events").insert({ event_type: "leads.exported", payload: { count: rows.length, fields, format } });
   if (format === "json") return Response.json({ leads: rows });
+  if (format === "xls") {
+    const tableRows = [
+      fields.map((field) => `<Cell><Data ss:Type="String">${xmlCell(field)}</Data></Cell>`),
+      ...rows.map((row) => fields.map((field) => `<Cell><Data ss:Type="String">${xmlCell(row[field])}</Data></Cell>`)),
+    ];
+    const workbook = `<?xml version="1.0"?><?mso-application progid="Excel.Sheet"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"><Worksheet ss:Name="Leads"><Table>${tableRows.map((cells) => `<Row>${cells.join("")}</Row>`).join("")}</Table></Worksheet></Workbook>`;
+    return new Response(workbook, {
+      headers: {
+        "Content-Disposition": `attachment; filename="leadia-leads-${new Date().toISOString().slice(0, 10)}.xls"`,
+        "Content-Type": "application/vnd.ms-excel; charset=utf-8",
+      },
+    });
+  }
   const csv = [fields.join(","), ...rows.map((row) => fields.map((field) => csvCell(row[field])).join(","))].join("\n");
   return new Response(`\uFEFF${csv}`, { headers: { "Content-Disposition": `attachment; filename="leadia-leads-${new Date().toISOString().slice(0, 10)}.csv"`, "Content-Type": "text/csv; charset=utf-8" } });
 }

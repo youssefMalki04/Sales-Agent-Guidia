@@ -11,8 +11,18 @@ export function LeadExportActions({ lead }: { lead: LeadExportPayload }) {
 
   async function exportLead(type: "hubspot" | "salesforce" | "slack" | "webhook") {
     setNotice("");
-    const response = await fetch("/api/crm/export", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ lead, target: type }) });
-    setNotice(response.ok ? `Lead sent to ${type}.` : `Unable to send lead to ${type}.`);
+    try {
+      const response = await fetch("/api/crm/export", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ lead, target: type }) });
+      const payload = (await response.json()) as {
+        error?: string;
+        results?: Array<{ message?: string; response?: { message?: string } }>;
+      };
+      const result = payload.results?.[0];
+      const detail = result?.response?.message ?? result?.message ?? payload.error;
+      setNotice(response.ok ? (detail ?? `Lead sent to ${type}.`) : (detail ?? `Unable to send lead to ${type}.`));
+    } catch {
+      setNotice(`Unable to reach the server for ${type}.`);
+    }
   }
 
   return <div><div className="flex flex-wrap gap-2"><Button variant="outline" onClick={() => exportLead("slack")}>Notify Slack</Button><Button variant="outline" onClick={() => exportLead("hubspot")}>Send HubSpot</Button><Button variant="outline" onClick={() => exportLead("salesforce")}>Send Salesforce</Button><Button onClick={() => exportLead("webhook")}><Send className="size-4" /> Webhook</Button></div>{notice ? <p className="mt-2 text-xs font-semibold text-[#5964d6]">{notice}</p> : null}</div>;

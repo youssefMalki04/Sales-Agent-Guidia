@@ -4,7 +4,12 @@ export type ActiveQualificationFlow = {
   title: string;
   businessGoal: string;
   safetyMode: "guide" | "confirm" | "auto";
-  steps: Array<{ title: string; field?: string; required?: boolean; weight?: number }>;
+  steps: Array<{
+    title: string;
+    field?: string;
+    required?: boolean;
+    weight?: number;
+  }>;
   scoring: { coldMax: number; warmMax: number };
 };
 
@@ -25,12 +30,17 @@ export async function getActiveQualificationFlow(): Promise<ActiveQualificationF
     businessGoal: data.business_goal,
     safetyMode: data.safety_mode,
     steps: Array.isArray(data.steps) ? data.steps : [],
-    scoring: data.scoring ?? { coldMax: 34, warmMax: 69 },
+    scoring: data.scoring ?? { coldMax: 39, warmMax: 69 },
   } as ActiveQualificationFlow;
 }
 
 export function flowPrompt(flow: ActiveQualificationFlow | null) {
   if (!flow) return "";
-  const questions = flow.steps.map((step, index) => `${index + 1}. ${step.title} [field=${step.field ?? "need"}, weight=${step.weight ?? 0}, required=${Boolean(step.required)}]`).join("\n");
+  const questions = flow.steps
+    .map(
+      (step, index) =>
+        `${index + 1}. ${step.title} [field=${step.field ?? "need"}, weight=${step.weight ?? 0}, required=${Boolean(step.required)}]`,
+    )
+    .join("\n");
   return `\nACTIVE QUALIFICATION FLOW: ${flow.title}\nGoal: ${flow.businessGoal}\nQuestions/criteria:\n${questions}\nAsk at most one useful unanswered qualification question per response. Do not repeat information already provided.`;
 }

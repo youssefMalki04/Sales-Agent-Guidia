@@ -248,6 +248,6 @@ export function createEmptyForm(flowNumber: number): FlowForm {
     active: true,
     entryPageIds: [],
     steps: [],
-    scoring: { coldMax: 34, warmMax: 69 },
+    scoring: { coldMax: 39, warmMax: 69 },
   };
 }

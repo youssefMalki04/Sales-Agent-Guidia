@@ -116,7 +116,7 @@ export function useQualificationFlows() {
       active: flow.active,
       entryPageIds: flow.entryPageIds,
       steps: flow.steps,
-      scoring: flow.scoring ?? { coldMax: 34, warmMax: 69 },
+      scoring: flow.scoring ?? { coldMax: 39, warmMax: 69 },
     });
     setDrawerMode("edit");
   };

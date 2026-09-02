@@ -19,6 +19,11 @@ type SalesforceLeadResponse = {
   errors?: unknown[];
 };
 
+type SalesforceAuthorizationOptions = {
+  codeChallenge?: string;
+  state?: string;
+};
+
 function getRequiredEnv(name: string) {
   const value = process.env[name];
 
@@ -33,17 +38,32 @@ function getRedirectUri(origin: string) {
   return `${origin}/api/crm/salesforce/callback`;
 }
 
-export function buildSalesforceAuthorizationUrl(origin: string) {
-  const instanceUrl = getRequiredEnv("SALESFORCE_INSTANCE_URL");
+function getSalesforceLoginUrl() {
+  return process.env.SALESFORCE_LOGIN_URL ?? "https://login.salesforce.com";
+}
+
+export function buildSalesforceAuthorizationUrl(
+  origin: string,
+  options: SalesforceAuthorizationOptions = {},
+) {
   const clientId = getRequiredEnv("SALESFORCE_CLIENT_ID");
   const redirectUri = getRedirectUri(origin);
 
-  const url = new URL("/services/oauth2/authorize", instanceUrl);
+  const url = new URL("/services/oauth2/authorize", getSalesforceLoginUrl());
   url.searchParams.set("response_type", "code");
   url.searchParams.set("client_id", clientId);
   url.searchParams.set("redirect_uri", redirectUri);
   url.searchParams.set("scope", "api refresh_token offline_access");
   url.searchParams.set("prompt", "consent");
+
+  if (options.codeChallenge) {
+    url.searchParams.set("code_challenge", options.codeChallenge);
+    url.searchParams.set("code_challenge_method", "S256");
+  }
+
+  if (options.state) {
+    url.searchParams.set("state", options.state);
+  }
 
   return url;
 }
@@ -51,24 +71,30 @@ export function buildSalesforceAuthorizationUrl(origin: string) {
 export async function exchangeSalesforceCode(
   code: string,
   origin: string,
+  codeVerifier?: string,
 ): Promise<SalesforceTokenResponse> {
-  const instanceUrl = getRequiredEnv("SALESFORCE_INSTANCE_URL");
   const clientId = getRequiredEnv("SALESFORCE_CLIENT_ID");
   const clientSecret = getRequiredEnv("SALESFORCE_CLIENT_SECRET");
   const redirectUri = getRedirectUri(origin);
 
-  const response = await fetch(new URL("/services/oauth2/token", instanceUrl), {
+  const body = new URLSearchParams({
+    grant_type: "authorization_code",
+    code,
+    client_id: clientId,
+    client_secret: clientSecret,
+    redirect_uri: redirectUri,
+  });
+
+  if (codeVerifier) {
+    body.set("code_verifier", codeVerifier);
+  }
+
+  const response = await fetch(new URL("/services/oauth2/token", getSalesforceLoginUrl()), {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     },
-    body: new URLSearchParams({
-      grant_type: "authorization_code",
-      code,
-      client_id: clientId,
-      client_secret: clientSecret,
-      redirect_uri: redirectUri,
-    }),
+    body,
   });
 
   const data = (await response.json()) as SalesforceTokenResponse;
@@ -157,7 +183,7 @@ async function getSalesforceAccessToken() {
     return null;
   }
 
-  const response = await fetch(new URL("/services/oauth2/token", instanceUrl), {
+  const response = await fetch(new URL("/services/oauth2/token", getSalesforceLoginUrl()), {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",

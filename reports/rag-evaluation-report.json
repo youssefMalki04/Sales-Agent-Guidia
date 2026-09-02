@@ -1,0 +1,240 @@
+{
+  "generatedAt": "2026-08-27T22:26:44.171Z",
+  "baseUrl": "http://localhost:3000",
+  "thresholds": {
+    "knownSimilarityFloor": 0.5,
+    "unknownSimilarityCeiling": 0.55
+  },
+  "summary": {
+    "total": 12,
+    "passed": 12,
+    "failed": 0
+  },
+  "results": [
+    {
+      "id": "fr-product-positioning",
+      "language": "fr",
+      "answerable": true,
+      "question": "Comment expliquer Guidia en une phrase ?",
+      "expectedTerms": [
+        "agent",
+        "SaaS",
+        "site web"
+      ],
+      "expectedCategory": "presentation",
+      "passed": true,
+      "topSimilarity": 0.7383,
+      "termCoverage": 1,
+      "foundTerms": [
+        "agent",
+        "SaaS",
+        "site web"
+      ],
+      "categoryFound": true,
+      "topMatch": "Doc1 Page Accueil Guidia"
+    },
+    {
+      "id": "fr-availability",
+      "language": "fr",
+      "answerable": true,
+      "question": "Guidia est-il disponible 24 heures sur 24 ?",
+      "expectedTerms": [
+        "24",
+        "7"
+      ],
+      "expectedCategory": "presentation",
+      "passed": true,
+      "topSimilarity": 0.7707,
+      "termCoverage": 1,
+      "foundTerms": [
+        "24",
+        "7"
+      ],
+      "categoryFound": true,
+      "topMatch": "Doc1 Page Accueil Guidia"
+    },
+    {
+      "id": "fr-languages",
+      "language": "fr",
+      "answerable": true,
+      "question": "Combien de langues Guidia prend-il en charge ?",
+      "expectedTerms": [
+        "40",
+        "langues"
+      ],
+      "passed": true,
+      "topSimilarity": 0.7753,
+      "termCoverage": 1,
+      "foundTerms": [
+        "40",
+        "langues"
+      ],
+      "categoryFound": true,
+      "topMatch": "Doc1 Page Accueil Guidia"
+    },
+    {
+      "id": "fr-ultra-price",
+      "language": "fr",
+      "answerable": true,
+      "question": "Quel est le prix mensuel du plan Ultra ?",
+      "expectedTerms": [
+        "999",
+        "mois"
+      ],
+      "expectedCategory": "pricing",
+      "passed": true,
+      "topSimilarity": 0.6861,
+      "termCoverage": 1,
+      "foundTerms": [
+        "999",
+        "mois"
+      ],
+      "categoryFound": true,
+      "topMatch": "Pricing"
+    },
+    {
+      "id": "fr-ultra-storage",
+      "language": "fr",
+      "answerable": true,
+      "question": "Combien de stockage comprend l'offre Ultra ?",
+      "expectedTerms": [
+        "100",
+        "Go"
+      ],
+      "expectedCategory": "pricing",
+      "passed": true,
+      "topSimilarity": 0.6562,
+      "termCoverage": 1,
+      "foundTerms": [
+        "100",
+        "Go"
+      ],
+      "categoryFound": true,
+      "topMatch": "Pricing"
+    },
+    {
+      "id": "fr-starter-price",
+      "language": "fr",
+      "answerable": true,
+      "question": "Combien coûte le plan Starter ?",
+      "expectedTerms": [
+        "199",
+        "mois"
+      ],
+      "expectedCategory": "pricing",
+      "passed": true,
+      "topSimilarity": 0.7126,
+      "termCoverage": 1,
+      "foundTerms": [
+        "199",
+        "mois"
+      ],
+      "categoryFound": true,
+      "topMatch": "Pricing"
+    },
+    {
+      "id": "en-positioning",
+      "language": "en",
+      "answerable": true,
+      "question": "What does Guidia do for SaaS products?",
+      "expectedTerms": [
+        "SaaS",
+        "agent"
+      ],
+      "expectedCategory": "presentation",
+      "passed": true,
+      "topSimilarity": 0.7428,
+      "termCoverage": 1,
+      "foundTerms": [
+        "SaaS",
+        "agent"
+      ],
+      "categoryFound": true,
+      "topMatch": "Doc1 Page Accueil Guidia"
+    },
+    {
+      "id": "en-human-cost",
+      "language": "en",
+      "answerable": true,
+      "question": "What hourly cost is shown for a human team?",
+      "expectedTerms": [
+        "40"
+      ],
+      "expectedCategory": "presentation",
+      "passed": true,
+      "topSimilarity": 0.6595,
+      "termCoverage": 1,
+      "foundTerms": [
+        "40"
+      ],
+      "categoryFound": true,
+      "topMatch": "Doc1 Page Accueil Guidia"
+    },
+    {
+      "id": "ar-availability",
+      "language": "ar",
+      "answerable": true,
+      "question": "هل تعمل Guidia على مدار الساعة؟",
+      "expectedTerms": [
+        "24",
+        "7"
+      ],
+      "expectedCategory": "presentation",
+      "passed": true,
+      "topSimilarity": 0.7321,
+      "termCoverage": 1,
+      "foundTerms": [
+        "24",
+        "7"
+      ],
+      "categoryFound": true,
+      "topMatch": "Doc1 Page Accueil Guidia"
+    },
+    {
+      "id": "ar-ultra-price",
+      "language": "ar",
+      "answerable": true,
+      "question": "ما هو السعر الشهري لخطة Ultra؟",
+      "expectedTerms": [
+        "999",
+        "mois"
+      ],
+      "expectedCategory": "pricing",
+      "passed": true,
+      "topSimilarity": 0.6329,
+      "termCoverage": 1,
+      "foundTerms": [
+        "999",
+        "mois"
+      ],
+      "categoryFound": true,
+      "topMatch": "Pricing"
+    },
+    {
+      "id": "unknown-weather",
+      "language": "fr",
+      "answerable": false,
+      "question": "Quelle météo fera-t-il demain à Tunis ?",
+      "expectedTerms": [],
+      "passed": true,
+      "topSimilarity": 0.5209,
+      "termCoverage": 1,
+      "foundTerms": [],
+      "categoryFound": true,
+      "topMatch": "Product"
+    },
+    {
+      "id": "unknown-president",
+      "language": "fr",
+      "answerable": false,
+      "question": "Qui sera le président de Mars en 2050 ?",
+      "expectedTerms": [],
+      "passed": true,
+      "topSimilarity": 0.5412,
+      "termCoverage": 1,
+      "foundTerms": [],
+      "categoryFound": true,
+      "topMatch": "Doc4 Fonctionnalites Guidia"
+    }
+  ]
+}

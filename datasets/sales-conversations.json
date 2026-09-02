@@ -1,0 +1,2346 @@
+{
+  "conversations": [
+    {
+      "id": "sales-cold-01",
+      "language": "fr",
+      "lead": {
+        "objections": [
+          {
+            "category": "price",
+            "evidence": "Dataset scenario 01",
+            "status": "detected"
+          }
+        ]
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "Bonjour, je regarde simplement et je souhaite des informations générales."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia peut qualifier les visiteurs et structurer les informations utiles pour votre équipe commerciale. Quel est votre besoin principal ?"
+        }
+      ],
+      "objection": "price",
+      "sector": "SaaS B2B",
+      "expected": {
+        "nextAction": "Envoyer la documentation adaptée.",
+        "score": 0,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 0,
+          "company": 0,
+          "sector": 0,
+          "need": 0,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect SaaS B2B en phase de découverte, sans besoin, budget ou calendrier confirmé. Objection à explorer : price.",
+        "temperature": "cold"
+      }
+    },
+    {
+      "id": "sales-cold-02",
+      "language": "en",
+      "lead": {
+        "objections": [
+          {
+            "category": "security",
+            "evidence": "Dataset scenario 02",
+            "status": "detected"
+          }
+        ]
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "Hello, I am only browsing and would like general information."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia can qualify visitors and structure useful information for your sales team. What is your main requirement?"
+        }
+      ],
+      "objection": "security",
+      "sector": "E-commerce",
+      "expected": {
+        "nextAction": "Envoyer la documentation adaptée.",
+        "score": 0,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 0,
+          "company": 0,
+          "sector": 0,
+          "need": 0,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect E-commerce en phase de découverte, sans besoin, budget ou calendrier confirmé. Objection à explorer : security.",
+        "temperature": "cold"
+      }
+    },
+    {
+      "id": "sales-cold-03",
+      "language": "ar",
+      "lead": {
+        "objections": [
+          {
+            "category": "integration",
+            "evidence": "Dataset scenario 03",
+            "status": "detected"
+          }
+        ]
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "مرحبا، أريد فقط معرفة المزيد عن الحل."
+        },
+        {
+          "role": "assistant",
+          "message": "يمكن لـ Leadia تأهيل الزوار وحفظ المعلومات المهمة لفريق المبيعات. ما هي حاجتكم الأساسية؟"
+        }
+      ],
+      "objection": "integration",
+      "sector": "Agence marketing",
+      "expected": {
+        "nextAction": "Envoyer la documentation adaptée.",
+        "score": 0,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 0,
+          "company": 0,
+          "sector": 0,
+          "need": 0,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect Agence marketing en phase de découverte, sans besoin, budget ou calendrier confirmé. Objection à explorer : integration.",
+        "temperature": "cold"
+      }
+    },
+    {
+      "id": "sales-cold-04",
+      "language": "fr",
+      "lead": {
+        "objections": [
+          {
+            "category": "competitor",
+            "evidence": "Dataset scenario 04",
+            "status": "detected"
+          }
+        ]
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "Bonjour, je regarde simplement et je souhaite des informations générales."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia peut qualifier les visiteurs et structurer les informations utiles pour votre équipe commerciale. Quel est votre besoin principal ?"
+        }
+      ],
+      "objection": "competitor",
+      "sector": "Industrie",
+      "expected": {
+        "nextAction": "Envoyer la documentation adaptée.",
+        "score": 0,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 0,
+          "company": 0,
+          "sector": 0,
+          "need": 0,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect Industrie en phase de découverte, sans besoin, budget ou calendrier confirmé. Objection à explorer : competitor.",
+        "temperature": "cold"
+      }
+    },
+    {
+      "id": "sales-cold-05",
+      "language": "en",
+      "lead": {
+        "objections": [
+          {
+            "category": "timing",
+            "evidence": "Dataset scenario 05",
+            "status": "detected"
+          }
+        ]
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "Hello, I am only browsing and would like general information."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia can qualify visitors and structure useful information for your sales team. What is your main requirement?"
+        }
+      ],
+      "objection": "timing",
+      "sector": "Santé",
+      "expected": {
+        "nextAction": "Envoyer la documentation adaptée.",
+        "score": 0,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 0,
+          "company": 0,
+          "sector": 0,
+          "need": 0,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect Santé en phase de découverte, sans besoin, budget ou calendrier confirmé. Objection à explorer : timing.",
+        "temperature": "cold"
+      }
+    },
+    {
+      "id": "sales-cold-06",
+      "language": "ar",
+      "lead": {
+        "objections": [
+          {
+            "category": "human_request",
+            "evidence": "Dataset scenario 06",
+            "status": "detected"
+          }
+        ]
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "مرحبا، أريد فقط معرفة المزيد عن الحل."
+        },
+        {
+          "role": "assistant",
+          "message": "يمكن لـ Leadia تأهيل الزوار وحفظ المعلومات المهمة لفريق المبيعات. ما هي حاجتكم الأساسية؟"
+        }
+      ],
+      "objection": "human_request",
+      "sector": "Banque",
+      "expected": {
+        "nextAction": "Envoyer la documentation adaptée.",
+        "score": 0,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 0,
+          "company": 0,
+          "sector": 0,
+          "need": 0,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect Banque en phase de découverte, sans besoin, budget ou calendrier confirmé. Objection à explorer : human_request.",
+        "temperature": "cold"
+      }
+    },
+    {
+      "id": "sales-cold-07",
+      "language": "fr",
+      "lead": {
+        "objections": [
+          {
+            "category": "security",
+            "evidence": "Dataset scenario 07",
+            "status": "detected"
+          }
+        ]
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "Bonjour, je regarde simplement et je souhaite des informations générales."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia peut qualifier les visiteurs et structurer les informations utiles pour votre équipe commerciale. Quel est votre besoin principal ?"
+        }
+      ],
+      "objection": "security",
+      "sector": "Conseil",
+      "expected": {
+        "nextAction": "Envoyer la documentation adaptée.",
+        "score": 0,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 0,
+          "company": 0,
+          "sector": 0,
+          "need": 0,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect Conseil en phase de découverte, sans besoin, budget ou calendrier confirmé. Objection à explorer : security.",
+        "temperature": "cold"
+      }
+    },
+    {
+      "id": "sales-cold-08",
+      "language": "en",
+      "lead": {
+        "objections": [
+          {
+            "category": "price",
+            "evidence": "Dataset scenario 08",
+            "status": "detected"
+          }
+        ]
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "Hello, I am only browsing and would like general information."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia can qualify visitors and structure useful information for your sales team. What is your main requirement?"
+        }
+      ],
+      "objection": "price",
+      "sector": "SaaS B2B",
+      "expected": {
+        "nextAction": "Envoyer la documentation adaptée.",
+        "score": 0,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 0,
+          "company": 0,
+          "sector": 0,
+          "need": 0,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect SaaS B2B en phase de découverte, sans besoin, budget ou calendrier confirmé. Objection à explorer : price.",
+        "temperature": "cold"
+      }
+    },
+    {
+      "id": "sales-cold-09",
+      "language": "ar",
+      "lead": {
+        "objections": [
+          {
+            "category": "timing",
+            "evidence": "Dataset scenario 09",
+            "status": "detected"
+          }
+        ]
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "مرحبا، أريد فقط معرفة المزيد عن الحل."
+        },
+        {
+          "role": "assistant",
+          "message": "يمكن لـ Leadia تأهيل الزوار وحفظ المعلومات المهمة لفريق المبيعات. ما هي حاجتكم الأساسية؟"
+        }
+      ],
+      "objection": "timing",
+      "sector": "E-commerce",
+      "expected": {
+        "nextAction": "Envoyer la documentation adaptée.",
+        "score": 0,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 0,
+          "company": 0,
+          "sector": 0,
+          "need": 0,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect E-commerce en phase de découverte, sans besoin, budget ou calendrier confirmé. Objection à explorer : timing.",
+        "temperature": "cold"
+      }
+    },
+    {
+      "id": "sales-cold-10",
+      "language": "fr",
+      "lead": {
+        "objections": [
+          {
+            "category": "integration",
+            "evidence": "Dataset scenario 10",
+            "status": "detected"
+          }
+        ]
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "Bonjour, je regarde simplement et je souhaite des informations générales."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia peut qualifier les visiteurs et structurer les informations utiles pour votre équipe commerciale. Quel est votre besoin principal ?"
+        }
+      ],
+      "objection": "integration",
+      "sector": "Agence marketing",
+      "expected": {
+        "nextAction": "Envoyer la documentation adaptée.",
+        "score": 0,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 0,
+          "company": 0,
+          "sector": 0,
+          "need": 0,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect Agence marketing en phase de découverte, sans besoin, budget ou calendrier confirmé. Objection à explorer : integration.",
+        "temperature": "cold"
+      }
+    },
+    {
+      "id": "sales-cold-11",
+      "language": "en",
+      "lead": {
+        "objections": [
+          {
+            "category": "competitor",
+            "evidence": "Dataset scenario 11",
+            "status": "detected"
+          }
+        ]
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "Hello, I am only browsing and would like general information."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia can qualify visitors and structure useful information for your sales team. What is your main requirement?"
+        }
+      ],
+      "objection": "competitor",
+      "sector": "Industrie",
+      "expected": {
+        "nextAction": "Envoyer la documentation adaptée.",
+        "score": 0,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 0,
+          "company": 0,
+          "sector": 0,
+          "need": 0,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect Industrie en phase de découverte, sans besoin, budget ou calendrier confirmé. Objection à explorer : competitor.",
+        "temperature": "cold"
+      }
+    },
+    {
+      "id": "sales-cold-12",
+      "language": "ar",
+      "lead": {
+        "objections": [
+          {
+            "category": "security",
+            "evidence": "Dataset scenario 12",
+            "status": "detected"
+          }
+        ]
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "مرحبا، أريد فقط معرفة المزيد عن الحل."
+        },
+        {
+          "role": "assistant",
+          "message": "يمكن لـ Leadia تأهيل الزوار وحفظ المعلومات المهمة لفريق المبيعات. ما هي حاجتكم الأساسية؟"
+        }
+      ],
+      "objection": "security",
+      "sector": "Santé",
+      "expected": {
+        "nextAction": "Envoyer la documentation adaptée.",
+        "score": 0,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 0,
+          "company": 0,
+          "sector": 0,
+          "need": 0,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect Santé en phase de découverte, sans besoin, budget ou calendrier confirmé. Objection à explorer : security.",
+        "temperature": "cold"
+      }
+    },
+    {
+      "id": "sales-cold-13",
+      "language": "fr",
+      "lead": {
+        "objections": [
+          {
+            "category": "human_request",
+            "evidence": "Dataset scenario 13",
+            "status": "detected"
+          }
+        ]
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "Bonjour, je regarde simplement et je souhaite des informations générales."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia peut qualifier les visiteurs et structurer les informations utiles pour votre équipe commerciale. Quel est votre besoin principal ?"
+        }
+      ],
+      "objection": "human_request",
+      "sector": "Banque",
+      "expected": {
+        "nextAction": "Envoyer la documentation adaptée.",
+        "score": 0,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 0,
+          "company": 0,
+          "sector": 0,
+          "need": 0,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect Banque en phase de découverte, sans besoin, budget ou calendrier confirmé. Objection à explorer : human_request.",
+        "temperature": "cold"
+      }
+    },
+    {
+      "id": "sales-cold-14",
+      "language": "en",
+      "lead": {
+        "objections": [
+          {
+            "category": "integration",
+            "evidence": "Dataset scenario 14",
+            "status": "detected"
+          }
+        ]
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "Hello, I am only browsing and would like general information."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia can qualify visitors and structure useful information for your sales team. What is your main requirement?"
+        }
+      ],
+      "objection": "integration",
+      "sector": "Conseil",
+      "expected": {
+        "nextAction": "Envoyer la documentation adaptée.",
+        "score": 0,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 0,
+          "company": 0,
+          "sector": 0,
+          "need": 0,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect Conseil en phase de découverte, sans besoin, budget ou calendrier confirmé. Objection à explorer : integration.",
+        "temperature": "cold"
+      }
+    },
+    {
+      "id": "sales-cold-15",
+      "language": "ar",
+      "lead": {
+        "objections": [
+          {
+            "category": "price",
+            "evidence": "Dataset scenario 15",
+            "status": "detected"
+          }
+        ]
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "مرحبا، أريد فقط معرفة المزيد عن الحل."
+        },
+        {
+          "role": "assistant",
+          "message": "يمكن لـ Leadia تأهيل الزوار وحفظ المعلومات المهمة لفريق المبيعات. ما هي حاجتكم الأساسية؟"
+        }
+      ],
+      "objection": "price",
+      "sector": "SaaS B2B",
+      "expected": {
+        "nextAction": "Envoyer la documentation adaptée.",
+        "score": 0,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 0,
+          "company": 0,
+          "sector": 0,
+          "need": 0,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect SaaS B2B en phase de découverte, sans besoin, budget ou calendrier confirmé. Objection à explorer : price.",
+        "temperature": "cold"
+      }
+    },
+    {
+      "id": "sales-warm-16",
+      "language": "fr",
+      "lead": {
+        "objections": [
+          {
+            "category": "price",
+            "evidence": "Dataset scenario 16",
+            "status": "detected"
+          }
+        ],
+        "company": "Prospect 16",
+        "name": "Contact 16",
+        "need": "Qualifier automatiquement les visiteurs du site web",
+        "sector": "SaaS B2B"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "Nous voulons qualifier les visiteurs du site, mais le projet est encore à l'étude."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia peut qualifier les visiteurs et structurer les informations utiles pour votre équipe commerciale. Quel est votre besoin principal ?"
+        }
+      ],
+      "objection": "price",
+      "sector": "SaaS B2B",
+      "expected": {
+        "nextAction": "Planifier une relance pour confirmer le budget et le calendrier.",
+        "score": 45,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect SaaS B2B avec un besoin de qualification identifié, mais sans décision commerciale immédiate. Objection à traiter : price.",
+        "temperature": "warm"
+      }
+    },
+    {
+      "id": "sales-warm-17",
+      "language": "en",
+      "lead": {
+        "objections": [
+          {
+            "category": "security",
+            "evidence": "Dataset scenario 17",
+            "status": "detected"
+          }
+        ],
+        "company": "Prospect 17",
+        "name": "Contact 17",
+        "need": "Qualifier automatiquement les visiteurs du site web",
+        "sector": "E-commerce"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "We need to qualify website visitors, but the project is still under review."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia can qualify visitors and structure useful information for your sales team. What is your main requirement?"
+        }
+      ],
+      "objection": "security",
+      "sector": "E-commerce",
+      "expected": {
+        "nextAction": "Planifier une relance pour confirmer le budget et le calendrier.",
+        "score": 45,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect E-commerce avec un besoin de qualification identifié, mais sans décision commerciale immédiate. Objection à traiter : security.",
+        "temperature": "warm"
+      }
+    },
+    {
+      "id": "sales-warm-18",
+      "language": "ar",
+      "lead": {
+        "objections": [
+          {
+            "category": "integration",
+            "evidence": "Dataset scenario 18",
+            "status": "detected"
+          }
+        ],
+        "company": "Prospect 18",
+        "name": "Contact 18",
+        "need": "Qualifier automatiquement les visiteurs du site web",
+        "sector": "Agence marketing"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "نريد تأهيل زوار موقعنا، لكننا ما زلنا ندرس المشروع."
+        },
+        {
+          "role": "assistant",
+          "message": "يمكن لـ Leadia تأهيل الزوار وحفظ المعلومات المهمة لفريق المبيعات. ما هي حاجتكم الأساسية؟"
+        }
+      ],
+      "objection": "integration",
+      "sector": "Agence marketing",
+      "expected": {
+        "nextAction": "Planifier une relance pour confirmer le budget et le calendrier.",
+        "score": 45,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect Agence marketing avec un besoin de qualification identifié, mais sans décision commerciale immédiate. Objection à traiter : integration.",
+        "temperature": "warm"
+      }
+    },
+    {
+      "id": "sales-warm-19",
+      "language": "fr",
+      "lead": {
+        "objections": [
+          {
+            "category": "competitor",
+            "evidence": "Dataset scenario 19",
+            "status": "detected"
+          }
+        ],
+        "company": "Prospect 19",
+        "name": "Contact 19",
+        "need": "Qualifier automatiquement les visiteurs du site web",
+        "sector": "Industrie"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "Nous voulons qualifier les visiteurs du site, mais le projet est encore à l'étude."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia peut qualifier les visiteurs et structurer les informations utiles pour votre équipe commerciale. Quel est votre besoin principal ?"
+        }
+      ],
+      "objection": "competitor",
+      "sector": "Industrie",
+      "expected": {
+        "nextAction": "Planifier une relance pour confirmer le budget et le calendrier.",
+        "score": 45,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect Industrie avec un besoin de qualification identifié, mais sans décision commerciale immédiate. Objection à traiter : competitor.",
+        "temperature": "warm"
+      }
+    },
+    {
+      "id": "sales-warm-20",
+      "language": "en",
+      "lead": {
+        "objections": [
+          {
+            "category": "timing",
+            "evidence": "Dataset scenario 20",
+            "status": "detected"
+          }
+        ],
+        "company": "Prospect 20",
+        "name": "Contact 20",
+        "need": "Qualifier automatiquement les visiteurs du site web",
+        "sector": "Santé"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "We need to qualify website visitors, but the project is still under review."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia can qualify visitors and structure useful information for your sales team. What is your main requirement?"
+        }
+      ],
+      "objection": "timing",
+      "sector": "Santé",
+      "expected": {
+        "nextAction": "Planifier une relance pour confirmer le budget et le calendrier.",
+        "score": 45,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect Santé avec un besoin de qualification identifié, mais sans décision commerciale immédiate. Objection à traiter : timing.",
+        "temperature": "warm"
+      }
+    },
+    {
+      "id": "sales-warm-21",
+      "language": "ar",
+      "lead": {
+        "objections": [
+          {
+            "category": "human_request",
+            "evidence": "Dataset scenario 21",
+            "status": "detected"
+          }
+        ],
+        "company": "Prospect 21",
+        "name": "Contact 21",
+        "need": "Qualifier automatiquement les visiteurs du site web",
+        "sector": "Banque"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "نريد تأهيل زوار موقعنا، لكننا ما زلنا ندرس المشروع."
+        },
+        {
+          "role": "assistant",
+          "message": "يمكن لـ Leadia تأهيل الزوار وحفظ المعلومات المهمة لفريق المبيعات. ما هي حاجتكم الأساسية؟"
+        }
+      ],
+      "objection": "human_request",
+      "sector": "Banque",
+      "expected": {
+        "nextAction": "Planifier une relance pour confirmer le budget et le calendrier.",
+        "score": 45,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect Banque avec un besoin de qualification identifié, mais sans décision commerciale immédiate. Objection à traiter : human_request.",
+        "temperature": "warm"
+      }
+    },
+    {
+      "id": "sales-warm-22",
+      "language": "fr",
+      "lead": {
+        "objections": [
+          {
+            "category": "security",
+            "evidence": "Dataset scenario 22",
+            "status": "detected"
+          }
+        ],
+        "company": "Prospect 22",
+        "name": "Contact 22",
+        "need": "Qualifier automatiquement les visiteurs du site web",
+        "sector": "Conseil"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "Nous voulons qualifier les visiteurs du site, mais le projet est encore à l'étude."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia peut qualifier les visiteurs et structurer les informations utiles pour votre équipe commerciale. Quel est votre besoin principal ?"
+        }
+      ],
+      "objection": "security",
+      "sector": "Conseil",
+      "expected": {
+        "nextAction": "Planifier une relance pour confirmer le budget et le calendrier.",
+        "score": 45,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect Conseil avec un besoin de qualification identifié, mais sans décision commerciale immédiate. Objection à traiter : security.",
+        "temperature": "warm"
+      }
+    },
+    {
+      "id": "sales-warm-23",
+      "language": "en",
+      "lead": {
+        "objections": [
+          {
+            "category": "price",
+            "evidence": "Dataset scenario 23",
+            "status": "detected"
+          }
+        ],
+        "company": "Prospect 23",
+        "name": "Contact 23",
+        "need": "Qualifier automatiquement les visiteurs du site web",
+        "sector": "SaaS B2B"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "We need to qualify website visitors, but the project is still under review."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia can qualify visitors and structure useful information for your sales team. What is your main requirement?"
+        }
+      ],
+      "objection": "price",
+      "sector": "SaaS B2B",
+      "expected": {
+        "nextAction": "Planifier une relance pour confirmer le budget et le calendrier.",
+        "score": 45,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect SaaS B2B avec un besoin de qualification identifié, mais sans décision commerciale immédiate. Objection à traiter : price.",
+        "temperature": "warm"
+      }
+    },
+    {
+      "id": "sales-warm-24",
+      "language": "ar",
+      "lead": {
+        "objections": [
+          {
+            "category": "timing",
+            "evidence": "Dataset scenario 24",
+            "status": "detected"
+          }
+        ],
+        "company": "Prospect 24",
+        "name": "Contact 24",
+        "need": "Qualifier automatiquement les visiteurs du site web",
+        "sector": "E-commerce"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "نريد تأهيل زوار موقعنا، لكننا ما زلنا ندرس المشروع."
+        },
+        {
+          "role": "assistant",
+          "message": "يمكن لـ Leadia تأهيل الزوار وحفظ المعلومات المهمة لفريق المبيعات. ما هي حاجتكم الأساسية؟"
+        }
+      ],
+      "objection": "timing",
+      "sector": "E-commerce",
+      "expected": {
+        "nextAction": "Planifier une relance pour confirmer le budget et le calendrier.",
+        "score": 45,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect E-commerce avec un besoin de qualification identifié, mais sans décision commerciale immédiate. Objection à traiter : timing.",
+        "temperature": "warm"
+      }
+    },
+    {
+      "id": "sales-warm-25",
+      "language": "fr",
+      "lead": {
+        "objections": [
+          {
+            "category": "integration",
+            "evidence": "Dataset scenario 25",
+            "status": "detected"
+          }
+        ],
+        "company": "Prospect 25",
+        "name": "Contact 25",
+        "need": "Qualifier automatiquement les visiteurs du site web",
+        "sector": "Agence marketing"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "Nous voulons qualifier les visiteurs du site, mais le projet est encore à l'étude."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia peut qualifier les visiteurs et structurer les informations utiles pour votre équipe commerciale. Quel est votre besoin principal ?"
+        }
+      ],
+      "objection": "integration",
+      "sector": "Agence marketing",
+      "expected": {
+        "nextAction": "Planifier une relance pour confirmer le budget et le calendrier.",
+        "score": 45,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect Agence marketing avec un besoin de qualification identifié, mais sans décision commerciale immédiate. Objection à traiter : integration.",
+        "temperature": "warm"
+      }
+    },
+    {
+      "id": "sales-warm-26",
+      "language": "en",
+      "lead": {
+        "objections": [
+          {
+            "category": "competitor",
+            "evidence": "Dataset scenario 26",
+            "status": "detected"
+          }
+        ],
+        "company": "Prospect 26",
+        "name": "Contact 26",
+        "need": "Qualifier automatiquement les visiteurs du site web",
+        "sector": "Industrie"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "We need to qualify website visitors, but the project is still under review."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia can qualify visitors and structure useful information for your sales team. What is your main requirement?"
+        }
+      ],
+      "objection": "competitor",
+      "sector": "Industrie",
+      "expected": {
+        "nextAction": "Planifier une relance pour confirmer le budget et le calendrier.",
+        "score": 45,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect Industrie avec un besoin de qualification identifié, mais sans décision commerciale immédiate. Objection à traiter : competitor.",
+        "temperature": "warm"
+      }
+    },
+    {
+      "id": "sales-warm-27",
+      "language": "ar",
+      "lead": {
+        "objections": [
+          {
+            "category": "security",
+            "evidence": "Dataset scenario 27",
+            "status": "detected"
+          }
+        ],
+        "company": "Prospect 27",
+        "name": "Contact 27",
+        "need": "Qualifier automatiquement les visiteurs du site web",
+        "sector": "Santé"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "نريد تأهيل زوار موقعنا، لكننا ما زلنا ندرس المشروع."
+        },
+        {
+          "role": "assistant",
+          "message": "يمكن لـ Leadia تأهيل الزوار وحفظ المعلومات المهمة لفريق المبيعات. ما هي حاجتكم الأساسية؟"
+        }
+      ],
+      "objection": "security",
+      "sector": "Santé",
+      "expected": {
+        "nextAction": "Planifier une relance pour confirmer le budget et le calendrier.",
+        "score": 45,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect Santé avec un besoin de qualification identifié, mais sans décision commerciale immédiate. Objection à traiter : security.",
+        "temperature": "warm"
+      }
+    },
+    {
+      "id": "sales-warm-28",
+      "language": "fr",
+      "lead": {
+        "objections": [
+          {
+            "category": "human_request",
+            "evidence": "Dataset scenario 28",
+            "status": "detected"
+          }
+        ],
+        "company": "Prospect 28",
+        "name": "Contact 28",
+        "need": "Qualifier automatiquement les visiteurs du site web",
+        "sector": "Banque"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "Nous voulons qualifier les visiteurs du site, mais le projet est encore à l'étude."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia peut qualifier les visiteurs et structurer les informations utiles pour votre équipe commerciale. Quel est votre besoin principal ?"
+        }
+      ],
+      "objection": "human_request",
+      "sector": "Banque",
+      "expected": {
+        "nextAction": "Planifier une relance pour confirmer le budget et le calendrier.",
+        "score": 45,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect Banque avec un besoin de qualification identifié, mais sans décision commerciale immédiate. Objection à traiter : human_request.",
+        "temperature": "warm"
+      }
+    },
+    {
+      "id": "sales-warm-29",
+      "language": "en",
+      "lead": {
+        "objections": [
+          {
+            "category": "integration",
+            "evidence": "Dataset scenario 29",
+            "status": "detected"
+          }
+        ],
+        "company": "Prospect 29",
+        "name": "Contact 29",
+        "need": "Qualifier automatiquement les visiteurs du site web",
+        "sector": "Conseil"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "We need to qualify website visitors, but the project is still under review."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia can qualify visitors and structure useful information for your sales team. What is your main requirement?"
+        }
+      ],
+      "objection": "integration",
+      "sector": "Conseil",
+      "expected": {
+        "nextAction": "Planifier une relance pour confirmer le budget et le calendrier.",
+        "score": 45,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect Conseil avec un besoin de qualification identifié, mais sans décision commerciale immédiate. Objection à traiter : integration.",
+        "temperature": "warm"
+      }
+    },
+    {
+      "id": "sales-warm-30",
+      "language": "ar",
+      "lead": {
+        "objections": [
+          {
+            "category": "price",
+            "evidence": "Dataset scenario 30",
+            "status": "detected"
+          }
+        ],
+        "company": "Prospect 30",
+        "name": "Contact 30",
+        "need": "Qualifier automatiquement les visiteurs du site web",
+        "sector": "SaaS B2B"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "نريد تأهيل زوار موقعنا، لكننا ما زلنا ندرس المشروع."
+        },
+        {
+          "role": "assistant",
+          "message": "يمكن لـ Leadia تأهيل الزوار وحفظ المعلومات المهمة لفريق المبيعات. ما هي حاجتكم الأساسية؟"
+        }
+      ],
+      "objection": "price",
+      "sector": "SaaS B2B",
+      "expected": {
+        "nextAction": "Planifier une relance pour confirmer le budget et le calendrier.",
+        "score": 45,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect SaaS B2B avec un besoin de qualification identifié, mais sans décision commerciale immédiate. Objection à traiter : price.",
+        "temperature": "warm"
+      }
+    },
+    {
+      "id": "sales-warm-31",
+      "language": "fr",
+      "lead": {
+        "objections": [
+          {
+            "category": "timing",
+            "evidence": "Dataset scenario 31",
+            "status": "detected"
+          }
+        ],
+        "company": "Prospect 31",
+        "name": "Contact 31",
+        "need": "Qualifier automatiquement les visiteurs du site web",
+        "sector": "E-commerce"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "Nous voulons qualifier les visiteurs du site, mais le projet est encore à l'étude."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia peut qualifier les visiteurs et structurer les informations utiles pour votre équipe commerciale. Quel est votre besoin principal ?"
+        }
+      ],
+      "objection": "timing",
+      "sector": "E-commerce",
+      "expected": {
+        "nextAction": "Planifier une relance pour confirmer le budget et le calendrier.",
+        "score": 45,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect E-commerce avec un besoin de qualification identifié, mais sans décision commerciale immédiate. Objection à traiter : timing.",
+        "temperature": "warm"
+      }
+    },
+    {
+      "id": "sales-warm-32",
+      "language": "en",
+      "lead": {
+        "objections": [
+          {
+            "category": "security",
+            "evidence": "Dataset scenario 32",
+            "status": "detected"
+          }
+        ],
+        "company": "Prospect 32",
+        "name": "Contact 32",
+        "need": "Qualifier automatiquement les visiteurs du site web",
+        "sector": "Agence marketing"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "We need to qualify website visitors, but the project is still under review."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia can qualify visitors and structure useful information for your sales team. What is your main requirement?"
+        }
+      ],
+      "objection": "security",
+      "sector": "Agence marketing",
+      "expected": {
+        "nextAction": "Planifier une relance pour confirmer le budget et le calendrier.",
+        "score": 45,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect Agence marketing avec un besoin de qualification identifié, mais sans décision commerciale immédiate. Objection à traiter : security.",
+        "temperature": "warm"
+      }
+    },
+    {
+      "id": "sales-warm-33",
+      "language": "ar",
+      "lead": {
+        "objections": [
+          {
+            "category": "competitor",
+            "evidence": "Dataset scenario 33",
+            "status": "detected"
+          }
+        ],
+        "company": "Prospect 33",
+        "name": "Contact 33",
+        "need": "Qualifier automatiquement les visiteurs du site web",
+        "sector": "Industrie"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "نريد تأهيل زوار موقعنا، لكننا ما زلنا ندرس المشروع."
+        },
+        {
+          "role": "assistant",
+          "message": "يمكن لـ Leadia تأهيل الزوار وحفظ المعلومات المهمة لفريق المبيعات. ما هي حاجتكم الأساسية؟"
+        }
+      ],
+      "objection": "competitor",
+      "sector": "Industrie",
+      "expected": {
+        "nextAction": "Planifier une relance pour confirmer le budget et le calendrier.",
+        "score": 45,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect Industrie avec un besoin de qualification identifié, mais sans décision commerciale immédiate. Objection à traiter : competitor.",
+        "temperature": "warm"
+      }
+    },
+    {
+      "id": "sales-warm-34",
+      "language": "fr",
+      "lead": {
+        "objections": [
+          {
+            "category": "integration",
+            "evidence": "Dataset scenario 34",
+            "status": "detected"
+          }
+        ],
+        "company": "Prospect 34",
+        "name": "Contact 34",
+        "need": "Qualifier automatiquement les visiteurs du site web",
+        "sector": "Santé"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "Nous voulons qualifier les visiteurs du site, mais le projet est encore à l'étude."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia peut qualifier les visiteurs et structurer les informations utiles pour votre équipe commerciale. Quel est votre besoin principal ?"
+        }
+      ],
+      "objection": "integration",
+      "sector": "Santé",
+      "expected": {
+        "nextAction": "Planifier une relance pour confirmer le budget et le calendrier.",
+        "score": 45,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect Santé avec un besoin de qualification identifié, mais sans décision commerciale immédiate. Objection à traiter : integration.",
+        "temperature": "warm"
+      }
+    },
+    {
+      "id": "sales-warm-35",
+      "language": "en",
+      "lead": {
+        "objections": [
+          {
+            "category": "human_request",
+            "evidence": "Dataset scenario 35",
+            "status": "detected"
+          }
+        ],
+        "company": "Prospect 35",
+        "name": "Contact 35",
+        "need": "Qualifier automatiquement les visiteurs du site web",
+        "sector": "Conseil"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "We need to qualify website visitors, but the project is still under review."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia can qualify visitors and structure useful information for your sales team. What is your main requirement?"
+        }
+      ],
+      "objection": "human_request",
+      "sector": "Conseil",
+      "expected": {
+        "nextAction": "Planifier une relance pour confirmer le budget et le calendrier.",
+        "score": 45,
+        "scoreBreakdown": {
+          "professionalEmail": 0,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 0,
+          "highUrgency": 0,
+          "crmOrIntegration": 0,
+          "commercialIntent": 0,
+          "resolvedObjection": 0
+        },
+        "summary": "Prospect Conseil avec un besoin de qualification identifié, mais sans décision commerciale immédiate. Objection à traiter : human_request.",
+        "temperature": "warm"
+      }
+    },
+    {
+      "id": "sales-hot-36",
+      "language": "fr",
+      "lead": {
+        "objections": [
+          {
+            "category": "price",
+            "evidence": "Dataset scenario 36",
+            "status": "resolved"
+          }
+        ],
+        "budget": "5000 EUR",
+        "company": "Entreprise 36",
+        "email": "contact36@entreprise-36.com",
+        "name": "Décideur 36",
+        "need": "Qualifier les prospects et transmettre les opportunités au CRM",
+        "sector": "SaaS B2B",
+        "urgency": "Démarrage ce mois-ci"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "Nous utilisons HubSpot et souhaitons une démonstration ce mois-ci. Notre budget est de 5 000 €."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia peut qualifier les visiteurs et structurer les informations utiles pour votre équipe commerciale. Quel est votre besoin principal ?"
+        }
+      ],
+      "objection": "price",
+      "sector": "SaaS B2B",
+      "expected": {
+        "nextAction": "Organiser une démonstration et notifier immédiatement l'équipe commerciale.",
+        "score": 100,
+        "scoreBreakdown": {
+          "professionalEmail": 10,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 15,
+          "highUrgency": 15,
+          "crmOrIntegration": 5,
+          "commercialIntent": 15,
+          "resolvedObjection": 5
+        },
+        "summary": "Prospect SaaS B2B avec besoin clair, budget de 5 000 EUR, démarrage ce mois-ci et demande de démonstration. Objection price traitée.",
+        "temperature": "hot"
+      }
+    },
+    {
+      "id": "sales-hot-37",
+      "language": "en",
+      "lead": {
+        "objections": [
+          {
+            "category": "security",
+            "evidence": "Dataset scenario 37",
+            "status": "resolved"
+          }
+        ],
+        "budget": "5000 EUR",
+        "company": "Entreprise 37",
+        "email": "contact37@entreprise-37.com",
+        "name": "Décideur 37",
+        "need": "Qualifier les prospects et transmettre les opportunités au CRM",
+        "sector": "E-commerce",
+        "urgency": "Démarrage ce mois-ci"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "We use HubSpot and want a demo this month. Our budget is EUR 5,000."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia can qualify visitors and structure useful information for your sales team. What is your main requirement?"
+        }
+      ],
+      "objection": "security",
+      "sector": "E-commerce",
+      "expected": {
+        "nextAction": "Organiser une démonstration et notifier immédiatement l'équipe commerciale.",
+        "score": 100,
+        "scoreBreakdown": {
+          "professionalEmail": 10,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 15,
+          "highUrgency": 15,
+          "crmOrIntegration": 5,
+          "commercialIntent": 15,
+          "resolvedObjection": 5
+        },
+        "summary": "Prospect E-commerce avec besoin clair, budget de 5 000 EUR, démarrage ce mois-ci et demande de démonstration. Objection security traitée.",
+        "temperature": "hot"
+      }
+    },
+    {
+      "id": "sales-hot-38",
+      "language": "ar",
+      "lead": {
+        "objections": [
+          {
+            "category": "integration",
+            "evidence": "Dataset scenario 38",
+            "status": "resolved"
+          }
+        ],
+        "budget": "5000 EUR",
+        "company": "Entreprise 38",
+        "email": "contact38@entreprise-38.com",
+        "name": "Décideur 38",
+        "need": "Qualifier les prospects et transmettre les opportunités au CRM",
+        "sector": "Agence marketing",
+        "urgency": "Démarrage ce mois-ci"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "نستعمل HubSpot ونريد عرضا توضيحيا هذا الشهر. الميزانية 5000 يورو."
+        },
+        {
+          "role": "assistant",
+          "message": "يمكن لـ Leadia تأهيل الزوار وحفظ المعلومات المهمة لفريق المبيعات. ما هي حاجتكم الأساسية؟"
+        }
+      ],
+      "objection": "integration",
+      "sector": "Agence marketing",
+      "expected": {
+        "nextAction": "Organiser une démonstration et notifier immédiatement l'équipe commerciale.",
+        "score": 95,
+        "scoreBreakdown": {
+          "professionalEmail": 10,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 15,
+          "highUrgency": 15,
+          "crmOrIntegration": 5,
+          "commercialIntent": 0,
+          "resolvedObjection": 5
+        },
+        "summary": "Prospect Agence marketing avec besoin clair, budget de 5 000 EUR, démarrage ce mois-ci et demande de démonstration. Objection integration traitée.",
+        "temperature": "hot"
+      }
+    },
+    {
+      "id": "sales-hot-39",
+      "language": "fr",
+      "lead": {
+        "objections": [
+          {
+            "category": "competitor",
+            "evidence": "Dataset scenario 39",
+            "status": "resolved"
+          }
+        ],
+        "budget": "5000 EUR",
+        "company": "Entreprise 39",
+        "email": "contact39@entreprise-39.com",
+        "name": "Décideur 39",
+        "need": "Qualifier les prospects et transmettre les opportunités au CRM",
+        "sector": "Industrie",
+        "urgency": "Démarrage ce mois-ci"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "Nous utilisons HubSpot et souhaitons une démonstration ce mois-ci. Notre budget est de 5 000 €."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia peut qualifier les visiteurs et structurer les informations utiles pour votre équipe commerciale. Quel est votre besoin principal ?"
+        }
+      ],
+      "objection": "competitor",
+      "sector": "Industrie",
+      "expected": {
+        "nextAction": "Organiser une démonstration et notifier immédiatement l'équipe commerciale.",
+        "score": 100,
+        "scoreBreakdown": {
+          "professionalEmail": 10,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 15,
+          "highUrgency": 15,
+          "crmOrIntegration": 5,
+          "commercialIntent": 15,
+          "resolvedObjection": 5
+        },
+        "summary": "Prospect Industrie avec besoin clair, budget de 5 000 EUR, démarrage ce mois-ci et demande de démonstration. Objection competitor traitée.",
+        "temperature": "hot"
+      }
+    },
+    {
+      "id": "sales-hot-40",
+      "language": "en",
+      "lead": {
+        "objections": [
+          {
+            "category": "timing",
+            "evidence": "Dataset scenario 40",
+            "status": "resolved"
+          }
+        ],
+        "budget": "5000 EUR",
+        "company": "Entreprise 40",
+        "email": "contact40@entreprise-40.com",
+        "name": "Décideur 40",
+        "need": "Qualifier les prospects et transmettre les opportunités au CRM",
+        "sector": "Santé",
+        "urgency": "Démarrage ce mois-ci"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "We use HubSpot and want a demo this month. Our budget is EUR 5,000."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia can qualify visitors and structure useful information for your sales team. What is your main requirement?"
+        }
+      ],
+      "objection": "timing",
+      "sector": "Santé",
+      "expected": {
+        "nextAction": "Organiser une démonstration et notifier immédiatement l'équipe commerciale.",
+        "score": 100,
+        "scoreBreakdown": {
+          "professionalEmail": 10,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 15,
+          "highUrgency": 15,
+          "crmOrIntegration": 5,
+          "commercialIntent": 15,
+          "resolvedObjection": 5
+        },
+        "summary": "Prospect Santé avec besoin clair, budget de 5 000 EUR, démarrage ce mois-ci et demande de démonstration. Objection timing traitée.",
+        "temperature": "hot"
+      }
+    },
+    {
+      "id": "sales-hot-41",
+      "language": "ar",
+      "lead": {
+        "objections": [
+          {
+            "category": "human_request",
+            "evidence": "Dataset scenario 41",
+            "status": "resolved"
+          }
+        ],
+        "budget": "5000 EUR",
+        "company": "Entreprise 41",
+        "email": "contact41@entreprise-41.com",
+        "name": "Décideur 41",
+        "need": "Qualifier les prospects et transmettre les opportunités au CRM",
+        "sector": "Banque",
+        "urgency": "Démarrage ce mois-ci"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "نستعمل HubSpot ونريد عرضا توضيحيا هذا الشهر. الميزانية 5000 يورو."
+        },
+        {
+          "role": "assistant",
+          "message": "يمكن لـ Leadia تأهيل الزوار وحفظ المعلومات المهمة لفريق المبيعات. ما هي حاجتكم الأساسية؟"
+        }
+      ],
+      "objection": "human_request",
+      "sector": "Banque",
+      "expected": {
+        "nextAction": "Organiser une démonstration et notifier immédiatement l'équipe commerciale.",
+        "score": 95,
+        "scoreBreakdown": {
+          "professionalEmail": 10,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 15,
+          "highUrgency": 15,
+          "crmOrIntegration": 5,
+          "commercialIntent": 0,
+          "resolvedObjection": 5
+        },
+        "summary": "Prospect Banque avec besoin clair, budget de 5 000 EUR, démarrage ce mois-ci et demande de démonstration. Objection human_request traitée.",
+        "temperature": "hot"
+      }
+    },
+    {
+      "id": "sales-hot-42",
+      "language": "fr",
+      "lead": {
+        "objections": [
+          {
+            "category": "security",
+            "evidence": "Dataset scenario 42",
+            "status": "resolved"
+          }
+        ],
+        "budget": "5000 EUR",
+        "company": "Entreprise 42",
+        "email": "contact42@entreprise-42.com",
+        "name": "Décideur 42",
+        "need": "Qualifier les prospects et transmettre les opportunités au CRM",
+        "sector": "Conseil",
+        "urgency": "Démarrage ce mois-ci"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "Nous utilisons HubSpot et souhaitons une démonstration ce mois-ci. Notre budget est de 5 000 €."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia peut qualifier les visiteurs et structurer les informations utiles pour votre équipe commerciale. Quel est votre besoin principal ?"
+        }
+      ],
+      "objection": "security",
+      "sector": "Conseil",
+      "expected": {
+        "nextAction": "Organiser une démonstration et notifier immédiatement l'équipe commerciale.",
+        "score": 100,
+        "scoreBreakdown": {
+          "professionalEmail": 10,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 15,
+          "highUrgency": 15,
+          "crmOrIntegration": 5,
+          "commercialIntent": 15,
+          "resolvedObjection": 5
+        },
+        "summary": "Prospect Conseil avec besoin clair, budget de 5 000 EUR, démarrage ce mois-ci et demande de démonstration. Objection security traitée.",
+        "temperature": "hot"
+      }
+    },
+    {
+      "id": "sales-hot-43",
+      "language": "en",
+      "lead": {
+        "objections": [
+          {
+            "category": "price",
+            "evidence": "Dataset scenario 43",
+            "status": "resolved"
+          }
+        ],
+        "budget": "5000 EUR",
+        "company": "Entreprise 43",
+        "email": "contact43@entreprise-43.com",
+        "name": "Décideur 43",
+        "need": "Qualifier les prospects et transmettre les opportunités au CRM",
+        "sector": "SaaS B2B",
+        "urgency": "Démarrage ce mois-ci"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "We use HubSpot and want a demo this month. Our budget is EUR 5,000."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia can qualify visitors and structure useful information for your sales team. What is your main requirement?"
+        }
+      ],
+      "objection": "price",
+      "sector": "SaaS B2B",
+      "expected": {
+        "nextAction": "Organiser une démonstration et notifier immédiatement l'équipe commerciale.",
+        "score": 100,
+        "scoreBreakdown": {
+          "professionalEmail": 10,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 15,
+          "highUrgency": 15,
+          "crmOrIntegration": 5,
+          "commercialIntent": 15,
+          "resolvedObjection": 5
+        },
+        "summary": "Prospect SaaS B2B avec besoin clair, budget de 5 000 EUR, démarrage ce mois-ci et demande de démonstration. Objection price traitée.",
+        "temperature": "hot"
+      }
+    },
+    {
+      "id": "sales-hot-44",
+      "language": "ar",
+      "lead": {
+        "objections": [
+          {
+            "category": "timing",
+            "evidence": "Dataset scenario 44",
+            "status": "resolved"
+          }
+        ],
+        "budget": "5000 EUR",
+        "company": "Entreprise 44",
+        "email": "contact44@entreprise-44.com",
+        "name": "Décideur 44",
+        "need": "Qualifier les prospects et transmettre les opportunités au CRM",
+        "sector": "E-commerce",
+        "urgency": "Démarrage ce mois-ci"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "نستعمل HubSpot ونريد عرضا توضيحيا هذا الشهر. الميزانية 5000 يورو."
+        },
+        {
+          "role": "assistant",
+          "message": "يمكن لـ Leadia تأهيل الزوار وحفظ المعلومات المهمة لفريق المبيعات. ما هي حاجتكم الأساسية؟"
+        }
+      ],
+      "objection": "timing",
+      "sector": "E-commerce",
+      "expected": {
+        "nextAction": "Organiser une démonstration et notifier immédiatement l'équipe commerciale.",
+        "score": 95,
+        "scoreBreakdown": {
+          "professionalEmail": 10,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 15,
+          "highUrgency": 15,
+          "crmOrIntegration": 5,
+          "commercialIntent": 0,
+          "resolvedObjection": 5
+        },
+        "summary": "Prospect E-commerce avec besoin clair, budget de 5 000 EUR, démarrage ce mois-ci et demande de démonstration. Objection timing traitée.",
+        "temperature": "hot"
+      }
+    },
+    {
+      "id": "sales-hot-45",
+      "language": "fr",
+      "lead": {
+        "objections": [
+          {
+            "category": "integration",
+            "evidence": "Dataset scenario 45",
+            "status": "resolved"
+          }
+        ],
+        "budget": "5000 EUR",
+        "company": "Entreprise 45",
+        "email": "contact45@entreprise-45.com",
+        "name": "Décideur 45",
+        "need": "Qualifier les prospects et transmettre les opportunités au CRM",
+        "sector": "Agence marketing",
+        "urgency": "Démarrage ce mois-ci"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "Nous utilisons HubSpot et souhaitons une démonstration ce mois-ci. Notre budget est de 5 000 €."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia peut qualifier les visiteurs et structurer les informations utiles pour votre équipe commerciale. Quel est votre besoin principal ?"
+        }
+      ],
+      "objection": "integration",
+      "sector": "Agence marketing",
+      "expected": {
+        "nextAction": "Organiser une démonstration et notifier immédiatement l'équipe commerciale.",
+        "score": 100,
+        "scoreBreakdown": {
+          "professionalEmail": 10,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 15,
+          "highUrgency": 15,
+          "crmOrIntegration": 5,
+          "commercialIntent": 15,
+          "resolvedObjection": 5
+        },
+        "summary": "Prospect Agence marketing avec besoin clair, budget de 5 000 EUR, démarrage ce mois-ci et demande de démonstration. Objection integration traitée.",
+        "temperature": "hot"
+      }
+    },
+    {
+      "id": "sales-hot-46",
+      "language": "en",
+      "lead": {
+        "objections": [
+          {
+            "category": "competitor",
+            "evidence": "Dataset scenario 46",
+            "status": "resolved"
+          }
+        ],
+        "budget": "5000 EUR",
+        "company": "Entreprise 46",
+        "email": "contact46@entreprise-46.com",
+        "name": "Décideur 46",
+        "need": "Qualifier les prospects et transmettre les opportunités au CRM",
+        "sector": "Industrie",
+        "urgency": "Démarrage ce mois-ci"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "We use HubSpot and want a demo this month. Our budget is EUR 5,000."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia can qualify visitors and structure useful information for your sales team. What is your main requirement?"
+        }
+      ],
+      "objection": "competitor",
+      "sector": "Industrie",
+      "expected": {
+        "nextAction": "Organiser une démonstration et notifier immédiatement l'équipe commerciale.",
+        "score": 100,
+        "scoreBreakdown": {
+          "professionalEmail": 10,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 15,
+          "highUrgency": 15,
+          "crmOrIntegration": 5,
+          "commercialIntent": 15,
+          "resolvedObjection": 5
+        },
+        "summary": "Prospect Industrie avec besoin clair, budget de 5 000 EUR, démarrage ce mois-ci et demande de démonstration. Objection competitor traitée.",
+        "temperature": "hot"
+      }
+    },
+    {
+      "id": "sales-hot-47",
+      "language": "ar",
+      "lead": {
+        "objections": [
+          {
+            "category": "security",
+            "evidence": "Dataset scenario 47",
+            "status": "resolved"
+          }
+        ],
+        "budget": "5000 EUR",
+        "company": "Entreprise 47",
+        "email": "contact47@entreprise-47.com",
+        "name": "Décideur 47",
+        "need": "Qualifier les prospects et transmettre les opportunités au CRM",
+        "sector": "Santé",
+        "urgency": "Démarrage ce mois-ci"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "نستعمل HubSpot ونريد عرضا توضيحيا هذا الشهر. الميزانية 5000 يورو."
+        },
+        {
+          "role": "assistant",
+          "message": "يمكن لـ Leadia تأهيل الزوار وحفظ المعلومات المهمة لفريق المبيعات. ما هي حاجتكم الأساسية؟"
+        }
+      ],
+      "objection": "security",
+      "sector": "Santé",
+      "expected": {
+        "nextAction": "Organiser une démonstration et notifier immédiatement l'équipe commerciale.",
+        "score": 95,
+        "scoreBreakdown": {
+          "professionalEmail": 10,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 15,
+          "highUrgency": 15,
+          "crmOrIntegration": 5,
+          "commercialIntent": 0,
+          "resolvedObjection": 5
+        },
+        "summary": "Prospect Santé avec besoin clair, budget de 5 000 EUR, démarrage ce mois-ci et demande de démonstration. Objection security traitée.",
+        "temperature": "hot"
+      }
+    },
+    {
+      "id": "sales-hot-48",
+      "language": "fr",
+      "lead": {
+        "objections": [
+          {
+            "category": "human_request",
+            "evidence": "Dataset scenario 48",
+            "status": "resolved"
+          }
+        ],
+        "budget": "5000 EUR",
+        "company": "Entreprise 48",
+        "email": "contact48@entreprise-48.com",
+        "name": "Décideur 48",
+        "need": "Qualifier les prospects et transmettre les opportunités au CRM",
+        "sector": "Banque",
+        "urgency": "Démarrage ce mois-ci"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "Nous utilisons HubSpot et souhaitons une démonstration ce mois-ci. Notre budget est de 5 000 €."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia peut qualifier les visiteurs et structurer les informations utiles pour votre équipe commerciale. Quel est votre besoin principal ?"
+        }
+      ],
+      "objection": "human_request",
+      "sector": "Banque",
+      "expected": {
+        "nextAction": "Organiser une démonstration et notifier immédiatement l'équipe commerciale.",
+        "score": 100,
+        "scoreBreakdown": {
+          "professionalEmail": 10,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 15,
+          "highUrgency": 15,
+          "crmOrIntegration": 5,
+          "commercialIntent": 15,
+          "resolvedObjection": 5
+        },
+        "summary": "Prospect Banque avec besoin clair, budget de 5 000 EUR, démarrage ce mois-ci et demande de démonstration. Objection human_request traitée.",
+        "temperature": "hot"
+      }
+    },
+    {
+      "id": "sales-hot-49",
+      "language": "en",
+      "lead": {
+        "objections": [
+          {
+            "category": "integration",
+            "evidence": "Dataset scenario 49",
+            "status": "resolved"
+          }
+        ],
+        "budget": "5000 EUR",
+        "company": "Entreprise 49",
+        "email": "contact49@entreprise-49.com",
+        "name": "Décideur 49",
+        "need": "Qualifier les prospects et transmettre les opportunités au CRM",
+        "sector": "Conseil",
+        "urgency": "Démarrage ce mois-ci"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "We use HubSpot and want a demo this month. Our budget is EUR 5,000."
+        },
+        {
+          "role": "assistant",
+          "message": "Leadia can qualify visitors and structure useful information for your sales team. What is your main requirement?"
+        }
+      ],
+      "objection": "integration",
+      "sector": "Conseil",
+      "expected": {
+        "nextAction": "Organiser une démonstration et notifier immédiatement l'équipe commerciale.",
+        "score": 100,
+        "scoreBreakdown": {
+          "professionalEmail": 10,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 15,
+          "highUrgency": 15,
+          "crmOrIntegration": 5,
+          "commercialIntent": 15,
+          "resolvedObjection": 5
+        },
+        "summary": "Prospect Conseil avec besoin clair, budget de 5 000 EUR, démarrage ce mois-ci et demande de démonstration. Objection integration traitée.",
+        "temperature": "hot"
+      }
+    },
+    {
+      "id": "sales-hot-50",
+      "language": "ar",
+      "lead": {
+        "objections": [
+          {
+            "category": "price",
+            "evidence": "Dataset scenario 50",
+            "status": "resolved"
+          }
+        ],
+        "budget": "5000 EUR",
+        "company": "Entreprise 50",
+        "email": "contact50@entreprise-50.com",
+        "name": "Décideur 50",
+        "need": "Qualifier les prospects et transmettre les opportunités au CRM",
+        "sector": "SaaS B2B",
+        "urgency": "Démarrage ce mois-ci"
+      },
+      "messages": [
+        {
+          "role": "user",
+          "message": "نستعمل HubSpot ونريد عرضا توضيحيا هذا الشهر. الميزانية 5000 يورو."
+        },
+        {
+          "role": "assistant",
+          "message": "يمكن لـ Leadia تأهيل الزوار وحفظ المعلومات المهمة لفريق المبيعات. ما هي حاجتكم الأساسية؟"
+        }
+      ],
+      "objection": "price",
+      "sector": "SaaS B2B",
+      "expected": {
+        "nextAction": "Organiser une démonstration et notifier immédiatement l'équipe commerciale.",
+        "score": 95,
+        "scoreBreakdown": {
+          "professionalEmail": 10,
+          "name": 5,
+          "company": 10,
+          "sector": 10,
+          "need": 20,
+          "budget": 15,
+          "highUrgency": 15,
+          "crmOrIntegration": 5,
+          "commercialIntent": 0,
+          "resolvedObjection": 5
+        },
+        "summary": "Prospect SaaS B2B avec besoin clair, budget de 5 000 EUR, démarrage ce mois-ci et demande de démonstration. Objection price traitée.",
+        "temperature": "hot"
+      }
+    }
+  ],
+  "generatedAt": "2026-08-27T13:15:25.600Z",
+  "summary": {
+    "cold": 15,
+    "hot": 15,
+    "warm": 20,
+    "total": 50
+  }
+}
