@@ -1,6 +1,6 @@
 "use client";
 
-import { Sparkles } from "lucide-react";
+import { Bell } from "lucide-react";
 import {
   NotificationPreferencesPanel,
   RecentNotifications,
@@ -12,37 +12,40 @@ export default function NotificationsPage() {
     enabledEvents,
     emails,
     saved,
+    testingEmail,
+    testEmailResult,
     notifications,
     error,
     changeEmails,
     toggleEvent,
     savePreferences,
+    sendTestEmail,
     updateNotification,
     markAllAsRead,
     deleteNotification,
+    openNotification,
+    snoozeNotification,
   } = useNotifications();
 
   return (
-    <main className="min-h-[calc(100vh-76px)] bg-white px-5 py-8 text-[#171717] sm:px-8 xl:px-14">
-      <div className="soft-page-enter mx-auto flex max-w-[1080px] flex-col gap-7">
-        <header className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
+    <main className="min-h-[calc(100vh-76px)] bg-white px-4 py-6 text-slate-900 sm:px-8 xl:px-10">
+      <div className="soft-page-enter mx-auto flex max-w-[1400px] flex-col gap-6">
+        <header className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-indigo-100/60 bg-gradient-to-r from-indigo-50/70 via-white to-white p-4 sm:p-5">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#e1e4f8] bg-[#f1f2ff] px-3 py-1.5 text-xs font-semibold text-[#626cd1]">
-              <Sparkles className="size-3.5" /> Team awareness
-            </div>
-            <h1 className="mt-4 text-3xl font-semibold tracking-[-0.035em] text-slate-950 sm:text-4xl">
+            <h1 className="flex items-center gap-3 text-2xl font-semibold tracking-tight text-slate-950">
+              <span className="flex size-10 items-center justify-center rounded-xl bg-white text-indigo-600 shadow-sm ring-1 ring-indigo-100"><Bell aria-hidden="true" className="size-5" /></span>
               Notifications
             </h1>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500 sm:text-base">
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
               Keep your team informed when customer conversations need
               attention.
             </p>
           </div>
-          <div className="rounded-2xl border border-slate-100 bg-[#fafafd] px-4 py-3">
-            <p className="text-xl font-semibold text-slate-950">
+          <div className="flex items-center gap-3 rounded-xl border border-indigo-100 bg-white px-4 py-3">
+            <p className="text-xl font-semibold tabular-nums text-indigo-600">
               {enabledEvents.length}
             </p>
-            <p className="text-xs font-medium text-slate-500">Active alerts</p>
+            <p className="text-xs font-medium text-slate-500">Enabled email events</p>
           </div>
         </header>
         {error ? (
@@ -54,6 +57,8 @@ export default function NotificationsPage() {
           notifications={notifications}
           onDelete={deleteNotification}
           onMarkAllAsRead={markAllAsRead}
+          onOpen={openNotification}
+          onSnooze={snoozeNotification}
           onUpdate={updateNotification}
         />
         <NotificationPreferencesPanel
@@ -61,8 +66,11 @@ export default function NotificationsPage() {
           enabledEvents={enabledEvents}
           onEmailsChange={changeEmails}
           onSave={savePreferences}
+          onSendTest={sendTestEmail}
           onToggleEvent={toggleEvent}
           saved={saved}
+          testingEmail={testingEmail}
+          testEmailResult={testEmailResult}
         />
       </div>
     </main>

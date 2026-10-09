@@ -1,12 +1,6 @@
-import {
-  CalendarDays,
-  ChevronLeft,
-  ChevronRight,
-  List,
-  Search,
-} from "lucide-react";
-
-import type { Meeting, MeetingStatus } from "./meeting-data";
+import { useState, type ReactNode } from "react";
+import { CalendarDays, ChevronLeft, ChevronRight, List, Search, SlidersHorizontal } from "lucide-react";
+import type { Meeting } from "./meeting-data";
 import { CalendarGrid, MeetingList, ViewButton } from "./meeting-calendar";
 
 type MeetingWorkspaceProps = {
@@ -14,160 +8,54 @@ type MeetingWorkspaceProps = {
   selectedMonth: Date;
   monthLabel: string;
   query: string;
-  owner: string;
-  status: "all" | MeetingStatus;
   view: "calendar" | "list";
+  filters: ReactNode;
+  activeFilters: number;
+  loading: boolean;
+  unavailable: boolean;
   onToday: () => void;
   onPreviousMonth: () => void;
   onNextMonth: () => void;
   onQueryChange: (query: string) => void;
-  onOwnerChange: (owner: string) => void;
-  onStatusChange: (status: "all" | MeetingStatus) => void;
   onViewChange: (view: "calendar" | "list") => void;
   onSelectMeeting: (id: string) => void;
 };
 
 export function MeetingWorkspace({
-  meetings,
-  selectedMonth,
-  monthLabel,
-  query,
-  owner,
-  status,
-  view,
-  onToday,
-  onPreviousMonth,
-  onNextMonth,
-  onQueryChange,
-  onOwnerChange,
-  onStatusChange,
-  onViewChange,
-  onSelectMeeting,
+  meetings, selectedMonth, monthLabel, query, view, filters, activeFilters, loading, unavailable,
+  onToday, onPreviousMonth, onNextMonth, onQueryChange, onViewChange, onSelectMeeting,
 }: MeetingWorkspaceProps) {
+  const [filtersOpen, setFiltersOpen] = useState(false);
   return (
-    <section className="soft-panel-enter overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-[0_8px_30px_rgba(15,23,42,.045)]">
-      <div className="flex flex-col gap-3 border-b border-[#e8e8ec] p-4 xl:flex-row xl:items-center xl:justify-between">
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={onToday}
-            className="h-9 rounded-xl border border-slate-200 px-3 text-xs font-semibold text-[#5964d6] hover:bg-[#f5f6ff]"
-          >
-            Today
-          </button>
-          <button
-            type="button"
-            aria-label="Previous month"
-            onClick={onPreviousMonth}
-            className="flex size-9 items-center justify-center rounded-xl border border-slate-200 hover:bg-[#f5f6ff]"
-          >
-            <ChevronLeft className="size-4" />
-          </button>
-          <button
-            type="button"
-            aria-label="Next month"
-            onClick={onNextMonth}
-            className="flex size-9 items-center justify-center rounded-xl border border-slate-200 hover:bg-[#f5f6ff]"
-          >
-            <ChevronRight className="size-4" />
-          </button>
-          <h2 className="ml-2 text-lg font-semibold">{monthLabel}</h2>
+    <section aria-label="Agenda des rendez-vous" aria-busy={loading} className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
+      <div className="flex flex-wrap items-center gap-3 border-b border-slate-100 p-4">
+        <h2 className="mr-auto text-base font-semibold capitalize text-slate-900">{monthLabel}</h2>
+        <div className="flex items-center gap-1">
+          <button type="button" aria-label="Mois précédent" onClick={onPreviousMonth} className="flex size-9 items-center justify-center rounded-lg hover:bg-slate-50"><ChevronLeft className="size-4" /></button>
+          <button type="button" onClick={onToday} className="h-9 rounded-lg px-2 text-xs font-medium text-slate-600 hover:bg-slate-50">Ce mois-ci</button>
+          <button type="button" aria-label="Mois suivant" onClick={onNextMonth} className="flex size-9 items-center justify-center rounded-lg hover:bg-slate-50"><ChevronRight className="size-4" /></button>
         </div>
-
-        <MeetingFilters
-          query={query}
-          owner={owner}
-          status={status}
-          view={view}
-          onQueryChange={onQueryChange}
-          onOwnerChange={onOwnerChange}
-          onStatusChange={onStatusChange}
-          onViewChange={onViewChange}
-        />
+        <div className="flex rounded-lg border border-slate-200 p-1">
+          <ViewButton active={view === "calendar"} label="Calendrier" onClick={() => onViewChange("calendar")}><CalendarDays className="size-4" /></ViewButton>
+          <ViewButton active={view === "list"} label="Liste" onClick={() => onViewChange("list")}><List className="size-4" /></ViewButton>
+        </div>
       </div>
-
-      {view === "calendar" ? (
-        <CalendarGrid
-          month={selectedMonth}
-          meetings={meetings}
-          onSelect={onSelectMeeting}
-        />
-      ) : (
-        <MeetingList meetings={meetings} onSelect={onSelectMeeting} />
-      )}
+      <div className="flex flex-wrap items-center gap-2 p-4">
+        <label className="relative min-w-0 flex-[1_1_220px]">
+          <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
+          <input value={query} onChange={(event) => onQueryChange(event.target.value)} aria-label="Rechercher un rendez-vous" placeholder="Rechercher un rendez-vous…" className="h-10 w-full rounded-lg border border-slate-200 pl-9 pr-3 text-sm focus-visible:outline-2 focus-visible:outline-indigo-500" />
+        </label>
+        <button type="button" aria-expanded={filtersOpen} aria-controls="meeting-filters" onClick={() => setFiltersOpen(!filtersOpen)} className={`inline-flex h-10 items-center gap-2 rounded-lg border px-3 text-sm ${filtersOpen || activeFilters ? "border-indigo-200 bg-indigo-50 text-indigo-700" : "border-slate-200 text-slate-600 hover:bg-slate-50"}`}>
+          <SlidersHorizontal className="size-4" /> Filtres {activeFilters > 0 && <span className="rounded-full bg-indigo-100 px-1.5 text-xs">{activeFilters}</span>}
+        </button>
+      </div>
+      <div id="meeting-filters" hidden={!filtersOpen} className="border-b border-slate-100 bg-slate-50/60 px-4 pb-4 pt-3">{filters}</div>
+      {loading ? <div role="status" className="flex min-h-64 items-center justify-center text-sm text-slate-500">Chargement des rendez-vous…</div> :
+        unavailable ? <div className="flex min-h-64 items-center justify-center px-6 text-center text-sm text-slate-500">L’agenda sera affiché dès que les données seront disponibles.</div> :
+        view === "calendar" ? <>
+          <div className="md:hidden"><p className="px-4 py-2 text-xs text-slate-500">Agenda du mois</p><MeetingList meetings={meetings} onSelect={onSelectMeeting} /></div>
+          <div className="hidden md:block"><CalendarGrid month={selectedMonth} meetings={meetings} onSelect={onSelectMeeting} /></div>
+        </> : <MeetingList meetings={meetings} onSelect={onSelectMeeting} />}
     </section>
-  );
-}
-
-function MeetingFilters({
-  query,
-  owner,
-  status,
-  view,
-  onQueryChange,
-  onOwnerChange,
-  onStatusChange,
-  onViewChange,
-}: Pick<
-  MeetingWorkspaceProps,
-  | "query"
-  | "owner"
-  | "status"
-  | "view"
-  | "onQueryChange"
-  | "onOwnerChange"
-  | "onStatusChange"
-  | "onViewChange"
->) {
-  return (
-    <div className="flex flex-wrap gap-2">
-      <label className="relative min-w-52 flex-1">
-        <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#9999a2]" />
-        <input
-          value={query}
-          onChange={(event) => onQueryChange(event.target.value)}
-          placeholder="Search meetings…"
-          className="h-9 w-full rounded-xl border border-slate-200 pl-9 pr-3 text-xs outline-none focus:border-[#939ae2]"
-        />
-      </label>
-      <select
-        value={owner}
-        onChange={(event) => onOwnerChange(event.target.value)}
-        className="h-9 rounded-md border border-[#dedee4] bg-white px-3 text-xs font-semibold"
-      >
-        <option value="all">All owners</option>
-        <option>Yosra</option>
-        <option>Sami</option>
-      </select>
-      <select
-        value={status}
-        onChange={(event) =>
-          onStatusChange(event.target.value as "all" | MeetingStatus)
-        }
-        className="h-9 rounded-md border border-[#dedee4] bg-white px-3 text-xs font-semibold"
-      >
-        <option value="all">All statuses</option>
-        <option value="confirmed">Confirmed</option>
-        <option value="pending">Pending</option>
-        <option value="completed">Completed</option>
-        <option value="cancelled">Cancelled</option>
-      </select>
-      <div className="flex rounded-md border border-[#dedee4] p-1">
-        <ViewButton
-          active={view === "calendar"}
-          label="Calendar"
-          onClick={() => onViewChange("calendar")}
-        >
-          <CalendarDays className="size-4" />
-        </ViewButton>
-        <ViewButton
-          active={view === "list"}
-          label="List"
-          onClick={() => onViewChange("list")}
-        >
-          <List className="size-4" />
-        </ViewButton>
-      </div>
-    </div>
   );
 }

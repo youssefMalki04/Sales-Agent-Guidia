@@ -25,7 +25,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#fbfbfc] text-[#171717]">
-      <div className="grid min-h-screen lg:grid-cols-[296px_minmax(0,1fr)]">
+      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[296px_minmax(0,1fr)]">
         <div className="sticky top-0 hidden h-screen lg:block">
           <Sidebar />
         </div>

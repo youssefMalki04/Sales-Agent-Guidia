@@ -1,6 +1,18 @@
-import { Flame, MessageSquareText, UserRoundCheck } from "lucide-react";
+import {
+  CalendarClock,
+  Flame,
+  MessageSquareText,
+  AtSign,
+  UserRoundCheck,
+} from "lucide-react";
 
 export const NOTIFICATION_EVENTS = [
+  {
+    id: "note-mention",
+    label: "Note mention",
+    description: "A teammate mentions you in a commercial note.",
+    icon: AtSign,
+  },
   {
     id: "new-conversation",
     label: "New conversation",
@@ -18,5 +30,11 @@ export const NOTIFICATION_EVENTS = [
     label: "Takeover request",
     description: "An agent requests help from a human teammate.",
     icon: UserRoundCheck,
+  },
+  {
+    id: "follow-up-due",
+    label: "Follow-up due",
+    description: "A scheduled commercial follow-up reaches its due time.",
+    icon: CalendarClock,
   },
 ] as const;

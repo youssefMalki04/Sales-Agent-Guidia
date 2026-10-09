@@ -1,5 +1,9 @@
-export type MeetingStatus = "confirmed" | "pending" | "completed" | "cancelled";
+export type MeetingStatus = "confirmed" | "pending" | "completed" | "cancelled" | "no_show";
 export type Meeting = {
+  archivedAt?: string | null;
+  reportCount?: number;
+  leadId?: string | null;
+  videoUrl?: string | null;
   id: string;
   title: string;
   prospect: string;

@@ -35,6 +35,16 @@ async function readInput(request: Request) {
   }
 }
 
+export async function GET() {
+  const { data, error } = await supabaseAdmin
+    .from("leads")
+    .select("id,name,email,company")
+    .order("updated_at", { ascending: false })
+    .limit(500);
+  if (error) return Response.json({ error: error.message }, { status: 500 });
+  return Response.json({ leads: data ?? [] });
+}
+
 export async function POST(request: Request) {
   const parsed = await readInput(request);
   if (!parsed.success) {
@@ -90,7 +100,8 @@ export async function PATCH(request: Request) {
     .single();
 
   if (error) return Response.json({ error: error.message }, { status: 500 });
-  if (status === "qualified") await dispatchWebhook("lead.qualified", data as Record<string, unknown>);
+  if (status === "qualified")
+    await dispatchWebhook("lead.qualified", data as Record<string, unknown>);
   return Response.json({ ok: true });
 }
 

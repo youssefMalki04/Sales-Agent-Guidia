@@ -9,9 +9,10 @@ import {
   Pencil,
   Plus,
   Trash2,
+  MoreHorizontal,
 } from "lucide-react";
 
-import { IconButton } from "./lead-action-fields";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import {
   ConfirmDeleteModal,
   LeadFormModal,
@@ -54,7 +55,7 @@ export function LeadsToolbar() {
 
   return (
     <>
-      <div className="flex min-h-14 flex-wrap items-center gap-2 rounded-2xl bg-transparent px-1">
+      <div className="flex flex-wrap items-center gap-2">
         <button
           type="button"
           onClick={() => setIsCreateOpen(true)}
@@ -63,24 +64,20 @@ export function LeadsToolbar() {
           <Plus className="size-4" />
           New lead
         </button>
-        <button
+        <DropdownMenu>
+        <DropdownMenuTrigger asChild><button
           type="button"
-          onClick={() => void downloadLeads("csv")}
           disabled={exporting !== null}
           className="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-600 hover:bg-[#f5f6ff] hover:text-[#5964d6]"
         >
           <Download className="size-4" />
-          {exporting === "csv" ? "Exporting…" : "Export CSV"}
-        </button>
-        <button
-          type="button"
-          onClick={() => void downloadLeads("xls")}
-          disabled={exporting !== null}
-          className="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-600 hover:bg-[#f5f6ff] hover:text-[#5964d6]"
-        >
-          <FileSpreadsheet className="size-4" />
-          {exporting === "xls" ? "Exporting…" : "Export Excel"}
-        </button>
+          {exporting ? "Exporting…" : "Export"}
+        </button></DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem disabled={exporting !== null} onSelect={() => void downloadLeads("csv")}><Download className="size-4" />Export CSV</DropdownMenuItem>
+          <DropdownMenuItem disabled={exporting !== null} onSelect={() => void downloadLeads("xls")}><FileSpreadsheet className="size-4" />Export Excel</DropdownMenuItem>
+        </DropdownMenuContent>
+        </DropdownMenu>
         {exportError ? <p className="w-full text-sm font-medium text-red-600">{exportError}</p> : null}
       </div>
 
@@ -105,19 +102,18 @@ export function LeadRowActions({
   return (
     <>
       <div className="flex justify-end gap-2">
-        <Link
-          href={`/dashboard/leads/${encodeURIComponent(lead.id)}`}
-          aria-label="View full lead profile"
-          className="inline-flex size-8 items-center justify-center rounded-md text-[#55555f] hover:bg-[#f4f4f5]"
-        >
-          <Eye className="size-4" />
-        </Link>
-        <IconButton label="Edit" onClick={() => setModal("edit")}>
-          <Pencil className="size-4" />
-        </IconButton>
-        <IconButton label="Delete" danger onClick={() => setModal("delete")}>
-          <Trash2 className="size-4" />
-        </IconButton>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button type="button" aria-label="Lead actions" className="inline-flex size-8 items-center justify-center rounded-lg text-slate-500 hover:bg-indigo-50 hover:text-indigo-600 focus-visible:outline-2 focus-visible:outline-indigo-500">
+              <MoreHorizontal className="size-4" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem asChild><Link href={`/dashboard/leads/${encodeURIComponent(lead.id)}`}><Eye className="size-4" />Open lead</Link></DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => setModal("edit")}><Pencil className="size-4" />Edit lead</DropdownMenuItem>
+            <DropdownMenuItem variant="destructive" onSelect={() => setModal("delete")}><Trash2 className="size-4" />Delete lead</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       {modal === "edit" ? (

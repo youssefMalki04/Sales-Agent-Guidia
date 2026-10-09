@@ -49,7 +49,12 @@ export async function GET(request: Request) {
   const format = url.searchParams.get("format") ?? "csv";
   const requested = (url.searchParams.get("fields") ?? allowedFields.join(",")).split(",");
   const fields = requested.filter((field): field is (typeof allowedFields)[number] => allowedFields.includes(field as never));
-  const { data, error, count } = await supabaseAdmin.from("leads").select("name,email,company,country,sector,conversion_score,lead_temperature,crm_status,created_at", { count: "exact" }).order("created_at", { ascending: false });
+  const selection = url.searchParams.get("ids");
+  const parsedIds = selection === null ? null : z.array(z.string().uuid()).min(1).max(50).safeParse(selection.split(","));
+  if (parsedIds && !parsedIds.success) return Response.json({ error: "Select between 1 and 50 valid leads." }, { status: 400 });
+  let query = supabaseAdmin.from("leads").select("name,email,company,country,sector,conversion_score,lead_temperature,crm_status,created_at", { count: "exact" }).order("created_at", { ascending: false });
+  if (parsedIds?.success) query = query.in("id", [...new Set(parsedIds.data)]);
+  const { data, error, count } = await query;
   if (error) return Response.json({ error: error.message }, { status: 502 });
   if (format === "count") return Response.json({ count: count ?? data.length });
   const rows = data.map((lead) => ({ name: lead.name, email: lead.email, company: lead.company, country: lead.country, sector: lead.sector, score: lead.conversion_score, temperature: lead.lead_temperature, status: status(lead) }));

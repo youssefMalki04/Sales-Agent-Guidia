@@ -37,22 +37,22 @@ ENABLE_SUPABASE_DASHBOARD=true
 
 Routes principales :
 
-| Interface | Route | Objectif |
-| --- | --- | --- |
-| Getting started | `/dashboard/onboarding` | Guider la configuration et suivre la progression |
-| Agent Studio | `/dashboard/agents` | Creer, configurer et tester les agents IA |
-| Knowledge base | `/dashboard/knowledge` | Gerer les connaissances utilisees par les agents |
-| Widget demo | `/demo/widget` | Montrer le widget sur un site client fictif |
-| Widget installation | `/dashboard/widget-installation` | Personnaliser et copier le code d'installation |
-| Live Inbox | `/dashboard/inbox` | Reprendre une conversation transferee par l'IA |
-| Leads | `/dashboard/leads` | Rechercher et analyser les prospects qualifies |
-| Sales pipeline | `/dashboard/pipeline` | Faire avancer les opportunites dans le cycle commercial |
-| Meetings | `/dashboard/meetings` | Planifier et suivre les rendez-vous commerciaux |
-| AI performance | `/dashboard/analytics` | Analyser conversion, objections et qualite des reponses |
-| Integration center | `/dashboard/integrations` | Simuler CRM, Slack, email, calendrier et webhooks |
-| Team | `/dashboard/team` | Gerer les roles, permissions et charges de travail |
-| Privacy & GDPR | `/dashboard/privacy` | Configurer consentement et conservation des donnees |
-| Import / Export | `/dashboard/import-export` | Importer, valider et exporter des leads CSV |
+| Interface           | Route                            | Objectif                                                |
+| ------------------- | -------------------------------- | ------------------------------------------------------- |
+| Getting started     | `/dashboard/onboarding`          | Guider la configuration et suivre la progression        |
+| Agent Studio        | `/dashboard/agents`              | Creer, configurer et tester les agents IA               |
+| Knowledge base      | `/dashboard/knowledge`           | Gerer les connaissances utilisees par les agents        |
+| Widget demo         | `/demo/widget`                   | Montrer le widget sur un site client fictif             |
+| Widget installation | `/dashboard/widget-installation` | Personnaliser et copier le code d'installation          |
+| Live Inbox          | `/dashboard/inbox`               | Reprendre une conversation transferee par l'IA          |
+| Leads               | `/dashboard/leads`               | Rechercher et analyser les prospects qualifies          |
+| Sales pipeline      | `/dashboard/pipeline`            | Faire avancer les opportunites dans le cycle commercial |
+| Meetings            | `/dashboard/meetings`            | Planifier et suivre les rendez-vous commerciaux         |
+| AI performance      | `/dashboard/analytics`           | Analyser conversion, objections et qualite des reponses |
+| Integration center  | `/dashboard/integrations`        | Simuler CRM, Slack, email, calendrier et webhooks       |
+| Team                | `/dashboard/team`                | Gerer les roles, permissions et charges de travail      |
+| Privacy & GDPR      | `/dashboard/privacy`             | Configurer consentement et conservation des donnees     |
+| Import / Export     | `/dashboard/import-export`       | Importer, valider et exporter des leads CSV             |
 
 Le bouton **Demo** dans la topbar fournit le parcours recommande et permet de
 reinitialiser toutes les donnees locales de demonstration.
@@ -80,6 +80,9 @@ SALESFORCE_LOGIN_URL=https://login.salesforce.com
 SALESFORCE_REFRESH_TOKEN=
 SLACK_WEBHOOK_URL=
 GENERIC_WEBHOOK_URL=
+RESEND_API_KEY=
+NOTIFICATION_EMAIL_FROM=Leadia <onboarding@resend.dev>
+CRON_SECRET=
 ```
 
 ## Architecture
@@ -118,23 +121,18 @@ docs/                    Documentation projet et tests
 
 Disponibles dans le code actuel :
 
-| Methode | Endpoint | Role |
-| --- | --- | --- |
-| GET | `/api/health` | Verifier que l'API repond |
-| POST | `/api/rag/search` | Rechercher des chunks RAG pertinents |
-| POST | `/api/crm/export` | Exporter un lead vers Slack, HubSpot, Salesforce ou webhook selon la configuration |
-| GET | `/api/crm/salesforce/auth` | Demarrer l'auth Salesforce |
-| GET | `/api/crm/salesforce/callback` | Callback OAuth Salesforce |
-
-Endpoints prevus dans le flux final :
-
-| Methode | Endpoint | Role |
-| --- | --- | --- |
-| POST | `/api/chat` | Pipeline conversationnel complet |
-| GET | `/api/leads` | Liste des leads qualifies |
-| GET | `/api/leads/[id]` | Detail d'un lead |
-| POST | `/api/knowledge/ingest` | Ingestion knowledge depuis API |
-| POST | `/api/webhook/send` | Envoi webhook generique dedie |
+| Methode                   | Endpoint                       | Role                                                                               |
+| ------------------------- | ------------------------------ | ---------------------------------------------------------------------------------- |
+| GET                       | `/api/health`                  | Verifier que l'API repond                                                          |
+| POST                      | `/api/rag/search`              | Rechercher des chunks RAG pertinents                                               |
+| POST                      | `/api/chat`                    | Executer le pipeline conversationnel Gemini/RAG                                    |
+| GET/POST/PATCH/DELETE     | `/api/leads`                   | Gerer les leads qualifies                                                          |
+| GET/POST                  | `/api/conversations`           | Consulter et gerer les conversations                                               |
+| GET/POST/PUT/PATCH/DELETE | `/api/knowledge`               | Gerer et indexer la base de connaissance                                           |
+| POST                      | `/api/crm/export`              | Exporter un lead vers Slack, HubSpot, Salesforce ou webhook selon la configuration |
+| GET/POST/PUT/DELETE       | `/api/webhooks`                | Gerer les endpoints webhook signes                                                 |
+| GET                       | `/api/crm/salesforce/auth`     | Demarrer l'auth Salesforce                                                         |
+| GET                       | `/api/crm/salesforce/callback` | Callback OAuth Salesforce                                                          |
 
 ## Scripts utiles
 

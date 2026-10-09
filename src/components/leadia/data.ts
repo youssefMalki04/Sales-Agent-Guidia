@@ -13,6 +13,7 @@ import {
   FileSpreadsheet,
   LayoutGrid,
   Link2,
+  ListChecks,
   MessagesSquare,
   Route,
   Rocket,
@@ -22,6 +23,7 @@ import {
   Ticket,
   UsersRound,
   Video,
+  SunMedium,
 } from "lucide-react";
 
 import type { NavItem, SalesAgentApp, SalesAgentForm } from "./types";
@@ -44,16 +46,22 @@ export const platformItems: NavItem[] = [
 ];
 
 export const dataItems: NavItem[] = [
+  { label: "My Day", icon: SunMedium, href: "/dashboard/my-day" },
   { label: "Analytics", icon: LayoutGrid, href: "/dashboard/analytics" },
   { label: "Live inbox", icon: MessagesSquare, href: "/dashboard/inbox" },
   { label: "Conversations", icon: Camera, href: "/dashboard/conversations" },
   { label: "Notifications", icon: Bell, href: "/dashboard/notifications" },
   { label: "Leads", icon: BriefcaseBusiness, href: "/dashboard/leads" },
+  { label: "Tasks", icon: ListChecks, href: "/dashboard/tasks" },
   { label: "Sales pipeline", icon: Columns3, href: "/dashboard/pipeline" },
   { label: "Meetings", icon: CalendarDays, href: "/dashboard/meetings" },
   { label: "Tickets", icon: Ticket, href: "/dashboard/tickets" },
   { label: "Docs", icon: FileText, href: "/dashboard/docs" },
-  { label: "Import / Export", icon: FileSpreadsheet, href: "/dashboard/import-export" },
+  {
+    label: "Import / Export",
+    icon: FileSpreadsheet,
+    href: "/dashboard/import-export",
+  },
 ];
 
 export const integrationItems: NavItem[] = [

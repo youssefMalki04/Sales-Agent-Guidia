@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { Topbar } from "./topbar";
 
 const pageTitles = [
+  { href: "/dashboard/my-day", title: "My Day" },
   { href: "/dashboard/onboarding", title: "Getting started" },
   { href: "/dashboard/organization", title: "Organization" },
   { href: "/dashboard/team", title: "Team" },
@@ -19,6 +20,7 @@ const pageTitles = [
   { href: "/dashboard/conversations", title: "Conversations" },
   { href: "/dashboard/notifications", title: "Notifications" },
   { href: "/dashboard/leads", title: "Leads" },
+  { href: "/dashboard/tasks", title: "Tasks" },
   { href: "/dashboard/meetings", title: "Meetings" },
   { href: "/dashboard/tickets", title: "Tickets" },
   { href: "/dashboard/docs", title: "Docs" },
@@ -32,5 +34,11 @@ export function DashboardTopbar({ onMenuClick }: { onMenuClick?: () => void }) {
   const pathname = usePathname();
   const page = pageTitles.find((item) => pathname.startsWith(item.href));
 
-  return <Topbar title={page?.title ?? "Dashboard"} agentName="lynara" onMenuClick={onMenuClick} />;
+  return (
+    <Topbar
+      title={page?.title ?? "Dashboard"}
+      agentName="lynara"
+      onMenuClick={onMenuClick}
+    />
+  );
 }

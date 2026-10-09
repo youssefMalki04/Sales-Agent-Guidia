@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 
 import type { Meeting } from "./meeting-data";
 import { StatusBadge, statusStyle } from "./meeting-panels";
+import { localMeetingDate } from "@/lib/meetings/dates";
 
 export function CalendarGrid({
   month,
@@ -12,7 +13,7 @@ export function CalendarGrid({
   meetings: Meeting[];
   onSelect: (id: string) => void;
 }) {
-  const firstDay = new Date(month.getFullYear(), month.getMonth(), 1).getDay();
+  const firstDay = (new Date(month.getFullYear(), month.getMonth(), 1).getDay() + 6) % 7;
   const days = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate();
   const cells = [
     ...Array(firstDay).fill(null),
@@ -40,12 +41,12 @@ export function CalendarGrid({
               : "";
             const daily = meetings.filter((meeting) => meeting.date === date);
             const isToday =
-              day && date === new Date().toISOString().slice(0, 10);
+              day && date === localMeetingDate();
 
             return (
               <div
                 key={`${index}-${day}`}
-                className="min-h-32 border-b border-r border-[#ececf0] p-2"
+                className={`min-h-32 border-b border-r border-[#ececf0] p-2 ${isToday ? "bg-indigo-50/50" : !day ? "bg-slate-50/60" : "bg-white"}`}
               >
                 <span
                   className={`flex size-7 items-center justify-center rounded-full text-xs font-semibold ${isToday ? "bg-[#5964d6] text-white" : "text-[#696972]"}`}
@@ -58,7 +59,7 @@ export function CalendarGrid({
                       type="button"
                       key={meeting.id}
                       onClick={() => onSelect(meeting.id)}
-                      className={`w-full truncate rounded-md border-l-2 px-2 py-1.5 text-left text-[11px] font-semibold ${statusStyle(meeting.status)}`}
+                      className={`w-full truncate rounded-md border-l-2 px-2 py-1.5 text-left text-[11px] font-semibold transition-shadow hover:shadow-sm focus-visible:outline-2 focus-visible:outline-indigo-500 ${statusStyle(meeting.status)}`}
                     >
                       <span className="mr-1 font-normal">{meeting.time}</span>
                       {meeting.prospect}
@@ -92,12 +93,12 @@ export function MeetingList({
             type="button"
             key={meeting.id}
             onClick={() => onSelect(meeting.id)}
-            className="grid w-full gap-3 p-4 text-left hover:bg-[#fafafa] sm:grid-cols-[130px_1fr_150px_120px] sm:items-center"
+            className="grid w-full gap-3 border-l-2 border-l-transparent p-4 text-left transition-colors hover:border-l-indigo-400 hover:bg-indigo-50/40 focus-visible:outline-2 focus-visible:outline-indigo-500 sm:grid-cols-[130px_1fr_150px_120px] sm:items-center"
           >
             <div>
               <p className="text-sm font-semibold">
                 {new Date(`${meeting.date}T12:00:00`).toLocaleDateString(
-                  "en-US",
+                  "fr-FR",
                   { month: "short", day: "numeric" },
                 )}
               </p>
@@ -119,7 +120,7 @@ export function MeetingList({
         ))}
       {!meetings.length ? (
         <p className="p-12 text-center text-sm text-[#85858e]">
-          No meeting matches these filters.
+          Aucun rendez-vous ne correspond à cette période et à ces filtres.
         </p>
       ) : null}
     </div>
@@ -141,6 +142,7 @@ export function ViewButton({
     <button
       type="button"
       aria-label={label}
+      aria-pressed={active}
       onClick={onClick}
       className={`flex size-7 items-center justify-center rounded-lg ${active ? "bg-[#5964d6] text-white" : "text-[#85858e]"}`}
     >
@@ -176,4 +178,4 @@ export function MeetingStat({
   );
 }
 
-const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const weekDays = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];

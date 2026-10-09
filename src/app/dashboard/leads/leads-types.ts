@@ -18,6 +18,10 @@ export type LeadRow = {
 
 export type LeadsPageProps = {
   searchParams?: Promise<{
+    sort?: string;
+    followUp?: string;
+    page?: string;
+    pageSize?: string;
     from?: string;
     q?: string;
     source?: string;
@@ -32,6 +36,7 @@ export type LeadsPageProps = {
 };
 
 export type LeadsFilters = {
+  followUp?: string;
   from: string;
   query: string;
   source: string;

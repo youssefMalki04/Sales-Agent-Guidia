@@ -26,6 +26,8 @@ export async function GET() {
     notifications: {
       slackWebhookUrl: isConfigured("SLACK_WEBHOOK_URL"),
       genericWebhookUrl: isConfigured("GENERIC_WEBHOOK_URL"),
+      resendApiKey: isConfigured("RESEND_API_KEY"),
+      emailFrom: isConfigured("NOTIFICATION_EMAIL_FROM"),
     },
   };
 

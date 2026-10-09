@@ -133,13 +133,13 @@ Ouvrir `/dashboard/integrations`, puis `/dashboard/privacy`.
 
 | Frontend          | Backend attendu                             |
 | ----------------- | ------------------------------------------- |
-| Widget chat       | `POST /api/chat` et creation de session     |
-| Live Inbox        | WebSocket ou service Realtime               |
+| Widget chat       | `POST /api/chat`, Gemini/RAG et sessions Supabase |
+| Live Inbox        | API conversations et actions operateur      |
 | Leads et Pipeline | API CRUD Leads et historique des etapes     |
-| Meetings          | API calendrier et OAuth fournisseur         |
+| Meetings          | API de planification des rendez-vous        |
 | Analytics         | Agregations SQL et evenements produit       |
-| Integrations      | OAuth, webhooks signes et coffre de secrets |
-| Team              | Authentification, invitations et RBAC       |
+| Integrations      | Slack, HubSpot et webhook valides ; Salesforce reporte |
+| Team              | Gestion des membres et roles dans le dashboard |
 | Privacy           | Consentements, retention et demandes RGPD   |
 
 ## Verification avant livraison
@@ -164,7 +164,7 @@ Checklist manuelle :
 
 ## Formulation recommandee pendant la soutenance
 
-> Le frontend couvre tout le parcours utilisateur et commercial. Les donnees
-> de demonstration sont locales pour permettre une presentation stable. Les
-> interfaces identifient clairement les actions qui seront connectees aux API,
-> au temps reel et aux integrations securisees dans la phase backend.
+> Le produit couvre le parcours utilisateur et commercial de bout en bout :
+> conversation Gemini/RAG, qualification, sauvegarde Supabase, score, synthese
+> commerciale et exports Slack, HubSpot et webhook. Salesforce reste une
+> integration optionnelle reportee tant que le compte OAuth de test est indisponible.

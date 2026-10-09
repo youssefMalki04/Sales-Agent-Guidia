@@ -1,4 +1,5 @@
 import { supabaseAdmin } from "@/lib/database/supabase-admin";
+import { matchesFollowUp, type ReminderState } from "./follow-up-filter";
 
 import type { LeadRow, LeadsFilters } from "./leads-types";
 
@@ -105,7 +106,7 @@ export async function getLeads(filters: LeadsFilters) {
       "id,name,email,company,country,sector,need,urgency,lead_temperature,conversion_score,crm_status,pipeline_stage,created_at,summary,suggested_next_action",
     )
     .order("created_at", { ascending: false })
-    .limit(100);
+    .order("id", { ascending: true });
 
   if (filters.from) {
     request = request.gte("created_at", `${filters.from}T00:00:00.000Z`);
@@ -138,17 +139,40 @@ export async function getLeads(filters: LeadsFilters) {
   if (filters.urgency) request = request.eq("urgency", filters.urgency);
   if (filters.crm) request = request.eq("crm_status", filters.crm);
 
-  const result = await request;
-
-  if (result.error) {
-    throw new Error(result.error.message);
+  const rows: LeadRow[] = [];
+  // Read every matching row before applying derived status/source filters.
+  // Small batches avoid the API's default maximum response size.
+  const batchSize = 100;
+  for (let offset = 0; ; offset += batchSize) {
+    const result = await request.range(offset, offset + batchSize - 1);
+    if (result.error) throw new Error(result.error.message);
+    const batch = (result.data ?? []) as LeadRow[];
+    rows.push(...batch);
+    if (batch.length < batchSize) break;
   }
 
-  return ((result.data ?? []) as LeadRow[])
+  const reminders: ReminderState[] = [];
+  if (filters.followUp === "none" || filters.followUp === "overdue") {
+    for (let start = 0; start < rows.length; start += 100) {
+      const ids = rows.slice(start, start + 100).map(lead => lead.id);
+      for (let offset = 0; ; offset += 100) {
+        const result = await supabaseAdmin.from("follow_up_reminders")
+          .select("lead_id,status,due_at").in("lead_id", ids)
+          .eq("status", "upcoming").order("id", { ascending: true }).range(offset, offset + 99);
+        if (result.error) throw new Error("Unable to load follow-ups. Please try again.");
+        const batch = (result.data ?? []) as ReminderState[];
+        reminders.push(...batch);
+        if (batch.length < 100) break;
+      }
+    }
+  }
+  const now = Date.now();
+  return rows
     .filter((lead) => {
       const status = getLeadStatus(lead);
 
       return (
+        matchesFollowUp(lead.id, filters.followUp ?? "", reminders, now) &&
         (!filters.status || status.value === filters.status) &&
         matchesSource(lead, filters.source)
       );

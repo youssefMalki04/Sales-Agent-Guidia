@@ -1,4 +1,5 @@
 export type NotificationRow = {
+  action_url: string | null;
   created_at: string;
   event_type: string;
   id: string;
@@ -6,6 +7,7 @@ export type NotificationRow = {
   read_at: string | null;
   severity: "info" | "success" | "warning" | "error";
   title: string;
+  task_id: string | null;
 };
 
 export type NotificationAction = "read" | "unread" | "archive";

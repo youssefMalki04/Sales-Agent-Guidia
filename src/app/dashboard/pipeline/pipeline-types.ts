@@ -13,4 +13,5 @@ export type PipelineLead = {
   stage: Stage;
   owner: string;
   dueDate: string;
+  dueDateValue?: string | null;
 };
