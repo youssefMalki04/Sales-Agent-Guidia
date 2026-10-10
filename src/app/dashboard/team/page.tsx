@@ -28,15 +28,31 @@ export default function TeamPage() {
     useState<AssignmentMode>("balanced");
 
   useEffect(() => {
-    const timer = window.setTimeout(() => {
+    let isActive = true;
+
+    async function loadMembers() {
       try {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored) setMembers(JSON.parse(stored) as TeamMember[]);
+        const response = await fetch("/api/team", {
+          headers: { Accept: "application/json" },
+        });
+
+        if (!response.ok) {
+          return;
+        }
+
+        const body = (await response.json()) as { members?: TeamMember[] };
+        if (isActive && Array.isArray(body.members) && body.members.length > 0) {
+          setMembers(body.members);
+        }
       } catch {
-        // Keep demo data when local storage is unavailable.
+        // Keep the default demo data if the backend is not yet available.
       }
-    }, 0);
-    return () => window.clearTimeout(timer);
+    }
+
+    void loadMembers();
+    return () => {
+      isActive = false;
+    };
   }, []);
 
   const filtered = useMemo(
@@ -65,40 +81,59 @@ export default function TeamPage() {
       )
     : 0;
 
-  function save(next: TeamMember[]) {
+  async function save(next: TeamMember[]) {
     setMembers(next);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+
+    try {
+      await fetch("/api/team", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ members: next }),
+      });
+    } catch {
+      // Keep the UI responsive even before the backend is fully wired.
+    }
   }
 
-  function updateMember(id: string, patch: Partial<TeamMember>) {
-    save(
-      members.map((member) =>
-        member.id === id ? { ...member, ...patch } : member,
-      ),
+  async function updateMember(id: string, patch: Partial<TeamMember>) {
+    const next = members.map((member) =>
+      member.id === id ? { ...member, ...patch } : member,
     );
+    await save(next);
   }
 
-  function invite(event: FormEvent<HTMLFormElement>) {
+  async function invite(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const email = String(data.get("email") ?? "");
     const name = String(
       data.get("name") || email.split("@")[0] || "New member",
     );
-    save([
-      ...members,
-      {
-        id: `member-${Date.now()}`,
-        name,
-        email,
-        role: String(data.get("role") ?? "sales") as Role,
-        status: "pending",
-        activeLeads: 0,
-        meetings: 0,
-        conversion: 0,
-        capacity: 0,
-      },
-    ]);
+    const nextMember: TeamMember = {
+      id: `member-${Date.now()}`,
+      name,
+      email,
+      role: String(data.get("role") ?? "sales") as Role,
+      status: "pending",
+      activeLeads: 0,
+      meetings: 0,
+      conversion: 0,
+      capacity: 0,
+    };
+
+    const next = [...members, nextMember];
+    void save(next);
+
+    try {
+      await fetch("/api/team", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(nextMember),
+      });
+    } catch {
+      // Fallback remains safe while the server is being finalized.
+    }
+
     setInviting(false);
   }
 

@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { requireServerAuth } from "@/lib/auth/server-auth";
 import { supabaseAdmin } from "@/lib/database/supabase-admin";
 import { dispatchWebhook } from "@/lib/webhooks/dispatch-webhook";
 
@@ -35,7 +36,10 @@ async function readInput(request: Request) {
   }
 }
 
-export async function GET() {
+export async function GET(request: Request) {
+  const auth = await requireServerAuth(request, { requireOrg: true });
+  if (!auth.ok) return auth.response;
+
   const { data, error } = await supabaseAdmin
     .from("leads")
     .select("id,name,email,company")
@@ -46,6 +50,9 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  const auth = await requireServerAuth(request, { requireOrg: true });
+  if (!auth.ok) return auth.response;
+
   const parsed = await readInput(request);
   if (!parsed.success) {
     return Response.json(
@@ -74,6 +81,9 @@ export async function POST(request: Request) {
 }
 
 export async function PATCH(request: Request) {
+  const auth = await requireServerAuth(request, { requireOrg: true });
+  if (!auth.ok) return auth.response;
+
   const parsed = await readInput(request);
   if (!parsed.success || !parsed.data.id) {
     return Response.json(
@@ -106,6 +116,9 @@ export async function PATCH(request: Request) {
 }
 
 export async function DELETE(request: Request) {
+  const auth = await requireServerAuth(request, { requireOrg: true });
+  if (!auth.ok) return auth.response;
+
   const id = new URL(request.url).searchParams.get("id");
   const parsedId = z.string().uuid().safeParse(id);
   if (!parsedId.success)
